@@ -41,7 +41,7 @@ class canvas():
         return (int(x), int(y))
 
     def transform_length(self, r):
-        r = r * self.extent *2
+        r *= (self.width/self.extent)
         return int(r)
 
     def show(self):
@@ -53,8 +53,8 @@ class canvas():
         r = self.transform_length(r)
         cv2.circle(self.img, (x, y), r, color, -1)
 
-c = canvas(200,200)
-img = c.circle(x=0, y=0, r=4)
+c = canvas(200,200,extent=4)
+img = c.circle(x=0, y=0, r=2)
 c.show()
 
 
