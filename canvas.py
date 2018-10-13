@@ -37,7 +37,7 @@ class canvas():
         y *= -self.height / 2.0
         y /= self.extent
         y += self.height / 2
-        print(x,y)
+        
         return (int(x), int(y))
 
     def transform_length(self, r):
@@ -50,6 +50,9 @@ class canvas():
     def show(self):
         cv2.imshow(self.name, self.img)
         cv2.waitKey(0)
+
+    def save(self, f_save):
+        cv2.imwrite(f_save, self.img)
 
     def circle(self, x=0, y=0, r=1, color=[255,255,255],
                thickness=-1, antialiased=True, blend=True):
@@ -81,10 +84,12 @@ if __name__ == "__main__":
     t = np.arange(0, 2*np.pi, 2*np.pi/n) + np.pi/6
     x,y = np.cos(t), np.sin(t)
 
-    c.circle(x[0], y[0], r=1,color=[0,255,0])
-    c.circle(x[1], y[1], r=1,color=[255,0,0])
-    c.circle(x[2], y[2], r=1,color=[0,0,255])
-    
+    c.circle(x[0], y[0], r=1, color=[0,255,0])
+    c.circle(x[1], y[1], r=1, color=[255,0,0])
+    c.circle(x[2], y[2], r=1, color=[0,0,255])
+
+    c.save("examples/simple_circles.png")
     c.show()
+    
 
 
