@@ -6,6 +6,7 @@ _Very much a work in progress!_
 
 + Incorporate color palettes from https://github.com/Jam3/nice-color-palettes
 + Proper library
++ Subpixel resolution for AA
 + Animation library
 
 ## Examples
