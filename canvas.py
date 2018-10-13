@@ -44,9 +44,6 @@ class canvas():
         r *= (self.width/self.extent)
         return int(r)
 
-    def overlay(self, rhs_img, a0=1.0, a1=1.0):
-        self.img = cv2.addWeighted(self.img, a0, rhs_img, a1, 0)
-
     def show(self):
         cv2.imshow(self.name, self.img)
         cv2.waitKey(0)
@@ -65,16 +62,21 @@ class canvas():
         else:
             lineType = 8
 
+        args = (x,y), r, color, thickness, lineType
+        self._combine(cv2.circle, args, blend=blend)
+
+
+    def _combine(self, func, args, blend, **kwargs):
         # Saturate or blend the images together
-        if blend:
-            dst = canvas(self.width, self.height).img
-        else:
-            dst = self.img
-        
-        cv2.circle(dst, (x, y), r, color, thickness, lineType)
 
         if blend:
-            self.overlay(dst)
+            dst = canvas(self.width, self.height).img
+            func(dst, *args)
+            cv2.add(self.img, dst, self.img)
+        else:
+            func(self.img, *args)
+
+
 
 
 if __name__ == "__main__":
@@ -87,6 +89,9 @@ if __name__ == "__main__":
     c.circle(x[0], y[0], r=1, color=[0,255,0])
     c.circle(x[1], y[1], r=1, color=[255,0,0])
     c.circle(x[2], y[2], r=1, color=[0,0,255])
+
+    # An example of not saturating the images together
+    c.circle(0, 0, r=0.25, color=[55,]*3, blend=False)
 
     c.save("examples/simple_circles.png")
     c.show()
