@@ -54,7 +54,7 @@ class canvas():
         cv2.circle(self.img, (x, y), r, color, -1)
 
 c = canvas(200,200,extent=4)
-img = c.circle(x=0, y=0, r=2)
+img = c.circle(x=0, y=0, r=1)
 c.show()
 
 
