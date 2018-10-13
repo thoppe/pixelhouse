@@ -44,12 +44,15 @@ class canvas():
         r *= (self.width/self.extent)
         return int(r)
 
+    def overlay(self, rhs_img, a0=1.0, a1=1.0):
+        self.img = cv2.addWeighted(self.img, a0, rhs_img, a1, 0)
+
     def show(self):
         cv2.imshow(self.name, self.img)
         cv2.waitKey(0)
 
     def circle(self, x=0, y=0, r=1, color=[255,255,255],
-               thickness=-1, antialiased=True):
+               thickness=-1, antialiased=True, blend=True):
         x, y = self.transform_coordinates(x, y)
         r = self.transform_length(r)
         thickness = self.transform_length(thickness)
@@ -59,12 +62,29 @@ class canvas():
         else:
             lineType = 8
 
-        cv2.circle(self.img, (x, y), r, color, thickness, lineType)
+        # Saturate or blend the images together
+        if blend:
+            dst = canvas(self.width, self.height).img
+        else:
+            dst = self.img
+        
+        cv2.circle(dst, (x, y), r, color, thickness, lineType)
 
-c = canvas(200,200,extent=4)
-c.circle(x=1, y=0.5, r=1)
-c.circle(x=-1, y=0.5, r=1, color=[255,0,0])
+        if blend:
+            self.overlay(dst)
 
-c.show()
+
+if __name__ == "__main__":
+    c = canvas(200,200,extent=4)
+
+    n = 3
+    t = np.arange(0, 2*np.pi, 2*np.pi/n) + np.pi/6
+    x,y = np.cos(t), np.sin(t)
+
+    c.circle(x[0], y[0], r=1,color=[0,255,0])
+    c.circle(x[1], y[1], r=1,color=[255,0,0])
+    c.circle(x[2], y[2], r=1,color=[0,0,255])
+    
+    c.show()
 
 
