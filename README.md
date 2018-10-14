@@ -12,3 +12,4 @@ _Very much a work in progress!_
 ## Examples
 
 ![](examples/simple_circles.png)
+![](examples/moving_circles.gif)

@@ -1,5 +1,8 @@
 from canvas import canvas
+import cv2
+import os
 import numpy as np
+import imageio
 from tqdm import tqdm
 
 class animation():
@@ -48,7 +51,20 @@ class animation():
             if not repeat:
                 break
 
+    def to_gif(self, f_gif):
+        images = [self.render(n).img for n in range(self.n_frames)]
+
+        # Convert from BGR to RGB
+        images = [cv2.cvtColor(img, cv2.COLOR_BGR2RGB) for img in images]
+        
+        imageio.mimsave(f_gif, images, fps=self.fps*2,
+                        palettesize=256,  subrectangles=True)
+        fs = os.stat(f_gif).st_size
+        print(f"Rendered {f_gif}, filesize {fs}")
+
 #############################################################################
+
+# This is ugggggly, need to fix
 
 def constant(x):
     def func(self, t):
@@ -107,11 +123,14 @@ class circle(artist):
 
 
 if __name__ == "__main__":
-    A = animation()
+    
+    A = animation(width=75, height=75)
 
     line1 = lambda t: 0.5 - t
     line2 = lambda t: t - 0.5
 
     A.add(circle(x=line1, y=1, r=1.25,color=[150,250,0]))
     A.add(circle(x=line2, y=-1, r=1.25,color=[100,5,255]))
-    A.show(delay=20, repeat=True)
+
+    A.to_gif("examples/moving_circles.gif")
+    #A.show(delay=20, repeat=True)
