@@ -80,7 +80,7 @@ class canvas():
 
 
 if __name__ == "__main__":
-    c = canvas(200,200,extent=4)
+    c = canvas(100,100,extent=4)
 
     n = 3
     t = np.arange(0, 2*np.pi, 2*np.pi/n) + np.pi/6

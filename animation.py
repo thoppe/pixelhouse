@@ -58,16 +58,23 @@ class animation():
             if not repeat:
                 break
 
-    def to_gif(self, f_gif):
+    def to_gif(self, f_gif, palettesize=256, gifsicle=False):
         images = [self.render(n).img for n in range(len(self))]
 
         # Convert from BGR to RGB
         images = [cv2.cvtColor(img, cv2.COLOR_BGR2RGB) for img in images]
         
         imageio.mimsave(f_gif, images, fps=self.fps*2,
-                        palettesize=256,  subrectangles=True)
+                        palettesize=palettesize, subrectangles=True)
         fs = os.stat(f_gif).st_size
         print(f"Rendered {f_gif}, filesize {fs}")
+
+        if gifsicle:
+            print("HERE")
+            cmd = f"gifsicle -i {f_gif} --colors {palettesize} -O3 -o {f_gif}"
+            os.system(cmd)
+            fs = os.stat(f_gif).st_size
+            print(f"gifsicle reduced filesize to {fs}")
 
 #############################################################################
 
@@ -159,9 +166,6 @@ if __name__ == "__main__":
     x2 = np.hstack([E1(),E2()])
 
     A.add(circle(x=x2, y=1, r=1.25,color=[150,250,0]))
-    A.add(circle(x=x, y=-1, r=1.25,color=[100,5,255]))
-
-    #A.to_gif("examples/moving_circles.gif")
-    #A.show(delay=20, repeat=True)
+    A.add(circle(x=x,  y=-1, r=1.25,color=[100,5,255]))
 
     A.show(repeat=True)
