@@ -44,13 +44,23 @@ class canvas():
         r *= (self.width/self.extent)
         return int(r)
 
-    def show(self):
+    def show(self, delay=0):
         cv2.imshow(self.name, self.img)
-        cv2.waitKey(0)
+        cv2.waitKey(delay)
 
     def save(self, f_save):
         cv2.imwrite(f_save, self.img)
 
+    def _combine(self, func, args, blend, **kwargs):
+        # Saturate or blend the images together
+
+        if blend:
+            dst = canvas(self.width, self.height).img
+            func(dst, *args)
+            cv2.add(self.img, dst, self.img)
+        else:
+            func(self.img, *args)
+    
     def circle(self, x=0, y=0, r=1, color=[255,255,255],
                thickness=-1, antialiased=True, blend=True):
         x, y = self.transform_coordinates(x, y)
@@ -65,16 +75,6 @@ class canvas():
         args = (x,y), r, color, thickness, lineType
         self._combine(cv2.circle, args, blend=blend)
 
-
-    def _combine(self, func, args, blend, **kwargs):
-        # Saturate or blend the images together
-
-        if blend:
-            dst = canvas(self.width, self.height).img
-            func(dst, *args)
-            cv2.add(self.img, dst, self.img)
-        else:
-            func(self.img, *args)
 
 
 
