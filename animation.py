@@ -153,12 +153,13 @@ if __name__ == "__main__":
     x = np.cos(t*2*np.pi)
 
     # Use an ease function to go in an out
-    E = easing.QuadEaseInOut(0, 1, len(A)//2)
-    x2 = np.hstack([E(),-(E()-1)])
+    E1 = easing.QuadEaseInOut(-1, 1, len(A)//2)
+    E2 = easing.QuadEaseInOut(1, -1, len(A)//2)
+    
+    x2 = np.hstack([E1(),E2()])
 
     A.add(circle(x=x2, y=1, r=1.25,color=[150,250,0]))
     A.add(circle(x=x, y=-1, r=1.25,color=[100,5,255]))
-
 
     #A.to_gif("examples/moving_circles.gif")
     #A.show(delay=20, repeat=True)

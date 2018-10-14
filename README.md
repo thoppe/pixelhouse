@@ -5,6 +5,7 @@ _Very much a work in progress!_
 ## Wishlist / Roadmap
 
 + Incorporate color palettes from https://github.com/Jam3/nice-color-palettes
++ Text
 + Proper library
 + Subpixel resolution for AA
 
