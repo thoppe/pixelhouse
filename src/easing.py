@@ -7,7 +7,7 @@ GNU General Public License v3.0
 '''
 
 import math
-
+import numpy as np
 
 class EasingBase:
     limit = (0, 1)
@@ -26,6 +26,17 @@ class EasingBase:
         t /= self.duration
         a = self.func(t)
         return self.end * a + self.start * (1 - a)
+
+    def __call__(self, alpha=None):
+        '''
+        If called with a single number, return that frame. If not,
+        return the entire set.
+        '''
+        if alpha is not None:
+            return self.ease(alpha)
+
+        vals = [self(n) for n in range(self.duration)]
+        return np.array(vals)
 
 
 """
