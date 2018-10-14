@@ -7,9 +7,13 @@ _Very much a work in progress!_
 + Incorporate color palettes from https://github.com/Jam3/nice-color-palettes
 + Proper library
 + Subpixel resolution for AA
-+ [Easing functions](https://easings.net/)
++ [Easing functions](https://easings.net/) 
 
 ## Examples
 
 ![](examples/simple_circles.png)
 ![](examples/moving_circles.gif)
+
+## Credits
+
++ [Easing functions](https://github.com/semitable/easing-functions)

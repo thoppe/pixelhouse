@@ -1,4 +1,6 @@
 from canvas import canvas
+import src.easing as easing
+
 import cv2
 import os
 import numpy as np
@@ -142,25 +144,22 @@ class circle(artist):
 
 #############################################################################
 
-
-def linear(slope, intercept):
-    def func(t):
-        return slope*t + intercept
-    return func
-
-
 if __name__ == "__main__":
     
-    A = animation(width=375, height=375)
+    A = animation(width=375, height=375, fps=6)
 
-    line1 = linear(-1, 0.5)
-    line2 = linear(1, -0.5)
-
+    # Use a cosine to smoothly move back
     t = np.linspace(0,1,len(A))
     x = np.cos(t*2*np.pi)
 
-    A.add(circle(x=x, y=1, r=1.25,color=[150,250,0]))
-    A.add(circle(x=-x, y=-1, r=1.25,color=[100,5,255]))
+    # Use an ease function to go in an out
+    E = easing.QuadEaseInOut(0, 1, len(A)//2)
+    x2 = np.array([E.ease(n) for n in range(len(A)//2)])
+    x2 = np.hstack([x2,-(x2-1)])
+
+    A.add(circle(x=x2, y=1, r=1.25,color=[150,250,0]))
+    A.add(circle(x=x, y=-1, r=1.25,color=[100,5,255]))
+
 
     #A.to_gif("examples/moving_circles.gif")
     #A.show(delay=20, repeat=True)
