@@ -66,6 +66,12 @@ class BasicCanvas():
 _default_color = [255, 255, 255]
 
 class canvas(BasicCanvas):
+
+    @staticmethod
+    def get_lineType(antialiased):
+        if antialiased:
+            return cv2.LINE_AA
+        return 8
     
     def circle(self, x=0, y=0, r=1, color=_default_color,
                thickness=-1, antialiased=True, blend=True):
@@ -73,11 +79,7 @@ class canvas(BasicCanvas):
         x, y = self.transform_coordinates(x, y)
         r = self.transform_length(r)
         thickness = self.transform_length(thickness)
-
-        if antialiased:
-            lineType = cv2.LINE_AA
-        else:
-            lineType = 8
+        lineType = self.get_lineType(antialiased)
 
         args = (x,y), r, color, thickness, lineType
         self._combine(cv2.circle, args, blend=blend)
@@ -89,11 +91,7 @@ class canvas(BasicCanvas):
         x0, y0 = self.transform_coordinates(x0, y0)
         x1, y1 = self.transform_coordinates(x1, y1)
         thickness = self.transform_length(thickness)
-        
-        if antialiased:
-            lineType = cv2.LINE_AA
-        else:
-            lineType = 8
+        lineType = self.get_lineType(antialiased)
             
         args = (x0,y0), (x1, y1), color, thickness, lineType
         self._combine(cv2.rectangle, args, blend=blend)
