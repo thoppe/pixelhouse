@@ -23,6 +23,8 @@ gif_args = {
     "gifsicle" : True,
 }
 
+#########################################################################
+
 
 def simple_circles():
     c = canvas(**canvas_args)
@@ -39,6 +41,18 @@ def simple_circles():
     c.circle(0, 0, r=0.25, color=[55,]*3, blend=False)
 
     return c
+
+def simple_rectangles():
+    c = canvas(**canvas_args)
+
+    c.rectangle(-1,-1,1,1,[255,0,0])
+    c.rectangle(0,0,2,-2,[0,0,255])
+    c.rectangle(-3,-3,0.5,0.5,[0,255,0])
+
+    return c
+
+#########################################################################
+
 
 def rotating_circles():
     A = animation(**animation_args)
@@ -80,9 +94,11 @@ def checkerboard():
     
     return A
 
+#########################################################################
 
-simple_circles().save("examples/simple_circles.png")
-rotating_circles().to_gif("examples/moving_circles.gif", **gif_args)
-
-#checkerboard().show(delay=30)
-checkerboard().to_gif("examples/checkerboard.gif", **gif_args)
+if __name__ == "__main__":
+    
+    simple_circles().save("examples/simple_circles.png")
+    simple_rectangles().save("examples/simple_rectangle.png")
+    rotating_circles().to_gif("examples/moving_circles.gif", **gif_args)
+    checkerboard().to_gif("examples/checkerboard.gif", **gif_args)

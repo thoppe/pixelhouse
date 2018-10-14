@@ -1,9 +1,10 @@
 import cv2
 import numpy as np
 
-class canvas():
+class BasicCanvas():
     '''
-    Canvas object for quad drawings. Extent measures along the x-axis.
+    Basic canvas object for quad drawings. 
+    Extent measures along the x-axis.
     '''
 
     def __init__(
@@ -60,9 +61,15 @@ class canvas():
             cv2.add(self.img, dst, self.img)
         else:
             func(self.img, *args)
+
+
+_default_color = [255, 255, 255]
+
+class canvas(BasicCanvas):
     
-    def circle(self, x=0, y=0, r=1, color=[255,255,255],
+    def circle(self, x=0, y=0, r=1, color=_default_color,
                thickness=-1, antialiased=True, blend=True):
+
         x, y = self.transform_coordinates(x, y)
         r = self.transform_length(r)
         thickness = self.transform_length(thickness)
@@ -76,24 +83,31 @@ class canvas():
         self._combine(cv2.circle, args, blend=blend)
 
 
+    def rectangle(self, x0=0, y0=0, x1=1, y1=1, color=_default_color,
+                  thickness=-1, antialiased=True, blend=True):
+
+        x0, y0 = self.transform_coordinates(x0, y0)
+        x1, y1 = self.transform_coordinates(x1, y1)
+        thickness = self.transform_length(thickness)
+        
+        if antialiased:
+            lineType = cv2.LINE_AA
+        else:
+            lineType = 8
+            
+        args = (x0,y0), (x1, y1), color, thickness, lineType
+        self._combine(cv2.rectangle, args, blend=blend)
 
 
 
 if __name__ == "__main__":
-    c = canvas(100,100,extent=4)
+    c = canvas(400,400,extent=4)
 
-    n = 3
-    t = np.arange(0, 2*np.pi, 2*np.pi/n) + np.pi/6
-    x,y = np.cos(t), np.sin(t)
-
-    c.circle(x[0], y[0], r=1, color=[0,255,0])
-    c.circle(x[1], y[1], r=1, color=[255,0,0])
-    c.circle(x[2], y[2], r=1, color=[0,0,255])
-
-    # An example of not saturating the images together
-    c.circle(0, 0, r=0.25, color=[55,]*3, blend=False)
-
-    c.save("examples/simple_circles.png")
+    c.rectangle(-1,-1,1,1,[255,0,0])
+    c.rectangle(0,0,2,-2,[0,0,255])
+    c.rectangle(-3,-3,0.5,0.5,[0,255,0])
+    
+    
     c.show()
     
 
