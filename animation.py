@@ -2,6 +2,8 @@ from canvas import canvas
 import cv2
 import os
 import numpy as np
+import scipy.interpolate
+
 import imageio
 from tqdm import tqdm
 
@@ -75,6 +77,14 @@ class artist():
             return x
         return func
 
+    @staticmethod
+    def _create_interpolation(y):
+       t = np.linspace(0, 1, len(y))
+       f = scipy.interpolate.interp1d(t, y)
+       def func(x):
+           return f(x)
+       return func
+
     def __init__(self, **kwargs):
         '''
         When an artist is initiated, all of the attributes can be set
@@ -94,10 +104,10 @@ class artist():
             if callable(val):
                 setattr(self, key, val)
 
-            # If the val is iterable and matches size use this
+            # If the val is a numpy array
             elif isinstance(val, np.ndarray):
-                print("HERE")
-                exit()
+                interpfunc = self._create_interpolation(val)
+                setattr(self, key, interpfunc)
 
             # Otherwise we assume it's a constant of this value
             else:
@@ -146,10 +156,11 @@ if __name__ == "__main__":
     line1 = linear(-1, 0.5)
     line2 = linear(1, -0.5)
 
-    r = np.linspace(0,1,len(A))
+    t = np.linspace(0,1,len(A))
+    x = np.cos(t*2*np.pi)
 
-    A.add(circle(x=line1, y=1, r=1.25,color=[150,250,0]))
-    A.add(circle(x=line2, y=-1, r=1.25,color=[100,5,255]))
+    A.add(circle(x=x, y=1, r=1.25,color=[150,250,0]))
+    A.add(circle(x=-x, y=-1, r=1.25,color=[100,5,255]))
 
     #A.to_gif("examples/moving_circles.gif")
     #A.show(delay=20, repeat=True)
