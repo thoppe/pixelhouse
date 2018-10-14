@@ -70,7 +70,6 @@ class animation():
         print(f"Rendered {f_gif}, filesize {fs}")
 
         if gifsicle:
-            print("HERE")
             cmd = f"gifsicle -i {f_gif} --colors {palettesize} -O3 -o {f_gif}"
             os.system(cmd)
             fs = os.stat(f_gif).st_size
