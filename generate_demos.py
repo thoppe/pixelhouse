@@ -55,10 +55,17 @@ def simple_rectangles():
 def simple_ellipses():
     c = canvas(**canvas_args)
 
-    c.ellipse(0,0, 1.1, 0.85, np.pi/16, np.pi/8,
-              color=[225,225,225], thickness=0.1)
-    c.ellipse(0,0, 1, 0.75, np.pi/16, np.pi/8,
-              color=[155,250,255])
+    a0 = np.pi/8
+    a1 = 2*np.pi - np.pi/8
+
+    c.ellipse(0,0, 1, 0.75, 0, a0, a1,
+              color=[155,230,235])
+
+    c.ellipse(-4,0, 1, 0.75, 0, a0, a1,
+              color=[155,230,235])
+
+    c.ellipse(4,0, 1, 0.75, 0, a0, a1,
+              color=[155,230,235])
     
     return c
 
