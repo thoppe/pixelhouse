@@ -99,6 +99,16 @@ class canvas(BasicCanvas):
         args = (x0,y0), (x1, y1), color, thickness, lineType
         self._combine(cv2.rectangle, args, blend=blend)
 
+    def line(self, x0=0, y0=0, x1=1, y1=1, color=_default_color,
+             thickness=1, antialiased=True, blend=True):
+        
+        x0, y0 = self.transform_coordinates(x0, y0)
+        x1, y1 = self.transform_coordinates(x1, y1)
+        thickness = self.transform_length(thickness)
+        lineType = self.get_lineType(antialiased)
+            
+        args = (x0,y0), (x1, y1), color, thickness, lineType
+        self._combine(cv2.line, args, blend=blend)
 
     def ellipse(self, x=0, y=0,
                 major_length=2, minor_length=1,
@@ -133,11 +143,16 @@ class canvas(BasicCanvas):
 if __name__ == "__main__":
     c = canvas(400,400,extent=4)
 
-    c.ellipse(0,0, 1.1, 0.85, np.pi/16, np.pi/8,
-              color=[225,225,225], thickness=0.1)
-    c.ellipse(0,0, 1, 0.75, np.pi/16, np.pi/8,
-              color=[155,250,255])
-    
+    c.line(-4, 0, 4, 0, thickness=0.025)
+    c.line(0, 4, 0, -4, thickness=0.025)
+
+    for i in np.arange(-4,5,1):
+        c.line(-4, i, 4, i, thickness=0.01, color=[100,int(100+i*10),100])
+        c.line(i, 4, i, -4, thickness=0.01, color=[100,100,int(100+i*10)])
+
+    for i in np.arange(-4,5,.2):
+        c.line(-4, i, 4, i, thickness=0.01, color=[20,]*3)
+        c.line(i, 4, i, -4, thickness=0.01, color=[20,]*3)
     
     c.show()
     

@@ -4,9 +4,11 @@ _Very much a work in progress!_
 
 ## Wishlist / Roadmap
 
-+ Incorporate color palettes from https://github.com/Jam3/nice-color-palettes
-+ Text
 + Change the background color
++ Text
++ Lines
+
++ Incorporate color palettes from https://github.com/Jam3/nice-color-palettes
 + Proper library
 + Subpixel resolution for AA
 
@@ -15,7 +17,7 @@ _Very much a work in progress!_
 ![](examples/simple_circles.png)
 ![](examples/simple_rectangle.png)
 ![](examples/simple_ellipses.png)
-
+![](examples/simple_lines.png)
 
 
 ![](examples/moving_circles.gif)

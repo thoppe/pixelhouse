@@ -69,6 +69,24 @@ def simple_ellipses():
     
     return c
 
+def simple_lines():
+    c = canvas(**canvas_args)
+    
+    c.line(-4, 0, 4, 0, thickness=0.05)
+    c.line(0, 4, 0, -4, thickness=0.05)
+
+    tc = 0.04
+
+    for i in np.arange(-4,5,1):
+        c.line(-4, i, 4, i, thickness=tc, color=[100,int(100+i*10),100])
+        c.line(i, 4, i, -4, thickness=tc, color=[100,100,int(100+i*10)])
+
+    for i in np.arange(-4,5,.5):
+        c.line(-4, i, 4, i, thickness=tc, color=[20,]*3)
+        c.line(i, 4, i, -4, thickness=tc, color=[20,]*3)
+
+    return c
+
 #########################################################################
 
 
@@ -115,7 +133,8 @@ def checkerboard():
 #########################################################################
 
 if __name__ == "__main__":
-    
+
+    simple_lines().save("examples/simple_lines.png")
     simple_circles().save("examples/simple_circles.png")
     simple_rectangles().save("examples/simple_rectangle.png")
     simple_ellipses().save("examples/simple_ellipses.png")
