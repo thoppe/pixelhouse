@@ -45,6 +45,10 @@ class BasicCanvas():
         r *= (self.width/self.extent)
         return int(r)
 
+    def transform_angle(self, rads):
+        # From radians into degrees, counterclockwise
+        return -rads*(360/(2*np.pi))
+
     def show(self, delay=0):
         cv2.imshow(self.name, self.img)
         cv2.waitKey(delay)
@@ -84,10 +88,9 @@ class canvas(BasicCanvas):
         args = (x,y), r, color, thickness, lineType
         self._combine(cv2.circle, args, blend=blend)
 
-
     def rectangle(self, x0=0, y0=0, x1=1, y1=1, color=_default_color,
                   thickness=-1, antialiased=True, blend=True):
-
+        
         x0, y0 = self.transform_coordinates(x0, y0)
         x1, y1 = self.transform_coordinates(x1, y1)
         thickness = self.transform_length(thickness)
@@ -97,13 +100,43 @@ class canvas(BasicCanvas):
         self._combine(cv2.rectangle, args, blend=blend)
 
 
+    def ellipse(self, x=0, y=0,
+                major_length=2, minor_length=1,
+                rotation=0,
+                line_start=0,
+                line_end=2*np.pi,
+                color=_default_color,
+                thickness=-1,
+                antialiased=True,
+                blend=True
+    ):
+        # Angles measured in radians
+        
+        x, y = self.transform_coordinates(x, y)
+        major_length = self.transform_length(major_length)
+        minor_length = self.transform_length(minor_length)
+        thickness = self.transform_length(thickness)
+        lineType = self.get_lineType(antialiased)
+
+        rotation_degree = self.transform_angle(rotation)
+        start_degree = self.transform_angle(line_start)
+        end_degree = self.transform_angle(line_end)
+        
+            
+        args = ((x,y), (major_length, minor_length),
+                rotation_degree, start_degree, end_degree,
+                color, thickness, lineType)
+        
+        self._combine(cv2.ellipse, args, blend=blend)
+
 
 if __name__ == "__main__":
     c = canvas(400,400,extent=4)
 
-    c.rectangle(-1,-1,1,1,[255,0,0])
-    c.rectangle(0,0,2,-2,[0,0,255])
-    c.rectangle(-3,-3,0.5,0.5,[0,255,0])
+    c.ellipse(0,0, 1.1, 0.85, np.pi/16, np.pi/8,
+              color=[225,225,225], thickness=0.1)
+    c.ellipse(0,0, 1, 0.75, np.pi/16, np.pi/8,
+              color=[155,250,255])
     
     
     c.show()

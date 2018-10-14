@@ -51,6 +51,17 @@ def simple_rectangles():
 
     return c
 
+
+def simple_ellipses():
+    c = canvas(**canvas_args)
+
+    c.ellipse(0,0, 1.1, 0.85, np.pi/16, np.pi/8,
+              color=[225,225,225], thickness=0.1)
+    c.ellipse(0,0, 1, 0.75, np.pi/16, np.pi/8,
+              color=[155,250,255])
+    
+    return c
+
 #########################################################################
 
 
@@ -100,5 +111,7 @@ if __name__ == "__main__":
     
     simple_circles().save("examples/simple_circles.png")
     simple_rectangles().save("examples/simple_rectangle.png")
+    simple_ellipses().save("examples/simple_ellipses.png")
+    
     rotating_circles().to_gif("examples/moving_circles.gif", **gif_args)
     checkerboard().to_gif("examples/checkerboard.gif", **gif_args)

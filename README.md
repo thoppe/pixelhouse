@@ -14,6 +14,8 @@ _Very much a work in progress!_
 
 ![](examples/simple_circles.png)
 ![](examples/simple_rectangle.png)
+![](examples/simple_ellipses.png)
+
 
 
 ![](examples/moving_circles.gif)
