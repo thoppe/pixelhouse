@@ -17,20 +17,23 @@ class animation():
         self.fps = fps
         self.artists = []
 
-        self.n_frames = int(fps*duration)
+        n_frames = int(fps*duration)
 
         self.frames = [
             canvas(width, height, extent) for _ in
-            range(self.n_frames)
+            range(n_frames)
         ]
-        self.has_rendered = [False,]*self.n_frames
-        self.timepoints = np.linspace(0, 1, self.n_frames+1)[:-1]
+        self.has_rendered = [False,]*len(self)
+        self.timepoints = np.linspace(0, 1, len(self)+1)[:-1]
+
+    def __len__(self):
+        return len(self.frames)
 
     def add(self, art):
         self.artists.append(art)
 
     def render(self, n):
-        assert(0 <= n < self.n_frames)
+        assert(0 <= n < len(self))
 
         if not self.has_rendered[n]:
 
@@ -45,14 +48,14 @@ class animation():
 
     def show(self, delay=50, repeat=True):
         while True:
-            for n in range(self.n_frames):
+            for n in range(len(self)):
                 img = self.render(n)
                 img.show(delay=delay)
             if not repeat:
                 break
 
     def to_gif(self, f_gif):
-        images = [self.render(n).img for n in range(self.n_frames)]
+        images = [self.render(n).img for n in range(len(self))]
 
         # Convert from BGR to RGB
         images = [cv2.cvtColor(img, cv2.COLOR_BGR2RGB) for img in images]
@@ -75,9 +78,8 @@ class artist():
     def __init__(self, **kwargs):
         '''
         When an artist is initiated, all of the attributes can be set
-        as a function of time. These attributes can be a constant, a
-        numpy array equal to the number of frames (interpolation will
-        be used if needed), or a function.
+        as a function of time. These attributes can be a constant, a numpy
+        array (interpolation will be used if needed), or a function.
         '''
 
         attributes = dir(self)
@@ -91,6 +93,11 @@ class artist():
             # If the val is callable, that's what we use
             if callable(val):
                 setattr(self, key, val)
+
+            # If the val is iterable and matches size use this
+            elif isinstance(val, np.ndarray):
+                print("HERE")
+                exit()
 
             # Otherwise we assume it's a constant of this value
             else:
@@ -138,6 +145,8 @@ if __name__ == "__main__":
 
     line1 = linear(-1, 0.5)
     line2 = linear(1, -0.5)
+
+    r = np.linspace(0,1,len(A))
 
     A.add(circle(x=line1, y=1, r=1.25,color=[150,250,0]))
     A.add(circle(x=line2, y=-1, r=1.25,color=[100,5,255]))
