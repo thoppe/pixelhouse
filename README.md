@@ -14,6 +14,7 @@ _Very much a work in progress!_
 
 ![](examples/simple_circles.png)
 ![](examples/moving_circles.gif)
+![](examples/checkerboard.gif)
 
 Need example of these:
 

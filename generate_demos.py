@@ -3,6 +3,7 @@ from animation import animation, circle
 import src.easing as easing
 import numpy as np
 import os
+import itertools
 
 save_dest = "examples"
 
@@ -39,24 +40,49 @@ def simple_circles():
 
     return c
 
-def rotating_circles(show=False):
-    # Rotating circles
+def rotating_circles():
     A = animation(**animation_args)
 
     # Use an ease function to go in an out
     E1 = easing.QuadEaseInOut(-1, 1, len(A)//2)
     E2 = easing.QuadEaseInOut(1, -1, len(A)//2)
-    
     x = np.hstack([E1(),E2()])
 
     A.add(circle(x=x, y=1, r=1.25,color=[150,250,0]))
     A.add(circle(x=-x, y=-1, r=1.25,color=[100,5,255]))
-
-    if show:
-        A.show(repeat=True)
         
     return A
+
+
+def checkerboard():
+    A = animation(**animation_args)
+
+    # Use an ease function to go in an out
+    E1 = easing.QuadEaseInOut(0, 1, len(A)//2)
+    E2 = easing.QuadEaseInOut(1, 0, len(A)//2)
+    z = np.hstack([E1(),E2()])
+    
+    r = 0.20
+    c = [150, 250, 0]
+    coord = [-2, 0, 2]
+
+    for dx, dy in itertools.product(coord, repeat=2):
+        A.add(circle(x=z+dx, y=z+dy, r=r,color=c))
+        A.add(circle(x=z+dx, y=-z+dy, r=r,color=c))
+        A.add(circle(x=-z+dx, y=-z+dy, r=r,color=c))
+        A.add(circle(x=-z+dx, y=z+dy, r=r,color=c))
+
+        A.add(circle(x=dx, y=z+dy, r=r,color=c))
+        A.add(circle(x=z+dx, y=dy, r=r,color=c))
+
+        A.add(circle(x=dx, y=-z+dy, r=r,color=c))
+        A.add(circle(x=-z+dx, y=dy, r=r,color=c))
+    
+    return A
+
 
 simple_circles().save("examples/simple_circles.png")
 rotating_circles().to_gif("examples/moving_circles.gif", **gif_args)
 
+#checkerboard().show(delay=30)
+checkerboard().to_gif("examples/checkerboard.gif", **gif_args)
