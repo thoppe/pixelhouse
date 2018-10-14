@@ -64,22 +64,13 @@ class animation():
 
 #############################################################################
 
-# This is ugggggly, need to fix
-
-def constant(x):
-    def func(self, t):
-        return x
-    return func
-
-def constant2(x):
-    def func(t):
-        return x
-    return func
-
-#############################################################################
-        
-
 class artist():
+    
+    @staticmethod
+    def _constant(x):
+        def func(t):
+            return x
+        return func
 
     def __init__(self, **kwargs):
 
@@ -97,7 +88,7 @@ class artist():
 
             # Otherwise we assume it's a constant of this value
             else:
-                setattr(self, key, constant2(val))
+                setattr(self, key, self._constant(val))
 
     def __call__(self, t):
         # Virtual class, need to override
@@ -106,6 +97,10 @@ class artist():
 
 #############################################################################
 
+def constant(x):
+    def func(self, t):
+        return x
+    return func
 
 class circle(artist):
 
@@ -122,15 +117,26 @@ class circle(artist):
         )
 
 
+#############################################################################
+
+
+def linear(slope, intercept):
+    def func(t):
+        return slope*t + intercept
+    return func
+
+
 if __name__ == "__main__":
     
-    A = animation(width=75, height=75)
+    A = animation(width=375, height=375)
 
-    line1 = lambda t: 0.5 - t
-    line2 = lambda t: t - 0.5
+    line1 = linear(-1, 0.5)
+    line2 = linear(1, -0.5)
 
     A.add(circle(x=line1, y=1, r=1.25,color=[150,250,0]))
     A.add(circle(x=line2, y=-1, r=1.25,color=[100,5,255]))
 
-    A.to_gif("examples/moving_circles.gif")
+    #A.to_gif("examples/moving_circles.gif")
     #A.show(delay=20, repeat=True)
+
+    A.show(repeat=True)
