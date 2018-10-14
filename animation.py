@@ -73,6 +73,12 @@ class artist():
         return func
 
     def __init__(self, **kwargs):
+        '''
+        When an artist is initiated, all of the attributes can be set
+        as a function of time. These attributes can be a constant, a
+        numpy array equal to the number of frames (interpolation will
+        be used if needed), or a function.
+        '''
 
         attributes = dir(self)
         for key, val in kwargs.items():
