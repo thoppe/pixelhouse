@@ -19,15 +19,13 @@ _Very much a work in progress!_
 ![](examples/simple_ellipses.png)
 ![](examples/simple_lines.png)
 
-
 ![](examples/moving_circles.gif)
 ![](examples/checkerboard.gif)
 ![](examples/timer.gif)
 
-Need example of these:
+[Example code](generate_demos.py)
 
-+ [Easing functions](https://easings.net/) 
-
-## Credits
+## Credits / Code borrowed
 
 + [Easing functions](https://github.com/semitable/easing-functions)
++ [Bezier curves](https://github.com/reptillicus/Bezier)
