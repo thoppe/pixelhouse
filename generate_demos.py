@@ -4,6 +4,7 @@ import src.easing as easing
 import numpy as np
 import os
 import itertools
+from src.nice_colors import get_palette
 
 save_dest = "examples"
 
@@ -88,6 +89,32 @@ def simple_lines():
 
     return c
 
+def teyleen_982():
+    c = canvas(**canvas_args)
+    pi = np.pi
+    
+    pal = [[230]*3,] + get_palette(96) + [[230]*3,]
+    
+    c = canvas(**canvas_args)
+    tc = 0.025
+
+    dx = pi/8
+    t0 = dx
+    t1 = 2*pi-dx
+    r = 1.8
+
+    for n in range(6):
+        c.ellipse(0,0,r,r,pi/2,t0,t1,
+                  color=pal[n],
+                  thickness=tc)
+
+        dx *= 1.4
+        t0 = dx
+        t1 = 2*pi-dx
+        r -= 0.2
+
+    return c
+
 #########################################################################
 
 
@@ -165,5 +192,8 @@ if __name__ == "__main__":
     
     rotating_circles().to_gif("examples/moving_circles.gif", **gif_args)
     checkerboard().to_gif("examples/checkerboard.gif", **gif_args)
-    '''
     timer().to_gif("examples/timer.gif", **gif_args)
+    '''
+
+    teyleen_982().save("examples/teyleen_982.png")
+    
