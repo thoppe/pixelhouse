@@ -8,6 +8,7 @@ GNU General Public License v3.0
 
 import math
 import numpy as np
+from src.bezier import bezier_curve
 
 class EasingBase:
     limit = (0, 1)
@@ -37,6 +38,37 @@ class EasingBase:
 
         vals = [self(n) for n in range(self.duration)]
         return np.array(vals)
+
+'''
+'''
+
+
+
+
+class PolyEaseIn(EasingBase):
+    
+    def __init__(self, n=2.0, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.n = n
+    
+    def func(self, t):
+        return math.pow(t, self.n)
+    
+import scipy.interpolate
+
+class SmoothEaseIn(EasingBase):
+    
+    def __init__(self, dx=0.1, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        a = [0.45, 0.25-dx]
+        b = [0.55, 0.75+dx]
+        t, y = bezier_curve([[0,0], a, b, [1,1]], 500)
+        self.f = scipy.interpolate.interp1d(t, y)
+     
+    def func(self, t):
+        return self.f(t)
+
 
 
 """

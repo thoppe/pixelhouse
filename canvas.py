@@ -110,6 +110,26 @@ class canvas(BasicCanvas):
         args = (x0,y0), (x1, y1), color, thickness, lineType
         self._combine(cv2.line, args, blend=blend)
 
+    
+    def background(self, color=_default_color):
+        x = self.extent
+        cx = canvas(self.width, self.height, self.extent)
+        cx.rectangle(-x,-x, x, x, color=color, blend=True)
+        cx = cx.img
+
+        img2gray = cv2.cvtColor(self.img, cv2.COLOR_BGR2GRAY)
+        ret, mask = cv2.threshold(img2gray, 10, 255, cv2.THRESH_BINARY)
+        mask_inv = cv2.bitwise_not(mask)
+
+        # Now black-out the area of logo in ROI
+        img1_bg = cv2.bitwise_and(self.img, self.img, mask = mask_inv)
+
+        # Take only region of logo from logo image.
+        #img2_fg = cv2.bitwise_and(self.img,self.img, mask = mask)
+        
+        #self.img = cv2.addWeighted(self.img, 1.0, cx.img, 1.0, 0.0)
+        #self.img = img1_bg
+
     def ellipse(self, x=0, y=0,
                 major_length=2, minor_length=1,
                 rotation=0,
@@ -141,19 +161,12 @@ class canvas(BasicCanvas):
 
 
 if __name__ == "__main__":
-    c = canvas(400,400,extent=4)
+    c = canvas(200,200,extent=4)
 
     c.line(-4, 0, 4, 0, thickness=0.025)
-    c.line(0, 4, 0, -4, thickness=0.025)
+    c.background([45,]*3)
 
-    for i in np.arange(-4,5,1):
-        c.line(-4, i, 4, i, thickness=0.01, color=[100,int(100+i*10),100])
-        c.line(i, 4, i, -4, thickness=0.01, color=[100,100,int(100+i*10)])
-
-    for i in np.arange(-4,5,.2):
-        c.line(-4, i, 4, i, thickness=0.01, color=[20,]*3)
-        c.line(i, 4, i, -4, thickness=0.01, color=[20,]*3)
-    
+   
     c.show()
     
 

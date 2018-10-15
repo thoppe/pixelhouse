@@ -1,5 +1,5 @@
 from canvas import canvas
-from animation import animation, circle
+from animation import animation, circle, line
 import src.easing as easing
 import numpy as np
 import os
@@ -28,7 +28,8 @@ gif_args = {
 
 def simple_circles():
     c = canvas(**canvas_args)
-
+    q = 155
+    
     n = 3
     t = np.arange(0, 2*np.pi, 2*np.pi/n) + np.pi/6
     x,y = np.cos(t), np.sin(t)
@@ -38,8 +39,8 @@ def simple_circles():
     c.circle(x[2], y[2], r=1, color=[0,0,255])
 
     # An example of not saturating the images together
-    c.circle(0, 0, r=0.25, color=[55,]*3, blend=False)
-
+    c.circle(0, 0, r=0.25, color=[q,q,q], blend=False)
+    
     return c
 
 def simple_rectangles():
@@ -130,10 +131,33 @@ def checkerboard():
     
     return A
 
+
+def timer():
+    A = animation(**animation_args)
+
+    r, polyn, tc = 3, 0.1, 0.315
+    c = [65, 0, 20]
+
+    for k in range(20):
+
+        theta = easing.SmoothEaseIn(polyn, 0, 2*np.pi, len(A))()
+        L = line(
+            x0=0,y0=0,x1=r*np.cos(theta),
+            y1=r*np.sin(theta),
+            thickness=tc, color=c
+        )
+        A.add(L)
+        
+        r *= 0.98
+        polyn *= 1.2
+
+    return A
+
 #########################################################################
 
 if __name__ == "__main__":
 
+    '''
     simple_lines().save("examples/simple_lines.png")
     simple_circles().save("examples/simple_circles.png")
     simple_rectangles().save("examples/simple_rectangle.png")
@@ -141,3 +165,5 @@ if __name__ == "__main__":
     
     rotating_circles().to_gif("examples/moving_circles.gif", **gif_args)
     checkerboard().to_gif("examples/checkerboard.gif", **gif_args)
+    '''
+    timer().to_gif("examples/timer.gif", **gif_args)

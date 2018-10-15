@@ -6,8 +6,8 @@ _Very much a work in progress!_
 
 + Change the background color
 + Text
-+ Lines
 
++ BGR -> RGB
 + Incorporate color palettes from https://github.com/Jam3/nice-color-palettes
 + Proper library
 + Subpixel resolution for AA
@@ -22,6 +22,7 @@ _Very much a work in progress!_
 
 ![](examples/moving_circles.gif)
 ![](examples/checkerboard.gif)
+![](examples/timer.gif)
 
 Need example of these:
 

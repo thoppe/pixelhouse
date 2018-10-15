@@ -147,24 +147,46 @@ class circle(artist):
             self.color(t), self.thickness(t)
         )
 
+class line(artist):
+
+    x0 = y0 = constant(0.0)
+    x1 = y1 = constant(1.0)
+
+    color = constant([255,255,255])
+    thickness = constant(0.1)
+
+    def __call__(self, t, img=None):
+        
+        img.line(
+            self.x0(t), self.y0(t),
+            self.x1(t), self.y1(t), 
+            self.color(t), self.thickness(t)
+        )
+
 
 #############################################################################
 
 if __name__ == "__main__":
     
-    A = animation(width=375, height=375, fps=6)
-
-    # Use a cosine to smoothly move back
-    t = np.linspace(0,1,len(A))
-    x = np.cos(t*2*np.pi)
+    A = animation(width=400, height=400, fps=10)
 
     # Use an ease function to go in an out
-    E1 = easing.QuadEaseInOut(-1, 1, len(A)//2)
-    E2 = easing.QuadEaseInOut(1, -1, len(A)//2)
+    tc = 0.315
     
-    x2 = np.hstack([E1(),E2()])
+    r, polyn = 3, 0.1
+    c = [65, 0, 20]
 
-    A.add(circle(x=x2, y=1, r=1.25,color=[150,250,0]))
-    A.add(circle(x=x,  y=-1, r=1.25,color=[100,5,255]))
+    for k in range(20):
+
+        theta = easing.SmoothEaseIn(polyn, 0, 2*np.pi, len(A))()
+        L = line(
+            x0=0,y0=0,x1=r*np.cos(theta),
+            y1=r*np.sin(theta),
+            thickness=tc, color=c
+        )
+        A.add(L)
+        
+        r *= 0.98
+        polyn *= 1.2
 
     A.show(repeat=True)
