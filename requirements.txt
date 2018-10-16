@@ -1,5 +1,10 @@
+# Image
+opencv-python 
+imageio
+
+# Numerical
 numpy
 scipy
-imageio
-cv2
+
+# Helper
 tqdm
