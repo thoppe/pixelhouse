@@ -123,9 +123,9 @@ def rotating_circles():
     A = animation(**animation_args)
 
     # Use an ease function to go in an out
-    E1 = easing.QuadEaseInOut(-1, 1, len(A)//2)
-    E2 = easing.QuadEaseInOut(1, -1, len(A)//2)
-    x = np.hstack([E1(),E2()])
+    x0 = easing.easeInOutQuad(-1, 1, len(A)//2)()
+    x1 = easing.easeInOutQuad( 1, -1, len(A)//2)()
+    x = np.hstack([x0,x1])
 
     A.add(circle(x=x, y=1, r=1.25,color=[150,250,0]))
     A.add(circle(x=-x, y=-1, r=1.25,color=[100,5,255]))
@@ -137,10 +137,10 @@ def checkerboard():
     A = animation(**animation_args)
 
     # Use an ease function to go in an out
-    E1 = easing.QuadEaseInOut(0, 1, len(A)//2)
-    E2 = easing.QuadEaseInOut(1, 0, len(A)//2)
-    z = np.hstack([E1(),E2()])
-    
+    x0 = easing.easeInOutQuad(0, 1, len(A)//2)()
+    x1 = easing.easeInOutQuad(1, 0, len(A)//2)()
+    z = np.hstack([x0,x1])
+        
     r = 0.20
     c = [150, 250, 0]
     coord = [-2, 0, 2]
@@ -162,22 +162,25 @@ def checkerboard():
 
 def timer():
     A = animation(**animation_args)
-
-    r, polyn, tc = 3, 0.1, 0.315
+    
+    tc = 0.315
+    r = 3.0
+    lag = 0.1
     c = [65, 0, 20]
 
     for k in range(20):
 
-        theta = easing.SmoothEaseIn(polyn, 0, 2*np.pi, len(A))()
+        theta = easing.OffsetEase(lag, stop=2*np.pi, duration=len(A))()
+
         L = line(
-            x0=0,y0=0,x1=r*np.cos(theta),
+            x0=0, y0=0, x1=r*np.cos(theta),
             y1=r*np.sin(theta),
             thickness=tc, color=c
         )
         A.add(L)
         
         r *= 0.98
-        polyn *= 1.2
+        lag *= 1.17
 
     return A
 
@@ -185,7 +188,6 @@ def timer():
 
 if __name__ == "__main__":
 
-    '''
     simple_lines().save("examples/simple_lines.png")
     simple_circles().save("examples/simple_circles.png")
     simple_rectangles().save("examples/simple_rectangle.png")
@@ -196,18 +198,5 @@ if __name__ == "__main__":
     timer().to_gif("examples/timer.gif", **gif_args)
 
     teyleen_982().save("examples/teyleen_982.png")
-    '''
     
-    canvas_args = {
-        "width" : 400,
-        "height" : 400,
-        "extent": 4,
-    }
-    animation_args = {
-        "fps" : 30,
-        "duration":2,
-    }
-    animation_args.update(canvas_args)
-
     
-    timer().show()

@@ -191,13 +191,14 @@ if __name__ == "__main__":
 
     # Use an ease function to go in an out
     tc = 0.315
-    
-    r, polyn = 3, 0.1
+
+    r = 3.0
+    lag = 0.1
     c = [65, 0, 20]
 
     for k in range(20):
 
-        theta = easing.SmoothEaseIn(polyn, stop=2*np.pi)(A.timepoints)
+        theta = easing.OffsetEase(lag, stop=2*np.pi, duration=len(A))()
 
         L = line(
             x0=0, y0=0, x1=r*np.cos(theta),
@@ -207,6 +208,6 @@ if __name__ == "__main__":
         A.add(L)
         
         r *= 0.98
-        polyn *= 1.2
-
+        lag *= 1.17
+        
     A.show(repeat=True)
