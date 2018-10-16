@@ -6,6 +6,7 @@ _Very much a work in progress!_
 
 + Change the background color
 + Text
++ Filters!
 
 + BGR -> RGB
 + Proper library

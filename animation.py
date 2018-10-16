@@ -1,9 +1,10 @@
 from canvas import canvas
-import src.easing as easing
+import src.motion.easing as easing
 
 import cv2
 import os
 import numpy as np
+import tempfile
 import scipy.interpolate
 
 import imageio
@@ -74,7 +75,25 @@ class animation():
             os.system(cmd)
             fs = os.stat(f_gif).st_size
             print(f"gifsicle reduced filesize to {fs}")
+            
+    def to_mp4(self, f_mp4, loop=1):
 
+        with tempfile.TemporaryDirectory() as tmp_dir:
+
+            for n,img in tqdm(enumerate(self.frames)):
+                self.render(n)
+                img.save(f"{tmp_dir}/{n:04d}.png")
+            
+            cmd = f'ffmpeg -loop 1 -t {self.duration*loop} ' \
+                  f'-y -framerate {self.fps} -i {tmp_dir}/%04d.png ' \
+                  f'-c:v libx264 -profile:v high -crf 10 -pix_fmt yuv420p '\
+                  f'{f_mp4}'
+
+            os.system(cmd)
+
+            fs = os.stat(f_mp4).st_size
+            print(f"Rendered {f_mp4}, filesize {fs}")
+            
 #############################################################################
 
 class artist():

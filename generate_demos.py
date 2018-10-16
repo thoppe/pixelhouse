@@ -1,10 +1,11 @@
 from canvas import canvas
 from animation import animation, circle, line
-import src.easing as easing
 import numpy as np
 import os
 import itertools
-from src.nice_colors import get_palette
+
+import src.motion.easing as easing
+from src.color.nice_colors import get_palette
 
 save_dest = "examples"
 
@@ -184,7 +185,7 @@ def timer():
 
 if __name__ == "__main__":
 
-
+    
     simple_lines().save("examples/simple_lines.png")
     simple_circles().save("examples/simple_circles.png")
     simple_rectangles().save("examples/simple_rectangle.png")
@@ -196,3 +197,18 @@ if __name__ == "__main__":
 
     teyleen_982().save("examples/teyleen_982.png")
     
+    '''
+    canvas_args = {
+        "width" : 400,
+        "height" : 400,
+        "extent": 4,
+    }
+    animation_args = {
+        "fps" : 30,
+        "duration":2,
+    }
+    animation_args.update(canvas_args)
+
+    
+    timer().to_mp4("timer.mp4", loop=4)
+    '''

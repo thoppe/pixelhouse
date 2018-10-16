@@ -8,7 +8,7 @@ GNU General Public License v3.0
 
 import math
 import numpy as np
-from src.bezier import bezier_curve
+from .bezier import bezier_curve
 
 class EasingBase:
     limit = (0, 1)
