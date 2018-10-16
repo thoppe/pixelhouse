@@ -48,8 +48,9 @@ _Very much a work in progress!_
 + [x] Generic beizer easing
 
 #### Color/Palettes
-+ [ ] Named colors
-+ [ ] Top palettes
++ [x] Named colors
++ [x] Top palettes
++ [ ] Random palettes
 
 #### Devops
 + [x] Save to gif
