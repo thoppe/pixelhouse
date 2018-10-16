@@ -5,7 +5,7 @@ import os
 import itertools
 
 import src.motion.easing as easing
-from src.color.nice_colors import get_palette
+from src.color.palettes import ColorLoversPalette
 
 save_dest = "examples"
 
@@ -24,6 +24,8 @@ gif_args = {
     "palettesize" : 32,
     "gifsicle" : True,
 }
+
+palettes = ColorLoversPalette()
 
 #########################################################################
 
@@ -94,7 +96,7 @@ def teyleen_982():
     c = canvas(**canvas_args)
     pi = np.pi
     
-    pal = [[230]*3,] + get_palette(96) + [[230]*3,]
+    pal = [[230]*3,] + palettes(96) + [[230]*3,]
     
     c = canvas(**canvas_args)
     tc = 0.025

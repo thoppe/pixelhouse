@@ -1,0 +1,37 @@
+import os
+import json
+import numpy
+
+_script_path = os.path.dirname(os.path.abspath(__file__))
+
+class ColorLoversPalette():
+    '''
+    Nice palettes from 
+    '''
+
+    def __init__(self, colorset = 1000):
+        # Load the top 1000 by default
+
+        f_palette = os.path.join(
+            _script_path, f'palettes/{colorset}.json')
+
+        with open(f_palette) as FIN:
+            raw = FIN.read()
+            
+        self.colors = json.loads(raw)
+
+    def __call__(self, n):
+        if n > len(self.colors):
+            msg = f"Only {len(self)} palettes known, requested number {n}"
+            raise KeyError(msg)
+        
+        return self.colors[n]
+
+    def __len__(self):
+        return len(self.colors)
+
+
+if __name__ == "__main__":
+    P = ColorLoversPalette()
+    print (P(2))
+    
