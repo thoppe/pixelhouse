@@ -1,7 +1,10 @@
 import numpy as np
+import collections
 from scipy.misc import comb
 
-# https://github.com/reptillicus/Bezier
+'''
+Adapeted from https://github.com/reptillicus/Bezier
+'''
 
 def bernstein_poly(i, n, t):
     """
@@ -11,29 +14,28 @@ def bernstein_poly(i, n, t):
     return comb(n, i) * ( t**(n-i) ) * (1 - t)**i
 
 
+class bezierMotionCurve():
+    '''
+    Bezier curve with endpoints set at (0,0) and (1,1)
+    '''
 
-def bezier_curve(points, nTimes=1000):
-    """
-       Given a set of control points, return the
-       bezier curve defined by the control points.
-       points should be a list of lists, or list of tuples
-       such as [ [1,1], 
-                 [2,3], 
-                 [4,5], ..[Xn, Yn] ]
-        nTimes is the number of time steps, defaults to 1000
-        See http://processingjs.nihongoresources.com/bezierinfo/
-    """
+    def __init__(self, x1, y1, x2, y2):
+        points = np.array([(0,0), (x1, y1), (x2, y2), (1, 1)])
+        self.xPoints = np.array([p[0] for p in points])
+        self.yPoints = np.array([p[1] for p in points])
+        self.nPoints = 4
 
-    nPoints = len(points)
-    xPoints = np.array([p[0] for p in points])
-    yPoints = np.array([p[1] for p in points])
+    def __call__(self, t):
+        if not isinstance(t, collections.Iterable):
+            t = np.array([t,])
 
-    t = np.linspace(0.0, 1.0, nTimes)
+        polynomial_array = np.array([
+            bernstein_poly(i, self.nPoints-1, t)
+            for i in range(0, self.nPoints)
+        ])
 
-    polynomial_array = np.array([ bernstein_poly(i, nPoints-1, t)
-                                  for i in range(0, nPoints)   ])
+        xvals = np.dot(self.xPoints, polynomial_array)
+        yvals = np.dot(self.yPoints, polynomial_array)
 
-    xvals = np.dot(xPoints, polynomial_array)
-    yvals = np.dot(yPoints, polynomial_array)
+        return xvals, yvals
 
-    return xvals, yvals

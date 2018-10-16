@@ -197,9 +197,10 @@ if __name__ == "__main__":
 
     for k in range(20):
 
-        theta = easing.SmoothEaseIn(polyn, 0, 2*np.pi, len(A))()
+        theta = easing.SmoothEaseIn(polyn, stop=2*np.pi)(A.timepoints)
+
         L = line(
-            x0=0,y0=0,x1=r*np.cos(theta),
+            x0=0, y0=0, x1=r*np.cos(theta),
             y1=r*np.sin(theta),
             thickness=tc, color=c
         )

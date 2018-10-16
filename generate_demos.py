@@ -185,7 +185,7 @@ def timer():
 
 if __name__ == "__main__":
 
-    
+    '''
     simple_lines().save("examples/simple_lines.png")
     simple_circles().save("examples/simple_circles.png")
     simple_rectangles().save("examples/simple_rectangle.png")
@@ -196,8 +196,8 @@ if __name__ == "__main__":
     timer().to_gif("examples/timer.gif", **gif_args)
 
     teyleen_982().save("examples/teyleen_982.png")
-    
     '''
+    
     canvas_args = {
         "width" : 400,
         "height" : 400,
@@ -210,5 +210,4 @@ if __name__ == "__main__":
     animation_args.update(canvas_args)
 
     
-    timer().to_mp4("timer.mp4", loop=4)
-    '''
+    timer().show()
