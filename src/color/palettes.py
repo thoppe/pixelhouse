@@ -24,8 +24,14 @@ class ColorLoversPalette():
         if n > len(self.colors):
             msg = f"Only {len(self)} palettes known, requested number {n}"
             raise KeyError(msg)
+
+        pal = self.colors[n]
+
+        # Convert from BGR to RGB
+        pal = [(p[2], p[1], p[0]) for p in pal]
         
-        return self.colors[n]
+        return pal
+
 
     def __len__(self):
         return len(self.colors)
