@@ -58,23 +58,6 @@ def simple_rectangles():
     return c
 
 
-def simple_ellipses():
-    c = canvas(**canvas_args)
-
-    a0 = np.pi/8
-    a1 = 2*np.pi - np.pi/8
-
-    c.ellipse(0,0, 1, 0.75, 0, a0, a1,
-              color=[155,230,235])
-
-    c.ellipse(-4,0, 1, 0.75, 0, a0, a1,
-              color=[155,230,235])
-
-    c.ellipse(4,0, 1, 0.75, 0, a0, a1,
-              color=[155,230,235])
-    
-    return c
-
 def simple_lines():
     c = canvas(**canvas_args)
     
@@ -214,7 +197,6 @@ if __name__ == "__main__":
     simple_lines().save("examples/simple_lines.png")
     simple_circles().save("examples/simple_circles.png")
     simple_rectangles().save("examples/simple_rectangle.png")
-    simple_ellipses().save("examples/simple_ellipses.png")
 
     pacman().to_gif("examples/pacman.gif", **gif_args)
     rotating_circles().to_gif("examples/moving_circles.gif", **gif_args)
