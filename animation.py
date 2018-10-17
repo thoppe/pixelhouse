@@ -64,8 +64,10 @@ class animation():
 
         # Convert from BGR to RGB
         images = [cv2.cvtColor(img, cv2.COLOR_BGR2RGB) for img in images]
-        
-        imageio.mimsave(f_gif, images, fps=self.fps*2,
+        imageio.mimsave(f_gif, images,
+                        #fps=self.fps*2,
+                        #duration=self.duration,
+                        duration=self.duration/self.fps,
                         palettesize=palettesize, subrectangles=True)
         fs = os.stat(f_gif).st_size
         print(f"Rendered {f_gif}, filesize {fs}")
@@ -164,6 +166,31 @@ class circle(artist):
         img.circle(
             self.x(t), self.y(t), self.r(t),
             self.color(t), self.thickness(t)
+        )
+
+class ellipse(artist):
+
+    x = y = constant(0.0)
+    major_length = constant(1.0)
+    minor_length = constant(1.0)
+    rotation = constant(0.0)
+    line_start = constant(0.0)
+    line_end = constant(2*np.pi)
+
+    color = constant([255,255,255])
+    thickness = constant(-1)
+
+    def __call__(self, t, img=None):
+        
+        img.ellipse(
+            x=self.x(t),
+            y=self.y(t),
+            major_length=self.major_length(t),
+            minor_length=self.minor_length(t),
+            line_start=self.line_start(t),
+            line_end=self.line_end(t),
+            color=self.color(t),
+            thickness=self.thickness(t),
         )
 
 class line(artist):

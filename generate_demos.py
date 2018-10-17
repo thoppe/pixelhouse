@@ -1,5 +1,5 @@
 from canvas import canvas
-from animation import animation, circle, line
+from animation import animation, circle, line, ellipse
 import numpy as np
 import os
 import itertools
@@ -16,7 +16,8 @@ canvas_args = {
 }
 
 animation_args = {
-    "fps" : 6,
+    "fps" : 20,
+    "duration" : 1.5,
 }
 animation_args.update(canvas_args)
 
@@ -186,6 +187,24 @@ def timer():
 
     return A
 
+
+def pacman():
+    A = animation(fps=20, duration=0.5)
+
+    pac_color = (0,255,253)
+
+    # Use an ease function to go in an out
+    dp = np.pi/8
+    x0 = easing.easeOutQuad(0, dp, len(A)//2)()
+    x1 = easing.easeInQuad(dp, 0, len(A)//2)()
+    z = np.hstack([x0,x1])
+
+    pacman = ellipse(
+        line_start=z, line_end=2*np.pi-z, color=pac_color)
+
+    A.add(pacman)
+    return A
+
 #########################################################################
 
 if __name__ == "__main__":
@@ -194,7 +213,8 @@ if __name__ == "__main__":
     simple_circles().save("examples/simple_circles.png")
     simple_rectangles().save("examples/simple_rectangle.png")
     simple_ellipses().save("examples/simple_ellipses.png")
-    
+
+    pacman().to_gif("examples/pacman.gif", **gif_args)
     rotating_circles().to_gif("examples/moving_circles.gif", **gif_args)
     checkerboard().to_gif("examples/checkerboard.gif", **gif_args)
     timer().to_gif("examples/timer.gif", **gif_args)

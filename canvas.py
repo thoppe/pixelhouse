@@ -112,6 +112,9 @@ class canvas(BasicCanvas):
 
     
     def background(self, color=_default_color):
+        ### This doesn't work yet!
+        raise NotImplementedError
+        
         x = self.extent
         cx = canvas(self.width, self.height, self.extent)
         cx.rectangle(-x,-x, x, x, color=color, blend=True)
@@ -131,7 +134,7 @@ class canvas(BasicCanvas):
         #self.img = img1_bg
 
     def ellipse(self, x=0, y=0,
-                major_length=2, minor_length=1,
+                major_length=1, minor_length=1,
                 rotation=0,
                 line_start=0,
                 line_end=2*np.pi,
