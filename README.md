@@ -10,8 +10,8 @@ _Very much a work in progress!_
 ![](examples/teyleen_982.png)
 
 ![](examples/moving_circles.gif)
-![](examples/pacman.gif)
 ![](examples/checkerboard.gif)
+![](examples/pacman.gif)
 ![](examples/timer.gif)
 
 
