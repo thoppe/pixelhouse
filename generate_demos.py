@@ -189,7 +189,9 @@ def timer():
 
 
 def pacman():
-    A = animation(fps=20, duration=0.5)
+    args = animation_args.copy()
+    args["duration"] = 0.5
+    A = animation(**args)
 
     pac_color = (0,255,253)
 
