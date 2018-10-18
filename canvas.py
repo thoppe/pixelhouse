@@ -161,8 +161,8 @@ class canvas(BasicCanvas):
     def ellipse(self, x=0, y=0,
                 major_length=1, minor_length=1,
                 rotation=0,
-                line_start=0,
-                line_end=2*np.pi,
+                angle_start=0,
+                angle_end=2*np.pi,
                 color=_default_color,
                 thickness=-1,
                 antialiased=True,
@@ -179,8 +179,8 @@ class canvas(BasicCanvas):
         color=self.transform_color(color)
         
         rotation_degree = self.transform_angle(rotation)
-        start_degree = self.transform_angle(line_start)
-        end_degree = self.transform_angle(line_end)
+        start_degree = self.transform_angle(angle_start)
+        end_degree = self.transform_angle(angle_end)
         
             
         args = ((x,y), (major_length, minor_length),

@@ -188,13 +188,13 @@ def pacman():
     pac_color = (253,255,0)
 
     # Chomping easing function
-    dp = np.pi/8
+    dp = np.pi/4
     x0 = easing.easeOutQuad(0, dp, len(A)//2)()
     x1 = easing.easeInQuad(dp, 0, len(A)//2)()
     z = np.hstack([x0,x1])
 
     pacman = ellipse(
-        line_start=z, line_end=2*np.pi-z, color=pac_color)
+        angle_start=z, angle_end=2*np.pi-z, color=pac_color)
 
     A.add(pacman)
     return A

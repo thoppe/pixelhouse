@@ -175,8 +175,8 @@ class ellipse(artist):
     major_length = constant(1.0)
     minor_length = constant(1.0)
     rotation = constant(0.0)
-    line_start = constant(0.0)
-    line_end = constant(2*np.pi)
+    angle_start = constant(0.0)
+    angle_end = constant(2*np.pi)
 
     color = constant([255,255,255])
     thickness = constant(-1)
@@ -188,8 +188,8 @@ class ellipse(artist):
             y=self.y(t),
             major_length=self.major_length(t),
             minor_length=self.minor_length(t),
-            line_start=self.line_start(t),
-            line_end=self.line_end(t),
+            angle_start=self.angle_start(t),
+            angle_end=self.angle_end(t),
             color=self.color(t),
             thickness=self.thickness(t),
         )
