@@ -3,6 +3,8 @@ from canvas import canvas
 from src.filter.filters import *
 c = canvas()
 
-c.circle()
-gaussian_blur(c)
+c.circle(-1, color='b', blend=False)
+c.circle(color='r', blend=False)
+
+
 c.show()

@@ -19,9 +19,10 @@ class BasicCanvas():
             extent=4.0,
             name='quadImage',
     ):
-        self.img = np.zeros((height, width, 3), np.uint8)
+        self._img = np.zeros((height, width, 3), np.uint8)
         self.name = name
         self.extent = extent
+        self.layers = []
         
 
     def __repr__(self):
@@ -29,11 +30,26 @@ class BasicCanvas():
 
     @property
     def height(self):
-        return self.img.shape[0]
+        return self._img.shape[0]
 
     @property
     def width(self):
-        return self.img.shape[1]
+        return self._img.shape[1]
+
+    @property
+    def img(self):
+        self._img = np.zeros_like(self._img)
+        for func, args,blend in self.layers:
+
+            # Saturate or blend the images together
+            if blend:
+                dst = canvas(self.width, self.height).img
+                func(dst, *args)
+                cv2.add(self._img, dst, self._img)
+            else:
+                func(self._img, *args)
+        
+        return self._img
 
     def transform_coordinates(self, x, y):
         x *= self.width / 2.0
@@ -74,15 +90,9 @@ class BasicCanvas():
         dst = cv2.cvtColor(self.img, cv2.COLOR_RGB2BGR)
         cv2.imwrite(f_save, dst)
 
-    def _combine(self, func, args, blend, **kwargs):
-        # Saturate or blend the images together
+    def append(self, func, args, blend, **kwargs):
+        self.layers.append( [func, args, blend] )
 
-        if blend:
-            dst = canvas(self.width, self.height).img
-            func(dst, *args)
-            cv2.add(self.img, dst, self.img)
-        else:
-            func(self.img, *args)
 
 
 class canvas(BasicCanvas):
@@ -103,7 +113,7 @@ class canvas(BasicCanvas):
         color=self.transform_color(color)
 
         args = (x,y), r, color, thickness, lineType
-        self._combine(cv2.circle, args, blend=blend)
+        self.append(cv2.circle, args, blend=blend)
 
     def rectangle(self, x0=0, y0=0, x1=1, y1=1, color=_default_color,
                   thickness=-1, antialiased=True, blend=True):
@@ -115,7 +125,7 @@ class canvas(BasicCanvas):
         color=self.transform_color(color)
         
         args = (x0,y0), (x1, y1), color, thickness, lineType
-        self._combine(cv2.rectangle, args, blend=blend)
+        self.append(cv2.rectangle, args, blend=blend)
 
     def line(self, x0=0, y0=0, x1=1, y1=1, color=_default_color,
              thickness=1, antialiased=True, blend=True):
@@ -127,7 +137,7 @@ class canvas(BasicCanvas):
         color=self.transform_color(color)
         
         args = (x0,y0), (x1, y1), color, thickness, lineType
-        self._combine(cv2.line, args, blend=blend)
+        self.append(cv2.line, args, blend=blend)
 
     
     def background(self, color=_default_color):
@@ -162,7 +172,7 @@ class canvas(BasicCanvas):
                 rotation_degree, start_degree, end_degree,
                 color, thickness, lineType)
         
-        self._combine(cv2.ellipse, args, blend=blend)
+        self.append(cv2.ellipse, args, blend=blend)
 
 
 if __name__ == "__main__":
