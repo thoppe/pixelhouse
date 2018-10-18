@@ -76,6 +76,7 @@ def simple_lines():
 
     return c
 
+
 def teyleen_982():
     c = canvas(**canvas_args)
     pi = np.pi
@@ -101,6 +102,23 @@ def teyleen_982():
         r -= 0.2
 
     return c
+
+def teyleen_116():
+
+    c = canvas(**canvas_args)
+    pal = palettes(152)
+
+    x = 0.25
+    c.circle(x,x, r=x/2, color=pal[0])
+    c.circle(-x,x, r=x/2, color=pal[1])
+    c.circle(x,-x, r=x/2, color=pal[2])
+    c.circle(-x,-x, r=x/2, color=pal[3])
+
+    c.circle(0, x/2, r=2-x, color=pal[4],thickness=x/20)
+    c.circle(0,-x/2, r=2-x, color=pal[4],thickness=x/20)
+
+    return c
+
 
 #########################################################################
 
@@ -195,5 +213,6 @@ if __name__ == "__main__":
     timer().to_gif("examples/timer.gif", **gif_args)
 
     teyleen_982().save("examples/teyleen_982.png")
+    teyleen_116().save("examples/teyleen_116.png")
     
     

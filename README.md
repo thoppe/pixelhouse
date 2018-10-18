@@ -8,6 +8,7 @@ _Very much a work in progress!_
 ![](examples/simple_rectangle.png)
 ![](examples/simple_lines.png)
 ![](examples/teyleen_982.png)
+![](examples/teyleen_116.png)
 
 ![](examples/moving_circles.gif)
 ![](examples/checkerboard.gif)
