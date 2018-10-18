@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+import collections
 from src.color.colors import NamedColors
 
 matplotlib_colors = NamedColors()
@@ -22,11 +23,17 @@ class BasicCanvas():
         self._img = np.zeros((height, width, 3), np.uint8)
         self.name = name
         self.extent = extent
-        self.layers = []
+        self.layers = collections.defaultdict(list)
         
 
     def __repr__(self):
         return f"Quad Image {self.height}x{self.width}, extent {self.extent}"
+
+    def get_max_layer_number(self):
+        if not self.layers:
+            return 0
+        else:
+            return max(self.layers.keys())
 
     @property
     def height(self):
@@ -39,16 +46,19 @@ class BasicCanvas():
     @property
     def img(self):
         self._img = np.zeros_like(self._img)
-        for func, args,blend in self.layers:
 
-            # Saturate or blend the images together
-            if blend:
-                dst = canvas(self.width, self.height).img
-                func(dst, *args)
-                cv2.add(self._img, dst, self._img)
-            else:
-                func(self._img, *args)
-        
+        for ln in sorted(self.layers.keys()):
+            for layer in self.layers[ln]:
+                func, args, blend = layer
+
+                # Saturate or blend the images together
+                if blend:
+                    dst = canvas(self.width, self.height).img
+                    func(dst, *args)
+                    cv2.add(self._img, dst, self._img)
+                else:
+                    func(self._img, *args)
+
         return self._img
 
     def transform_coordinates(self, x, y):
@@ -71,9 +81,16 @@ class BasicCanvas():
             return matplotlib_colors(c)
         return c
 
-    def transform_angle(self, rads):
+    @staticmethod
+    def transform_angle(rads):
         # From radians into degrees, counterclockwise
         return -rads*(360/(2*np.pi))
+    
+    @staticmethod
+    def get_lineType(antialiased):
+        if antialiased:
+            return cv2.LINE_AA
+        return 8
 
     def load(self, f_image):
         raise NotImplementedError
@@ -90,21 +107,18 @@ class BasicCanvas():
         dst = cv2.cvtColor(self.img, cv2.COLOR_RGB2BGR)
         cv2.imwrite(f_save, dst)
 
-    def append(self, func, args, blend, **kwargs):
-        self.layers.append( [func, args, blend] )
+    def append(self, func, args, blend, layer=None, **kwargs):
+        if layer is None:
+            layer = self.get_max_layer_number()
+            
+        self.layers[layer].append( [func, args, blend] )
 
 
 
 class canvas(BasicCanvas):
-
-    @staticmethod
-    def get_lineType(antialiased):
-        if antialiased:
-            return cv2.LINE_AA
-        return 8
     
     def circle(self, x=0, y=0, r=1, color=_default_color,
-               thickness=-1, antialiased=True, blend=True):
+               thickness=-1, antialiased=True, blend=True, layer=None):
 
         x, y = self.transform_coordinates(x, y)
         r = self.transform_length(r)
@@ -113,10 +127,10 @@ class canvas(BasicCanvas):
         color=self.transform_color(color)
 
         args = (x,y), r, color, thickness, lineType
-        self.append(cv2.circle, args, blend=blend)
+        self.append(cv2.circle, args, blend=blend, layer=None)
 
     def rectangle(self, x0=0, y0=0, x1=1, y1=1, color=_default_color,
-                  thickness=-1, antialiased=True, blend=True):
+                  thickness=-1, antialiased=True, blend=True, layer=None):
         
         x0, y0 = self.transform_coordinates(x0, y0)
         x1, y1 = self.transform_coordinates(x1, y1)
@@ -125,10 +139,10 @@ class canvas(BasicCanvas):
         color=self.transform_color(color)
         
         args = (x0,y0), (x1, y1), color, thickness, lineType
-        self.append(cv2.rectangle, args, blend=blend)
+        self.append(cv2.rectangle, args, blend=blend, layer=layer)
 
     def line(self, x0=0, y0=0, x1=1, y1=1, color=_default_color,
-             thickness=1, antialiased=True, blend=True):
+             thickness=1, antialiased=True, blend=True, layer=None):
         
         x0, y0 = self.transform_coordinates(x0, y0)
         x1, y1 = self.transform_coordinates(x1, y1)
@@ -137,7 +151,7 @@ class canvas(BasicCanvas):
         color=self.transform_color(color)
         
         args = (x0,y0), (x1, y1), color, thickness, lineType
-        self.append(cv2.line, args, blend=blend)
+        self.append(cv2.line, args, blend=blend, layer=None)
 
     
     def background(self, color=_default_color):
@@ -152,7 +166,8 @@ class canvas(BasicCanvas):
                 color=_default_color,
                 thickness=-1,
                 antialiased=True,
-                blend=True
+                blend=True,
+                layer=None,
     ):
         # Angles measured in radians
         
@@ -172,7 +187,7 @@ class canvas(BasicCanvas):
                 rotation_degree, start_degree, end_degree,
                 color, thickness, lineType)
         
-        self.append(cv2.ellipse, args, blend=blend)
+        self.append(cv2.ellipse, args, blend=blend, layer=layer)
 
 
 if __name__ == "__main__":
