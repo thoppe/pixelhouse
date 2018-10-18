@@ -22,7 +22,7 @@ _Very much a work in progress!_
 #### Primitives 
 + [x] Line
 + [x] Circle
-+ [x] Ellipise
++ [x] Ellipse
 + [ ] Polyline
 + [ ] Backgrounds
 + [ ] Text
