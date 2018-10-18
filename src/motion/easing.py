@@ -90,3 +90,19 @@ class OffsetEase(BezierEase):
 
         super().__init__(x0,x1,y0,y1, *args, **kwargs)
 
+
+def easeReturn(easing_func, start, stop, frames):
+    '''
+    Returns an easing run that finishes halfway through and returns.
+    '''
+    if isinstance(easing_func, str):
+        easing_func = globals()[easing_func]
+    
+    n0 = frames//2
+    n1 = frames - n0
+    
+    x0 = easing_func(start, stop, n0)()
+    x1 = easing_func(stop, start, n1)()
+
+    return np.hstack([x0,x1])
+

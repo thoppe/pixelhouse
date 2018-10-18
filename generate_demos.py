@@ -107,11 +107,7 @@ def teyleen_982():
 
 def rotating_circles():
     A = animation(**animation_args)
-
-    # Use an ease function to go in an out
-    x0 = easing.easeInOutQuad(-1, 1, len(A)//2)()
-    x1 = easing.easeInOutQuad( 1, -1, len(A)//2)()
-    x = np.hstack([x0,x1])
+    x = easing.easeReturn('easeInOutQuad', -1, 1, len(A))
 
     A.add(circle(x=x, y=1, r=1.25,color=[0,250,150]))
     A.add(circle(x=-x, y=-1, r=1.25,color=[255,5,100]))
@@ -121,11 +117,7 @@ def rotating_circles():
 
 def checkerboard():
     A = animation(**animation_args)
-
-    # Use an ease function to go in an out
-    x0 = easing.easeInOutQuad(0, 1, len(A)//2)()
-    x1 = easing.easeInOutQuad(1, 0, len(A)//2)()
-    z = np.hstack([x0,x1])
+    z = easing.easeReturn('easeInOutQuad', 0, 1, len(A))
         
     r = 0.20
     c = [150, 250, 0]
@@ -177,7 +169,7 @@ def pacman():
 
     pac_color = (253,255,0)
 
-    # Use an ease function to go in an out
+    # Chomping easing function
     dp = np.pi/8
     x0 = easing.easeOutQuad(0, dp, len(A)//2)()
     x1 = easing.easeInQuad(dp, 0, len(A)//2)()
