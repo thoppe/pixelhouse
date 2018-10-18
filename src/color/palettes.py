@@ -6,7 +6,7 @@ _script_path = os.path.dirname(os.path.abspath(__file__))
 
 class ColorLoversPalette():
     '''
-    Nice palettes from 
+    Nice palettes from ...
     '''
 
     def __init__(self, colorset = 1000):
@@ -27,9 +27,6 @@ class ColorLoversPalette():
 
         pal = self.colors[n]
 
-        # Convert from BGR to RGB
-        pal = [(p[2], p[1], p[0]) for p in pal]
-        
         return pal
 
 

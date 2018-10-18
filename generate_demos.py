@@ -1,4 +1,4 @@
-from canvas import canvas
+from canvas import canvas, matplotlib_colors
 from animation import animation, circle, line, ellipse
 import numpy as np
 import os
@@ -51,9 +51,9 @@ def simple_circles():
 def simple_rectangles():
     c = canvas(**canvas_args)
 
-    c.rectangle(-1,-1,1,1,[255,0,0])
-    c.rectangle(0,0,2,-2,[0,0,255])
-    c.rectangle(-3,-3,0.5,0.5,[0,255,0])
+    c.rectangle(-1,-1,1,1,'lightcoral')
+    c.rectangle(0,0,2,-2,'lime')
+    c.rectangle(-3,-3,0.5,0.5,'royalblue')
 
     return c
 
@@ -80,7 +80,7 @@ def teyleen_982():
     c = canvas(**canvas_args)
     pi = np.pi
     
-    pal = [[230]*3,] + palettes(96) + [[230]*3,]
+    pal = [matplotlib_colors("lavender"),] + palettes(96)
     
     c = canvas(**canvas_args)
     tc = 0.025
@@ -113,8 +113,8 @@ def rotating_circles():
     x1 = easing.easeInOutQuad( 1, -1, len(A)//2)()
     x = np.hstack([x0,x1])
 
-    A.add(circle(x=x, y=1, r=1.25,color=[150,250,0]))
-    A.add(circle(x=-x, y=-1, r=1.25,color=[100,5,255]))
+    A.add(circle(x=x, y=1, r=1.25,color=[0,250,150]))
+    A.add(circle(x=-x, y=-1, r=1.25,color=[255,5,100]))
         
     return A
 
@@ -152,7 +152,6 @@ def timer():
     tc = 0.315
     r = 3.0
     lag = 0.1
-    c = [65, 0, 20]
 
     for k in range(20):
 
@@ -161,7 +160,7 @@ def timer():
         L = line(
             x0=0, y0=0, x1=r*np.cos(theta),
             y1=r*np.sin(theta),
-            thickness=tc, color=c
+            thickness=tc, color='indigo',
         )
         A.add(L)
         
@@ -176,7 +175,7 @@ def pacman():
     args["duration"] = 0.5
     A = animation(**args)
 
-    pac_color = (0,255,253)
+    pac_color = (253,255,0)
 
     # Use an ease function to go in an out
     dp = np.pi/8

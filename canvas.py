@@ -1,5 +1,10 @@
 import cv2
 import numpy as np
+from src.color.colors import NamedColors
+
+matplotlib_colors = NamedColors()
+#_default_color = [255, 255, 255]
+_default_color = 'white'
 
 class BasicCanvas():
     '''
@@ -45,16 +50,29 @@ class BasicCanvas():
         r *= (self.width/self.extent)
         return int(r)
 
+    def transform_color(self, c):
+        if isinstance(c, str):
+            return matplotlib_colors(c)
+        return c
+
     def transform_angle(self, rads):
         # From radians into degrees, counterclockwise
         return -rads*(360/(2*np.pi))
 
+    def load(self, f_image):
+        raise NotImplementedError
+
     def show(self, delay=0):
-        cv2.imshow(self.name, self.img)
+        # Before we show we have to convert back to BGR
+        dst = cv2.cvtColor(self.img, cv2.COLOR_RGB2BGR)
+        
+        cv2.imshow(self.name, dst)
         cv2.waitKey(delay)
 
     def save(self, f_save):
-        cv2.imwrite(f_save, self.img)
+        # Before we save we have to convert back to BGR
+        dst = cv2.cvtColor(self.img, cv2.COLOR_RGB2BGR)
+        cv2.imwrite(f_save, dst)
 
     def _combine(self, func, args, blend, **kwargs):
         # Saturate or blend the images together
@@ -66,8 +84,6 @@ class BasicCanvas():
         else:
             func(self.img, *args)
 
-
-_default_color = [255, 255, 255]
 
 class canvas(BasicCanvas):
 
@@ -84,6 +100,7 @@ class canvas(BasicCanvas):
         r = self.transform_length(r)
         thickness = self.transform_length(thickness)
         lineType = self.get_lineType(antialiased)
+        color=self.transform_color(color)
 
         args = (x,y), r, color, thickness, lineType
         self._combine(cv2.circle, args, blend=blend)
@@ -95,7 +112,8 @@ class canvas(BasicCanvas):
         x1, y1 = self.transform_coordinates(x1, y1)
         thickness = self.transform_length(thickness)
         lineType = self.get_lineType(antialiased)
-            
+        color=self.transform_color(color)
+        
         args = (x0,y0), (x1, y1), color, thickness, lineType
         self._combine(cv2.rectangle, args, blend=blend)
 
@@ -106,7 +124,8 @@ class canvas(BasicCanvas):
         x1, y1 = self.transform_coordinates(x1, y1)
         thickness = self.transform_length(thickness)
         lineType = self.get_lineType(antialiased)
-            
+        color=self.transform_color(color)
+        
         args = (x0,y0), (x1, y1), color, thickness, lineType
         self._combine(cv2.line, args, blend=blend)
 
@@ -114,25 +133,7 @@ class canvas(BasicCanvas):
     def background(self, color=_default_color):
         ### This doesn't work yet!
         raise NotImplementedError
-        
-        x = self.extent
-        cx = canvas(self.width, self.height, self.extent)
-        cx.rectangle(-x,-x, x, x, color=color, blend=True)
-        cx = cx.img
-
-        img2gray = cv2.cvtColor(self.img, cv2.COLOR_BGR2GRAY)
-        ret, mask = cv2.threshold(img2gray, 10, 255, cv2.THRESH_BINARY)
-        mask_inv = cv2.bitwise_not(mask)
-
-        # Now black-out the area of logo in ROI
-        img1_bg = cv2.bitwise_and(self.img, self.img, mask = mask_inv)
-
-        # Take only region of logo from logo image.
-        #img2_fg = cv2.bitwise_and(self.img,self.img, mask = mask)
-        
-        #self.img = cv2.addWeighted(self.img, 1.0, cx.img, 1.0, 0.0)
-        #self.img = img1_bg
-
+ 
     def ellipse(self, x=0, y=0,
                 major_length=1, minor_length=1,
                 rotation=0,
@@ -150,7 +151,8 @@ class canvas(BasicCanvas):
         minor_length = self.transform_length(minor_length)
         thickness = self.transform_length(thickness)
         lineType = self.get_lineType(antialiased)
-
+        color=self.transform_color(color)
+        
         rotation_degree = self.transform_angle(rotation)
         start_degree = self.transform_angle(line_start)
         end_degree = self.transform_angle(line_end)
@@ -166,8 +168,9 @@ class canvas(BasicCanvas):
 if __name__ == "__main__":
     c = canvas(200,200,extent=4)
 
-    c.line(-4, 0, 4, 0, thickness=0.025)
-    c.background([45,]*3)
+    color = [0, 0, 255]
+    c.line(-4, 0, 4, 0, thickness=0.025,color=color)
+
 
    
     c.show()

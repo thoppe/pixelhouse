@@ -63,7 +63,8 @@ class animation():
         images = [self.render(n).img for n in range(len(self))]
 
         # Convert from BGR to RGB
-        images = [cv2.cvtColor(img, cv2.COLOR_BGR2RGB) for img in images]
+        #images = [cv2.cvtColor(img, cv2.COLOR_BGR2RGB) for img in images]
+        
         imageio.mimsave(f_gif, images,
                         #fps=self.fps*2,
                         #duration=self.duration,

@@ -31,8 +31,8 @@ _Very much a work in progress!_
 + [ ] Rotation
 + [ ] Scale
 + [ ] Shear
-+ [ ] Hide abstract cv2, BGR -> RGB
 + [ ] Subpixel resolution
++ [x] Hide cv2 weird colorspace, BGR -> RGB
 
 #### Layers
 + [x] Simple additive
