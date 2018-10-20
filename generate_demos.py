@@ -1,5 +1,5 @@
 from canvas import canvas, matplotlib_colors
-from animation import animation, circle, line, ellipse
+from animation import animation, animated_circle, animated_line, animated_ellipse
 import numpy as np
 import os
 import itertools
@@ -127,8 +127,8 @@ def rotating_circles():
     A = animation(**animation_args)
     x = easing.easeReturn('easeInOutQuad', -1, 1, len(A))
 
-    A.add(circle(x=x, y=1, r=1.25,color=[0,250,150]))
-    A.add(circle(x=-x, y=-1, r=1.25,color=[255,5,100]))
+    A.add(animated_circle(x=x, y=1, r=1.25,color=[0,250,150]))
+    A.add(animated_circle(x=-x, y=-1, r=1.25,color=[255,5,100]))
         
     return A
 
@@ -142,16 +142,16 @@ def checkerboard():
     coord = [-2, 0, 2]
 
     for dx, dy in itertools.product(coord, repeat=2):
-        A.add(circle(x=z+dx, y=z+dy, r=r,color=c))
-        A.add(circle(x=z+dx, y=-z+dy, r=r,color=c))
-        A.add(circle(x=-z+dx, y=-z+dy, r=r,color=c))
-        A.add(circle(x=-z+dx, y=z+dy, r=r,color=c))
+        A.add(animated_circle(x=z+dx, y=z+dy, r=r,color=c))
+        A.add(animated_circle(x=z+dx, y=-z+dy, r=r,color=c))
+        A.add(animated_circle(x=-z+dx, y=-z+dy, r=r,color=c))
+        A.add(animated_circle(x=-z+dx, y=z+dy, r=r,color=c))
 
-        A.add(circle(x=dx, y=z+dy, r=r,color=c))
-        A.add(circle(x=z+dx, y=dy, r=r,color=c))
+        A.add(animated_circle(x=dx, y=z+dy, r=r,color=c))
+        A.add(animated_circle(x=z+dx, y=dy, r=r,color=c))
 
-        A.add(circle(x=dx, y=-z+dy, r=r,color=c))
-        A.add(circle(x=-z+dx, y=dy, r=r,color=c))
+        A.add(animated_circle(x=dx, y=-z+dy, r=r,color=c))
+        A.add(animated_circle(x=-z+dx, y=dy, r=r,color=c))
     
     return A
 
@@ -167,7 +167,7 @@ def timer():
 
         theta = easing.OffsetEase(lag, stop=2*np.pi, duration=len(A))()
 
-        L = line(
+        L = animated_line(
             x0=0, y0=0, x1=r*np.cos(theta),
             y1=r*np.sin(theta),
             thickness=tc, color='indigo',
@@ -193,7 +193,7 @@ def pacman():
     x1 = easing.easeInQuad(dp, 0, len(A)//2)()
     z = np.hstack([x0,x1])
 
-    pacman = ellipse(
+    pacman = animated_ellipse(
         angle_start=z, angle_end=2*np.pi-z, color=pac_color)
 
     A.add(pacman)

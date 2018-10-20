@@ -155,7 +155,7 @@ def constant(x):
         return x
     return func
 
-class circle(artist):
+class animated_circle(artist):
 
     x = y = constant(0.0)
     r = constant(1.0)
@@ -169,7 +169,7 @@ class circle(artist):
             self.color(t), self.thickness(t)
         )
 
-class ellipse(artist):
+class animated_ellipse(artist):
 
     x = y = constant(0.0)
     major_length = constant(1.0)
@@ -194,7 +194,7 @@ class ellipse(artist):
             thickness=self.thickness(t),
         )
 
-class line(artist):
+class animated_line(artist):
 
     x0 = y0 = constant(0.0)
     x1 = y1 = constant(1.0)
@@ -228,7 +228,7 @@ if __name__ == "__main__":
 
         theta = easing.OffsetEase(lag, stop=2*np.pi, duration=len(A))()
 
-        L = line(
+        L = animated_line(
             x0=0, y0=0, x1=r*np.cos(theta),
             y1=r*np.sin(theta),
             thickness=tc, color=c
