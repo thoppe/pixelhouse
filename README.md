@@ -56,6 +56,7 @@ _Very much a work in progress!_
 
 #### Devops
 + [ ] Unified class for artists
++ [ ] Context mangager for canvas and animation
 + [x] Save to gif
 + [x] Save to mp4 
 + [ ] Load from gif
