@@ -1,4 +1,4 @@
-# Quad
+# pixelhouse
 A minimalist drawing library for making beautiful animations in python.
 _Very much a work in progress!_
 

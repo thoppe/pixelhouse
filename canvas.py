@@ -17,7 +17,7 @@ class canvas():
             width=200,
             height=200,
             extent=4.0,
-            name='quadImage',
+            name='pixelhouseImage',
     ):
         self._img = np.zeros((height, width, 3), np.uint8)
         self.name = name
