@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 import collections
-from src.color.colors import NamedColors
+from pixelhouse.color.colors import NamedColors
 
 matplotlib_colors = NamedColors()
 #_default_color = [255, 255, 255]

@@ -4,8 +4,8 @@ import numpy as np
 import os
 import itertools
 
-import src.motion.easing as easing
-from src.color.palettes import ColorLoversPalette
+import pixelhouse.motion.easing as easing
+from pixelhouse.color.palettes import ColorLoversPalette
 
 save_dest = "examples"
 
