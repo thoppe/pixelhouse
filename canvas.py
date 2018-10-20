@@ -4,7 +4,6 @@ import collections
 from pixelhouse.color.colors import NamedColors
 
 matplotlib_colors = NamedColors()
-#_default_color = [255, 255, 255]
 _default_color = 'white'
 
 class BasicCanvas():
@@ -27,7 +26,10 @@ class BasicCanvas():
         
 
     def __repr__(self):
-        return f"Quad Image {self.height}x{self.width}, extent {self.extent}"
+        return (
+            f"pixelhouse (w/h) {self.height}x{self.width}, " \
+            f"extent {self.extent}"
+        )
 
     def get_max_layer_number(self):
         if not self.layers:
@@ -152,11 +154,6 @@ class canvas(BasicCanvas):
         
         args = (x0,y0), (x1, y1), color, thickness, lineType
         self.append(cv2.line, args, blend=blend, layer=None)
-
-    
-    def background(self, color=_default_color):
-        ### This doesn't work yet!
-        raise NotImplementedError
  
     def ellipse(self, x=0, y=0,
                 major_length=1, minor_length=1,
@@ -188,17 +185,19 @@ class canvas(BasicCanvas):
                 color, thickness, lineType)
         
         self.append(cv2.ellipse, args, blend=blend, layer=layer)
+    
+    
+    def background(self, color=_default_color):
+        ### This doesn't work yet!
+        raise NotImplementedError
 
 
 if __name__ == "__main__":
     c = canvas(200,200,extent=4)
 
     color = [0, 0, 255]
-    c.line(-4, 0, 4, 0, thickness=0.025,color=color)
-
-
+    c.circle(thickness=0.5,color=color)
+    c.circle(thickness=0,color=color)
    
     c.show()
     
-
-
