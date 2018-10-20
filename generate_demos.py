@@ -1,4 +1,4 @@
-from canvas import canvas, matplotlib_colors
+import canvas
 from animation import animation, animated_circle, animated_line, animated_ellipse
 import numpy as np
 import os
@@ -32,58 +32,62 @@ palettes = ColorLoversPalette()
 
 
 def simple_circles():
-    c = canvas(**canvas_args)
+    from canvas import circle
+    c = canvas.canvas(**canvas_args)
     q = 155
     
     n = 3
     t = np.arange(0, 2*np.pi, 2*np.pi/n) + np.pi/6
     x,y = np.cos(t), np.sin(t)
 
-    c.circle(x[0], y[0], r=1, color=[0,255,0])
-    c.circle(x[1], y[1], r=1, color=[255,0,0])
-    c.circle(x[2], y[2], r=1, color=[0,0,255])
+    circle(c, x[0], y[0], r=1, color=[0,255,0])
+    circle(c, x[1], y[1], r=1, color=[255,0,0])
+    circle(c, x[2], y[2], r=1, color=[0,0,255])
 
     # An example of not saturating the images together
-    c.circle(0, 0, r=0.25, color=[q,q,q], blend=False)
+    circle(c, 0, 0, r=0.25, color=[q,q,q], blend=False)
     
     return c
 
 def simple_rectangles():
-    c = canvas(**canvas_args)
+    from canvas import rectangle
+    
+    c = canvas.canvas(**canvas_args)
 
-    c.rectangle(-1,-1,1,1,'lightcoral')
-    c.rectangle(0,0,2,-2,'lime')
-    c.rectangle(-3,-3,0.5,0.5,'royalblue')
+    rectangle(c, -1,-1,1,1,'lightcoral')
+    rectangle(c, 0,0,2,-2,'lime')
+    rectangle(c, -3,-3,0.5,0.5,'royalblue')
 
     return c
 
 
 def simple_lines():
-    c = canvas(**canvas_args)
+    from canvas import line
     
-    c.line(-4, 0, 4, 0, thickness=0.05)
-    c.line(0, 4, 0, -4, thickness=0.05)
+    c = canvas.canvas(**canvas_args)
+    
+    line(c, -4, 0, 4, 0, thickness=0.05)
+    line(c, 0, 4, 0, -4, thickness=0.05)
 
     tc = 0.04
 
     for i in np.arange(-4,5,1):
-        c.line(-4, i, 4, i, thickness=tc, color=[100,int(100+i*10),100])
-        c.line(i, 4, i, -4, thickness=tc, color=[100,100,int(100+i*10)])
+        line(c, -4, i, 4, i, thickness=tc, color=[100,int(100+i*10),100])
+        line(c, i, 4, i, -4, thickness=tc, color=[100,100,int(100+i*10)])
 
     for i in np.arange(-4,5,.5):
-        c.line(-4, i, 4, i, thickness=tc, color=[20,]*3)
-        c.line(i, 4, i, -4, thickness=tc, color=[20,]*3)
+        line(c, -4, i, 4, i, thickness=tc, color=[20,]*3)
+        line(c, i, 4, i, -4, thickness=tc, color=[20,]*3)
 
     return c
 
 
 def teyleen_982():
-    c = canvas(**canvas_args)
+    from canvas import ellipse
+    c = canvas.canvas(**canvas_args)
     pi = np.pi
     
-    pal = [matplotlib_colors("lavender"),] + palettes(96)
-    
-    c = canvas(**canvas_args)
+    pal = [canvas.matplotlib_colors("lavender"),] + palettes(96)
     tc = 0.025
 
     dx = pi/8
@@ -92,9 +96,9 @@ def teyleen_982():
     r = 1.8
 
     for n in range(6):
-        c.ellipse(0,0,r,r,pi/2,t0,t1,
-                  color=pal[n],
-                  thickness=tc)
+        ellipse(c, 0,0,r,r,pi/2,t0,t1,
+                    color=pal[n],
+                    thickness=tc)
 
         dx *= 1.4
         t0 = dx
@@ -104,18 +108,19 @@ def teyleen_982():
     return c
 
 def teyleen_116():
-
-    c = canvas(**canvas_args)
+    from canvas import circle
+    
+    c = canvas.canvas(**canvas_args)
     pal = palettes(152)
 
     x = 0.25
-    c.circle(x,x, r=x/2, color=pal[0])
-    c.circle(-x,x, r=x/2, color=pal[1])
-    c.circle(x,-x, r=x/2, color=pal[2])
-    c.circle(-x,-x, r=x/2, color=pal[3])
+    circle(c, x,x, r=x/2, color=pal[0])
+    circle(c, -x,x, r=x/2, color=pal[1])
+    circle(c, x,-x, r=x/2, color=pal[2])
+    circle(c, -x,-x, r=x/2, color=pal[3])
 
-    c.circle(0, x/2, r=2-x, color=pal[4],thickness=x/20)
-    c.circle(0,-x/2, r=2-x, color=pal[4],thickness=x/20)
+    circle(c, 0, x/2, r=2-x, color=pal[4],thickness=x/20)
+    circle(c, 0,-x/2, r=2-x, color=pal[4],thickness=x/20)
 
     return c
 

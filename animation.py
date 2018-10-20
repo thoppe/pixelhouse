@@ -1,4 +1,4 @@
-from canvas import canvas
+import canvas
 import pixelhouse.motion.easing as easing
 
 import cv2
@@ -25,7 +25,7 @@ class animation():
         n_frames = int(fps*duration)
 
         self.frames = [
-            canvas(width, height, extent) for _ in
+            canvas.canvas(width, height, extent) for _ in
             range(n_frames)
         ]
         self.has_rendered = [False,]*len(self)
@@ -164,7 +164,8 @@ class animated_circle(artist):
 
     def __call__(self, t, img=None):
         
-        img.circle(
+        canvas.circle(
+            img,
             self.x(t), self.y(t), self.r(t),
             self.color(t), self.thickness(t)
         )
@@ -183,7 +184,8 @@ class animated_ellipse(artist):
 
     def __call__(self, t, img=None):
         
-        img.ellipse(
+        canvas.ellipse(
+            img,
             x=self.x(t),
             y=self.y(t),
             major_length=self.major_length(t),
@@ -204,7 +206,8 @@ class animated_line(artist):
 
     def __call__(self, t, img=None):
         
-        img.line(
+        canvas.line(
+            img,
             self.x0(t), self.y0(t),
             self.x1(t), self.y1(t), 
             self.color(t), self.thickness(t)

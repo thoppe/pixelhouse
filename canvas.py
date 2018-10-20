@@ -6,7 +6,7 @@ from pixelhouse.color.colors import NamedColors
 matplotlib_colors = NamedColors()
 _default_color = 'white'
 
-class BasicCanvas():
+class canvas():
     '''
     Basic canvas object for quad drawings. 
     Extent measures along the x-axis.
@@ -116,88 +116,91 @@ class BasicCanvas():
         self.layers[layer].append( [func, args, blend] )
 
 
+######################################################################
 
-class canvas(BasicCanvas):
-    
-    def circle(self, x=0, y=0, r=1, color=_default_color,
-               thickness=-1, antialiased=True, blend=True, layer=None):
+        
+def circle(c, x=0, y=0, r=1, color=_default_color,
+        thickness=-1, antialiased=True, blend=True, layer=None):
 
-        x, y = self.transform_coordinates(x, y)
-        r = self.transform_length(r)
-        thickness = self.transform_length(thickness)
-        lineType = self.get_lineType(antialiased)
-        color=self.transform_color(color)
+    x, y = c.transform_coordinates(x, y)
+    r = c.transform_length(r)
+    thickness = c.transform_length(thickness)
+    lineType = c.get_lineType(antialiased)
+    color=c.transform_color(color)
 
-        args = (x,y), r, color, thickness, lineType
-        self.append(cv2.circle, args, blend=blend, layer=None)
+    args = (x,y), r, color, thickness, lineType
+    c.append(cv2.circle, args, blend=blend, layer=None)
 
-    def rectangle(self, x0=0, y0=0, x1=1, y1=1, color=_default_color,
-                  thickness=-1, antialiased=True, blend=True, layer=None):
-        
-        x0, y0 = self.transform_coordinates(x0, y0)
-        x1, y1 = self.transform_coordinates(x1, y1)
-        thickness = self.transform_length(thickness)
-        lineType = self.get_lineType(antialiased)
-        color=self.transform_color(color)
-        
-        args = (x0,y0), (x1, y1), color, thickness, lineType
-        self.append(cv2.rectangle, args, blend=blend, layer=layer)
 
-    def line(self, x0=0, y0=0, x1=1, y1=1, color=_default_color,
-             thickness=1, antialiased=True, blend=True, layer=None):
-        
-        x0, y0 = self.transform_coordinates(x0, y0)
-        x1, y1 = self.transform_coordinates(x1, y1)
-        thickness = self.transform_length(thickness)
-        lineType = self.get_lineType(antialiased)
-        color=self.transform_color(color)
-        
-        args = (x0,y0), (x1, y1), color, thickness, lineType
-        self.append(cv2.line, args, blend=blend, layer=None)
- 
-    def ellipse(self, x=0, y=0,
-                major_length=1, minor_length=1,
-                rotation=0,
-                angle_start=0,
-                angle_end=2*np.pi,
-                color=_default_color,
-                thickness=-1,
-                antialiased=True,
-                blend=True,
-                layer=None,
-    ):
-        # Angles measured in radians
-        
-        x, y = self.transform_coordinates(x, y)
-        major_length = self.transform_length(major_length)
-        minor_length = self.transform_length(minor_length)
-        thickness = self.transform_length(thickness)
-        lineType = self.get_lineType(antialiased)
-        color=self.transform_color(color)
-        
-        rotation_degree = self.transform_angle(rotation)
-        start_degree = self.transform_angle(angle_start)
-        end_degree = self.transform_angle(angle_end)
-        
-            
-        args = ((x,y), (major_length, minor_length),
-                rotation_degree, start_degree, end_degree,
-                color, thickness, lineType)
-        
-        self.append(cv2.ellipse, args, blend=blend, layer=layer)
-    
-    
-    def background(self, color=_default_color):
-        ### This doesn't work yet!
-        raise NotImplementedError
+def rectangle(c, x0=0, y0=0, x1=1, y1=1, color=_default_color,
+              thickness=-1, antialiased=True, blend=True, layer=None):
+
+    x0, y0 = c.transform_coordinates(x0, y0)
+    x1, y1 = c.transform_coordinates(x1, y1)
+    thickness = c.transform_length(thickness)
+    lineType = c.get_lineType(antialiased)
+    color=c.transform_color(color)
+
+    args = (x0,y0), (x1, y1), color, thickness, lineType
+    c.append(cv2.rectangle, args, blend=blend, layer=layer)
+
+def line(c, x0=0, y0=0, x1=1, y1=1, color=_default_color,
+         thickness=1, antialiased=True, blend=True, layer=None):
+
+    x0, y0 = c.transform_coordinates(x0, y0)
+    x1, y1 = c.transform_coordinates(x1, y1)
+    thickness = c.transform_length(thickness)
+    lineType = c.get_lineType(antialiased)
+    color=c.transform_color(color)
+
+    args = (x0,y0), (x1, y1), color, thickness, lineType
+    c.append(cv2.line, args, blend=blend, layer=None)
+
+def ellipse(c, x=0, y=0,
+            major_length=1, minor_length=1,
+            rotation=0,
+            angle_start=0,
+            angle_end=2*np.pi,
+            color=_default_color,
+            thickness=-1,
+            antialiased=True,
+            blend=True,
+            layer=None,
+):
+    # Angles measured in radians
+
+    x, y = c.transform_coordinates(x, y)
+    major_length = c.transform_length(major_length)
+    minor_length = c.transform_length(minor_length)
+    thickness = c.transform_length(thickness)
+    lineType = c.get_lineType(antialiased)
+    color=c.transform_color(color)
+
+    rotation_degree = c.transform_angle(rotation)
+    start_degree = c.transform_angle(angle_start)
+    end_degree = c.transform_angle(angle_end)
+
+
+    args = ((x,y), (major_length, minor_length),
+            rotation_degree, start_degree, end_degree,
+            color, thickness, lineType)
+
+    c.append(cv2.ellipse, args, blend=blend, layer=layer)
+
+
+def background(c, color=_default_color):
+    ### This doesn't work yet!
+    raise NotImplementedError
+
 
 
 if __name__ == "__main__":
     c = canvas(200,200,extent=4)
 
-    color = [0, 0, 255]
-    c.circle(thickness=0.5,color=color)
-    c.circle(thickness=0,color=color)
+    color = 'olive'
+    #c.circle(thickness=0.5,color=color)
+    circle(c, thickness=0.5,color=color)
+    
    
     c.show()
     
