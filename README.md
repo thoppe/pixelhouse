@@ -55,6 +55,7 @@ _Very much a work in progress!_
 + [ ] Random palettes
 
 #### Devops
++ [ ] Unified class for artists
 + [x] Save to gif
 + [x] Save to mp4 
 + [ ] Load from gif
