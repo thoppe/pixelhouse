@@ -63,6 +63,14 @@ class canvas():
 
         return self._img
 
+    
+    def append(self, func, args, blend, layer=None, **kwargs):
+        if layer is None:
+            layer = self.get_max_layer_number()
+            
+        self.layers[layer].append( [func, args, blend] )
+
+
     def transform_x(self, x):
         x *= self.width / 2.0
         x /= self.extent
@@ -116,12 +124,6 @@ class canvas():
         # Before we save we have to convert back to BGR
         dst = cv2.cvtColor(self.img, cv2.COLOR_RGB2BGR)
         cv2.imwrite(f_save, dst)
-
-    def append(self, func, args, blend, layer=None, **kwargs):
-        if layer is None:
-            layer = self.get_max_layer_number()
-            
-        self.layers[layer].append( [func, args, blend] )
 
 
 ######################################################################

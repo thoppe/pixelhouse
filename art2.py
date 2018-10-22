@@ -10,7 +10,7 @@ _default_color = 'white'
 
 #########################################################################
 def constant(x):
-    def func(self, t):
+    def func(self, t=0):
         return x
     return func
 
@@ -95,7 +95,6 @@ def canvas_transform(fn):
                 func = getattr(cvs, func_name)
                 key_func = getattr(art, key)
                 kw[key] = func(key_func(t))
-            
 
         return fn(art, cvs, t, **kw)
     
@@ -113,11 +112,9 @@ class circle(artist):
     
     @canvas_transform
     def __call__(self, cvs, t=0.0, **kw):
-        print(kw)
-
-        args = ((kw['x'],kw['y']),
-                kw['r'], kw['color'],
-                kw['thickness'], kw['antialiased'])
+        kw['center'] = (kw['x'], kw['y'])
+        order = ('center', 'r', 'color', 'thickness', 'antialiased')
+        args = (kw[k] for k in order)
         
         cvs.append(cv2.circle, args, self.blend(t))
 
