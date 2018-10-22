@@ -1,12 +1,12 @@
-from pixelhouse.canvas import Canvas, matplotlib_colors
-from pixelhouse.animation import Animation
-from pixelhouse.artists import circle, line, ellipse, rectangle
+from pixelhouse import Canvas, Animation
+from pixelhouse import circle, line, ellipse, rectangle
+from pixelhouse.color import matplotlib_colors, ColorLoversPalette
+
+import pixelhouse.motion.easing as easing
+
 import numpy as np
 import os
 import itertools
-
-import pixelhouse.motion.easing as easing
-from pixelhouse.color.palettes import ColorLoversPalette
 
 save_dest = "examples"
 
