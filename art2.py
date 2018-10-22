@@ -20,7 +20,14 @@ class artist():
     as functions.
     '''
 
+    # Basic attributes common to all artists
+    x = constant(0.0)
+    y = constant(0.0)
     color = constant(_default_color)
+    thickness = constant(-1)
+    blend = constant(True)
+    antialiased = constant(True)
+
     
     @staticmethod
     def _constant(x):
@@ -78,12 +85,7 @@ class artist():
 
 class circle(artist):
 
-    x = constant(0.0)
-    y = constant(0.0)
     r = constant(1.0)
-    thickness = constant(-1)
-    blend = constant(True)
-    antialiased = constant(True)
 
     def __call__(self, cvs, t=0.0):
 
@@ -99,66 +101,51 @@ class circle(artist):
 
 class rectangle(artist):
 
-    x0 = constant(0.0)
-    y0 = constant(0.0)
     x1 = constant(1.0)
     y1 = constant(1.0)
-    thickness = constant(-1)
-    blend = constant(True)
-    antialiased = constant(True)
 
     def __call__(self, cvs, t=0.0):
-        x0 = cvs.transform_x(self.x0(t))
+        x = cvs.transform_x(self.x(t))
         x1 = cvs.transform_x(self.x1(t))
-        y0 = cvs.transform_y(self.y0(t))
+        y = cvs.transform_y(self.y(t))
         y1 = cvs.transform_y(self.y1(t))
 
         thickness = cvs.transform_thickness(self.thickness(t))
         lineType = cvs.get_lineType(self.antialiased(t))
         color=cvs.transform_color(self.color(t))
 
-        args = (x0,y0), (x1, y1), color, thickness, lineType
+        args = (x,y), (x1, y1), color, thickness, lineType
         cvs.cv2_draw(cv2.rectangle, args, blend=self.blend(t))
 
 
 class line(artist):
 
-    x0 = constant(0.0)
-    y0 = constant(0.0)
     x1 = constant(1.0)
     y1 = constant(1.0)
     thickness = constant(0.1)
-    blend = constant(True)
-    antialiased = constant(True)
 
     def __call__(self, cvs, t=0.0):
-        x0 = cvs.transform_x(self.x0(t))
+        x = cvs.transform_x(self.x(t))
         x1 = cvs.transform_x(self.x1(t))
-        y0 = cvs.transform_y(self.y0(t))
+        y = cvs.transform_y(self.y(t))
         y1 = cvs.transform_y(self.y1(t))
 
         thickness = cvs.transform_thickness(self.thickness(t))
         lineType = cvs.get_lineType(self.antialiased(t))
         color=cvs.transform_color(self.color(t))
 
-        args = (x0,y0), (x1, y1), color, thickness, lineType
+        args = (x,y), (x1, y1), color, thickness, lineType
         print(args)
         cvs.cv2_draw(cv2.line, args, blend=self.blend(t))
 
 class ellipse(artist):
 
-    x = constant(0.0)
-    y = constant(0.0)
-
-    a = constant(1.0)
+    a = constant(2.0)
     b = constant(1.0)
+    
     rotation = constant(0.0)
     angle_start = constant(0.0)
     angle_end = constant(2*np.pi)
-
-    thickness = constant(0.1)
-    blend = constant(True)
-    antialiased = constant(True)
 
     def __call__(self, cvs, t=0.0):
         x = cvs.transform_x(self.x(t))
@@ -185,8 +172,8 @@ if __name__== "__main__":
 
     circle(x=1,color='r')(c,t=0.5)
     circle(x=-1,color='b')(c)
-    rectangle(x0=-3,y0=-3,color='g')(c)
-    line(x0=-3,y0=-3,color='g')(c)
+    rectangle(x=-3,y=-3,color='g')(c)
+    line(x=-3,y=-3,color='g')(c)
     ellipse(color='purple')(c)
 
     c.show()
