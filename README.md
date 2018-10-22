@@ -54,14 +54,18 @@ _Very much a work in progress!_
 + [x] Top palettes
 + [ ] Random palettes
 
-#### Devops
-+ [x] Unified class for artists
-+ [ ] Context mangager for canvas and animation
+#### File IO
 + [x] Save to gif
 + [x] Save to mp4 
 + [ ] Load from gif
 + [ ] Load from mp4
-+ [ ] Proper library
+
+#### Devops
++ [x] Unified class for artists
++ [x] Proper library
++ [ ] setup.py
++ [ ] pip install
++ [ ] Context mangager for canvas and animatino
 + [ ] Unit tests
 + [ ] Doc coverage
 
