@@ -43,7 +43,7 @@ class artist():
            return f(x)
        return func
 
-    def __init__(self,**kwargs):
+    def __init__(self,  **kwargs):
         '''
         When an artist is initiated, all of the attributes can be set
         as a function of time. These attributes can be a constant, a numpy
