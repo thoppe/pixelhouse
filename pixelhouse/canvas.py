@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 import collections
-from color.colors import NamedColors
+from .color.colors import NamedColors
 
 matplotlib_colors = NamedColors()
 

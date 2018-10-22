@@ -1,6 +1,6 @@
-from canvas import Canvas, matplotlib_colors
-from animation import Animation
-from artists import circle, line, ellipse, rectangle
+from pixelhouse.canvas import Canvas, matplotlib_colors
+from pixelhouse.animation import Animation
+from pixelhouse.artists import circle, line, ellipse, rectangle
 import numpy as np
 import os
 import itertools

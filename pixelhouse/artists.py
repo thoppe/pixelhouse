@@ -1,8 +1,9 @@
 import numpy as np
 import scipy
-import canvas
 import cv2
 import itertools
+
+from . import canvas
 
 _DEFAULT_COLOR = 'white'
 _DEFAULT_THICKNESS = -1

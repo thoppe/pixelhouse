@@ -1,6 +1,6 @@
 # A working file to test various aspects of the module
-from canvas import Canvas
-from artists import circle
+from pixelhouse import Canvas
+from pixelhouse.artists import circle
 from pixelhouse.filter.filters import *
 c = Canvas()
 
