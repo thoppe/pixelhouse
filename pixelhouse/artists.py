@@ -16,13 +16,7 @@ class Artist():
     To be a proper artist, all derived classes must accept their arguments
     as functions.
     '''
- 
-    @staticmethod
-    def _constant(x):
-        def func(t):
-            return x
-        return func
-
+    
     @staticmethod
     def _create_interpolation(z):
        t = np.linspace(0, 1, len(z))
@@ -57,7 +51,8 @@ class Artist():
 
             # Otherwise we assume it's a constant of this value
             else:
-                setattr(self, key, self._constant(val))
+                #setattr(self, key, self._constant(val))
+                setattr(self, key, constant(val))
 
     def __call__(self, t):
         # Virtual class, need to override

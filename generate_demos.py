@@ -217,5 +217,3 @@ if __name__ == "__main__":
 
     teyleen_982().save("examples/teyleen_982.png")
     teyleen_116().save("examples/teyleen_116.png")
-    
-    
