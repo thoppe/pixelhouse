@@ -7,16 +7,27 @@ import itertools
 
 _default_color = 'white'
 
-
 #########################################################################
-    
-class artist():
+def constant(x):
+    def func(self, t=0):
+        return x
+    return func
 
+class artist():
     '''
     Artists are the backbone of pixelhouse. They draw what's on the screen.
     To be a proper artist, all derived classes must accept their arguments
     as functions.
     '''
+
+    # Basic attributes common to all artists
+    x = constant(0.0)
+    y = constant(0.0)
+    color = constant(_default_color)
+    thickness = constant(-1)
+    blend = constant(True)
+    antialiased = constant(True)
+
     
     @staticmethod
     def _constant(x):
@@ -25,19 +36,20 @@ class artist():
         return func
 
     @staticmethod
-    def _create_interpolation(y):
-       t = np.linspace(0, 1, len(y))
-       f = scipy.interpolate.interp1d(t, y)
+    def _create_interpolation(z):
+       t = np.linspace(0, 1, len(z))
+       f = scipy.interpolate.interp1d(t, z)
        def func(x):
            return f(x)
        return func
 
-    def __init__(self, **kwargs):
+    def __init__(self,**kwargs):
         '''
         When an artist is initiated, all of the attributes can be set
         as a function of time. These attributes can be a constant, a numpy
         array (interpolation will be used if needed), or a function.
         '''
+
 
         attributes = dir(self)
         for key, val in kwargs.items():
@@ -64,152 +76,94 @@ class artist():
         # Virtual class, need to override
         raise NotImplementedError
 
+    def basic_transforms(self, cvs, t):
+        x = cvs.transform_x(self.x(t))
+        y = cvs.transform_y(self.y(t))
+        thickness = cvs.transform_thickness(self.thickness(t))
+        color = cvs.transform_color(self.color(t))
+        lineType = cvs.get_lineType(self.antialiased(t))
 
-        
-def circle(c, x=0, y=0, r=1, color=_default_color,
-        thickness=-1, antialiased=True, blend=True, layer=None):
+        return x, y, thickness, color, lineType
 
-    x, y = c.transform_coordinates(x, y)
-    r = c.transform_length(r)
-    thickness = c.transform_length(thickness)
-    lineType = c.get_lineType(antialiased)
-    color=c.transform_color(color)
-
-    args = (x,y), r, color, thickness, lineType
-    c.append(cv2.circle, args, blend=blend, layer=None)
-
-
-def rectangle(c, x0=0, y0=0, x1=1, y1=1, color=_default_color,
-              thickness=-1, antialiased=True, blend=True, layer=None):
-
-    x0, y0 = c.transform_coordinates(x0, y0)
-    x1, y1 = c.transform_coordinates(x1, y1)
-    thickness = c.transform_length(thickness)
-    lineType = c.get_lineType(antialiased)
-    color=c.transform_color(color)
-
-    args = (x0,y0), (x1, y1), color, thickness, lineType
-    c.append(cv2.rectangle, args, blend=blend, layer=layer)
-
-def line(c, x0=0, y0=0, x1=1, y1=1, color=_default_color,
-         thickness=1, antialiased=True, blend=True, layer=None):
-
-    x0, y0 = c.transform_coordinates(x0, y0)
-    x1, y1 = c.transform_coordinates(x1, y1)
-    thickness = c.transform_length(thickness)
-    lineType = c.get_lineType(antialiased)
-    color=c.transform_color(color)
-
-    args = (x0,y0), (x1, y1), color, thickness, lineType
-    c.append(cv2.line, args, blend=blend, layer=None)
-
-def ellipse(c, x=0, y=0,
-            major_length=1, minor_length=1,
-            rotation=0,
-            angle_start=0,
-            angle_end=2*np.pi,
-            color=_default_color,
-            thickness=-1,
-            antialiased=True,
-            blend=True,
-            layer=None,
-):
-    # Angles measured in radians
-
-    x, y = c.transform_coordinates(x, y)
-    major_length = c.transform_length(major_length)
-    minor_length = c.transform_length(minor_length)
-    thickness = c.transform_length(thickness)
-    lineType = c.get_lineType(antialiased)
-    color=c.transform_color(color)
-
-    rotation_degree = c.transform_angle(rotation)
-    start_degree = c.transform_angle(angle_start)
-    end_degree = c.transform_angle(angle_end)
-
-
-    args = ((x,y), (major_length, minor_length),
-            rotation_degree, start_degree, end_degree,
-            color, thickness, lineType)
-
-    c.append(cv2.ellipse, args, blend=blend, layer=layer)
-
-
-def background(c, color=_default_color):
-    ### This doesn't work yet!
-    raise NotImplementedError
 
 
 
 #############################################################################
+# Class artists below
+#############################################################################
 
-def constant(x):
-    def func(self, t):
-        return x
-    return func
+class circle(artist):
 
-def constant(x):
-    # Constant factory, needed for constant arguments
-    def constant_factory(value):
-        return itertools.repeat(value).next
-    def func(t):
-        return x
-
-class animated_circle(artist):
-
-    x = y = artist._constant(0.0)
     r = constant(1.0)
-    color = constant([255,255,255])
-    thickness = constant(-1)
 
-    def __call__(self, t, img=None):
+    def __call__(self, cvs, t=0.0):
+        x, y, thickness, color, lineType = self.basic_transforms(cvs, t)
+        r = cvs.transform_length(self.r(t))
         
-        circle(
-            img,
-            self.x(t), self.y(t), self.r(t),
-            self.color(t), self.thickness(t)
-        )
+        args = (x,y), r, color, thickness, lineType
+        cvs.cv2_draw(cv2.circle, args, blend=self.blend(t))
 
-class animated_ellipse(artist):
+class rectangle(artist):
 
-    x = y = constant(0.0)
-    major_length = constant(1.0)
-    minor_length = constant(1.0)
+    x1 = constant(1.0)
+    y1 = constant(1.0)
+
+    def __call__(self, cvs, t=0.0):
+        x, y, thickness, color, lineType = self.basic_transforms(cvs, t)
+        x1 = cvs.transform_x(self.x1(t))
+        y1 = cvs.transform_y(self.y1(t))
+
+        args = (x,y), (x1, y1), color, thickness, lineType
+        cvs.cv2_draw(cv2.rectangle, args, blend=self.blend(t))
+
+
+class line(artist):
+
+    x1 = constant(1.0)
+    y1 = constant(1.0)
+    thickness = constant(0.1)
+
+    def __call__(self, cvs, t=0.0):
+        x, y, thickness, color, lineType = self.basic_transforms(cvs, t)
+        x1 = cvs.transform_x(self.x1(t))
+        y1 = cvs.transform_y(self.y1(t))
+
+        args = (x,y), (x1, y1), color, thickness, lineType
+        cvs.cv2_draw(cv2.line, args, blend=self.blend(t))
+
+class ellipse(artist):
+
+    a = constant(2.0)
+    b = constant(1.0)
+    
     rotation = constant(0.0)
     angle_start = constant(0.0)
     angle_end = constant(2*np.pi)
 
-    color = constant([255,255,255])
-    thickness = constant(-1)
+    def __call__(self, cvs, t=0.0):
+        x, y, thickness, color, lineType = self.basic_transforms(cvs, t)
 
-    def __call__(self, t, img=None):
+        a = cvs.transform_length(self.a(t))
+        b = cvs.transform_length(self.b(t))
         
-        ellipse(
-            img,
-            x=self.x(t),
-            y=self.y(t),
-            major_length=self.major_length(t),
-            minor_length=self.minor_length(t),
-            angle_start=self.angle_start(t),
-            angle_end=self.angle_end(t),
-            color=self.color(t),
-            thickness=self.thickness(t),
-        )
+        rotation = cvs.transform_angle(self.rotation(t))
+        angle_start = cvs.transform_angle(self.angle_start(t))
+        angle_end = cvs.transform_angle(self.angle_end(t))
 
-class animated_line(artist):
+        args = ((x,y), (a, b),
+                rotation, angle_start, angle_end, color, thickness, lineType)
 
-    x0 = y0 = constant(0.0)
-    x1 = y1 = constant(1.0)
+        cvs.cv2_draw(cv2.ellipse, args, blend=self.blend(t))
 
-    color = constant([255,255,255])
-    thickness = constant(0.1)
+if __name__== "__main__":
+    c = canvas.canvas()
 
-    def __call__(self, t, img=None):
-        
-        line(
-            img,
-            self.x0(t), self.y0(t),
-            self.x1(t), self.y1(t), 
-            self.color(t), self.thickness(t)
-        )
+    circle(x=1,color='r')(c,t=0.5)
+    circle(x=-1,color='b')(c)
+    rectangle(x=-3,y=-3,color='g')(c)
+    line(x=-3,y=-3,color='g')(c)
+    ellipse(color='purple')(c)
 
+    c.show()
+
+    

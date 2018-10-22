@@ -114,12 +114,10 @@ class canvas():
 if __name__ == "__main__":
     from artists import circle
     
-    c = canvas(200,200,extent=4)
+    cvs = canvas(200,200,extent=4)
 
     color = 'olive'
-    #c.circle(thickness=0.5,color=color)
-    circle(c, thickness=0.5,color=color)
+    circle(thickness=0.5,color='olive')(cvs)
     
-   
-    c.show()
+    cvs.show()
     

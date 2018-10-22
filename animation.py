@@ -45,7 +45,7 @@ class animation():
             t = self.timepoints[n]
 
             for art in self.artists:
-                art(t, self.frames[n])
+                art(self.frames[n], t)
 
             self.has_rendered[n] = True
 
@@ -102,7 +102,7 @@ class animation():
 #############################################################################
 
 if __name__ == "__main__":
-    from artists import animated_line
+    from artists import line
     
     A = animation(width=400, height=400, fps=10)
 
@@ -117,8 +117,8 @@ if __name__ == "__main__":
 
         theta = easing.OffsetEase(lag, stop=2*np.pi, duration=len(A))()
 
-        L = animated_line(
-            x0=0, y0=0, x1=r*np.cos(theta),
+        L = line(
+            x1=r*np.cos(theta),
             y1=r*np.sin(theta),
             thickness=tc, color=c
         )
