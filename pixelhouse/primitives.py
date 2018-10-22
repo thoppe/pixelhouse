@@ -1,9 +1,35 @@
 import numpy as np
 import cv2
-from .artists import artist, constant
+from .artists import Artist, constant
+
+_DEFAULT_COLOR = 'white'
+_DEFAULT_THICKNESS = -1
+_DEFAULT_BLEND = True
+_DEFAULT_ANTIALIASED = True
+
+class PrimitiveArtist(Artist):
+
+    # Basic attributes common to all artists
+    x = constant(0.0)
+    y = constant(0.0)
+    color = constant(_DEFAULT_COLOR)
+    thickness = constant(_DEFAULT_THICKNESS)
+    blend = constant(_DEFAULT_BLEND)
+    antialiased = constant(_DEFAULT_ANTIALIASED)
+
+   
+    def basic_transforms(self, cvs, t):
+        x = cvs.transform_x(self.x(t))
+        y = cvs.transform_y(self.y(t))
+        thickness = cvs.transform_thickness(self.thickness(t))
+        color = cvs.transform_color(self.color(t))
+        lineType = cvs.get_lineType(self.antialiased(t))
+
+        return x, y, thickness, color, lineType
 
 
-class circle(artist):
+
+class circle(PrimitiveArtist):
     r = constant(1.0)
 
     def __call__(self, cvs, t=0.0):
@@ -13,7 +39,7 @@ class circle(artist):
         args = (x,y), r, color, thickness, lineType
         cvs.cv2_draw(cv2.circle, args, blend=self.blend(t))
 
-class rectangle(artist):
+class rectangle(PrimitiveArtist):
     x1 = constant(1.0)
     y1 = constant(1.0)
 
@@ -26,7 +52,7 @@ class rectangle(artist):
         cvs.cv2_draw(cv2.rectangle, args, blend=self.blend(t))
 
 
-class line(artist):
+class line(PrimitiveArtist):
     x1 = constant(1.0)
     y1 = constant(1.0)
     thickness = constant(0.1)
@@ -39,7 +65,7 @@ class line(artist):
         args = (x,y), (x1, y1), color, thickness, lineType
         cvs.cv2_draw(cv2.line, args, blend=self.blend(t))
 
-class ellipse(artist):
+class ellipse(PrimitiveArtist):
     a = constant(2.0)
     b = constant(1.0)
     

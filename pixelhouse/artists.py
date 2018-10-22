@@ -2,10 +2,6 @@ import numpy as np
 import scipy
 import itertools
 
-_DEFAULT_COLOR = 'white'
-_DEFAULT_THICKNESS = -1
-_DEFAULT_BLEND = True
-_DEFAULT_ANTIALIASED = True
 
 #########################################################################
 
@@ -14,22 +10,13 @@ def constant(x):
         return x
     return func
 
-class artist():
+class Artist():
     '''
     Artists are the backbone of pixelhouse. They draw what's on the screen.
     To be a proper artist, all derived classes must accept their arguments
     as functions.
     '''
-
-    # Basic attributes common to all artists
-    x = constant(0.0)
-    y = constant(0.0)
-    color = constant(_DEFAULT_COLOR)
-    thickness = constant(_DEFAULT_THICKNESS)
-    blend = constant(_DEFAULT_BLEND)
-    antialiased = constant(_DEFAULT_ANTIALIASED)
-
-    
+ 
     @staticmethod
     def _constant(x):
         def func(t):
@@ -50,7 +37,6 @@ class artist():
         as a function of time. These attributes can be a constant, a numpy
         array (interpolation will be used if needed), or a function.
         '''
-
 
         attributes = dir(self)
         for key, val in kwargs.items():
@@ -77,11 +63,3 @@ class artist():
         # Virtual class, need to override
         raise NotImplementedError
 
-    def basic_transforms(self, cvs, t):
-        x = cvs.transform_x(self.x(t))
-        y = cvs.transform_y(self.y(t))
-        thickness = cvs.transform_thickness(self.thickness(t))
-        color = cvs.transform_color(self.color(t))
-        lineType = cvs.get_lineType(self.antialiased(t))
-
-        return x, y, thickness, color, lineType
