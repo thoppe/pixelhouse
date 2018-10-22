@@ -4,8 +4,10 @@ import canvas
 import cv2
 import itertools
 
-
-_default_color = 'white'
+_DEFAULT_COLOR = 'white'
+_DEFAULT_THICKNESS = -1
+_DEFAULT_BLEND = True
+_DEFAULT_ANTIALIASED = True
 
 #########################################################################
 def constant(x):
@@ -23,10 +25,10 @@ class artist():
     # Basic attributes common to all artists
     x = constant(0.0)
     y = constant(0.0)
-    color = constant(_default_color)
-    thickness = constant(-1)
-    blend = constant(True)
-    antialiased = constant(True)
+    color = constant(_DEFAULT_COLOR)
+    thickness = constant(_DEFAULT_THICKNESS)
+    blend = constant(_DEFAULT_BLEND)
+    antialiased = constant(_DEFAULT_ANTIALIASED)
 
     
     @staticmethod
