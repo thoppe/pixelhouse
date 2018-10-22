@@ -158,7 +158,7 @@ class ellipse(artist):
         cvs.cv2_draw(cv2.ellipse, args, blend=self.blend(t))
 
 if __name__== "__main__":
-    c = canvas.canvas()
+    c = canvas.Canvas()
 
     circle(x=1,color='r')(c,t=0.5)
     circle(x=-1,color='b')(c)

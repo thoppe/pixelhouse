@@ -1,5 +1,5 @@
 from canvas import Canvas
-import pixelhouse.motion.easing as easing
+import motion.easing as easing
 
 import cv2
 import os
