@@ -4,7 +4,7 @@ import collections
 from pixelhouse.color.colors import NamedColors
 
 matplotlib_colors = NamedColors()
-_default_color = 'white'
+
 
 class canvas():
     '''
@@ -63,20 +63,28 @@ class canvas():
 
         return self._img
 
-    def transform_coordinates(self, x, y):
+    def transform_x(self, x):
         x *= self.width / 2.0
         x /= self.extent
         x += self.width / 2
+        return int(x)
 
+    def transform_y(self, y):
         y *= -self.height / 2.0
         y /= self.extent
-        y += self.height / 2
-        
-        return (int(x), int(y))
+        y += self.height / 2        
+        return int(y)
 
     def transform_length(self, r):
         r *= (self.width/self.extent)
         return int(r)
+    
+    def transform_thickness(self, r):
+        # If thickness is negative, leave it alone
+        if r>0:
+            return self.transform_length(r)
+        return r
+    
 
     def transform_color(self, c):
         if isinstance(c, str):
@@ -118,83 +126,10 @@ class canvas():
 
 ######################################################################
 
-        
-def circle(c, x=0, y=0, r=1, color=_default_color,
-        thickness=-1, antialiased=True, blend=True, layer=None):
-
-    x, y = c.transform_coordinates(x, y)
-    r = c.transform_length(r)
-    thickness = c.transform_length(thickness)
-    lineType = c.get_lineType(antialiased)
-    color=c.transform_color(color)
-
-    args = (x,y), r, color, thickness, lineType
-    c.append(cv2.circle, args, blend=blend, layer=None)
-
-
-def rectangle(c, x0=0, y0=0, x1=1, y1=1, color=_default_color,
-              thickness=-1, antialiased=True, blend=True, layer=None):
-
-    x0, y0 = c.transform_coordinates(x0, y0)
-    x1, y1 = c.transform_coordinates(x1, y1)
-    thickness = c.transform_length(thickness)
-    lineType = c.get_lineType(antialiased)
-    color=c.transform_color(color)
-
-    args = (x0,y0), (x1, y1), color, thickness, lineType
-    c.append(cv2.rectangle, args, blend=blend, layer=layer)
-
-def line(c, x0=0, y0=0, x1=1, y1=1, color=_default_color,
-         thickness=1, antialiased=True, blend=True, layer=None):
-
-    x0, y0 = c.transform_coordinates(x0, y0)
-    x1, y1 = c.transform_coordinates(x1, y1)
-    thickness = c.transform_length(thickness)
-    lineType = c.get_lineType(antialiased)
-    color=c.transform_color(color)
-
-    args = (x0,y0), (x1, y1), color, thickness, lineType
-    c.append(cv2.line, args, blend=blend, layer=None)
-
-def ellipse(c, x=0, y=0,
-            major_length=1, minor_length=1,
-            rotation=0,
-            angle_start=0,
-            angle_end=2*np.pi,
-            color=_default_color,
-            thickness=-1,
-            antialiased=True,
-            blend=True,
-            layer=None,
-):
-    # Angles measured in radians
-
-    x, y = c.transform_coordinates(x, y)
-    major_length = c.transform_length(major_length)
-    minor_length = c.transform_length(minor_length)
-    thickness = c.transform_length(thickness)
-    lineType = c.get_lineType(antialiased)
-    color=c.transform_color(color)
-
-    rotation_degree = c.transform_angle(rotation)
-    start_degree = c.transform_angle(angle_start)
-    end_degree = c.transform_angle(angle_end)
-
-
-    args = ((x,y), (major_length, minor_length),
-            rotation_degree, start_degree, end_degree,
-            color, thickness, lineType)
-
-    c.append(cv2.ellipse, args, blend=blend, layer=layer)
-
-
-def background(c, color=_default_color):
-    ### This doesn't work yet!
-    raise NotImplementedError
-
-
 
 if __name__ == "__main__":
+    from artists import circle
+    
     c = canvas(200,200,extent=4)
 
     color = 'olive'

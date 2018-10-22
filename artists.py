@@ -2,9 +2,69 @@ import numpy as np
 import scipy
 import canvas
 import cv2
+import itertools
 
 
 _default_color = 'white'
+
+
+#########################################################################
+    
+class artist():
+
+    '''
+    Artists are the backbone of pixelhouse. They draw what's on the screen.
+    To be a proper artist, all derived classes must accept their arguments
+    as functions.
+    '''
+    
+    @staticmethod
+    def _constant(x):
+        def func(t):
+            return x
+        return func
+
+    @staticmethod
+    def _create_interpolation(y):
+       t = np.linspace(0, 1, len(y))
+       f = scipy.interpolate.interp1d(t, y)
+       def func(x):
+           return f(x)
+       return func
+
+    def __init__(self, **kwargs):
+        '''
+        When an artist is initiated, all of the attributes can be set
+        as a function of time. These attributes can be a constant, a numpy
+        array (interpolation will be used if needed), or a function.
+        '''
+
+        attributes = dir(self)
+        for key, val in kwargs.items():
+
+            # Can't set attributes an object doesn't have
+            if key not in attributes:
+                msg = f"{key} not in class {self}"
+                raise AttributeError(msg)
+
+            # If the val is callable, that's what we use
+            if callable(val):
+                setattr(self, key, val)
+
+            # If the val is a numpy array
+            elif isinstance(val, np.ndarray):
+                interpfunc = self._create_interpolation(val)
+                setattr(self, key, interpfunc)
+
+            # Otherwise we assume it's a constant of this value
+            else:
+                setattr(self, key, self._constant(val))
+
+    def __call__(self, t):
+        # Virtual class, need to override
+        raise NotImplementedError
+
+
         
 def circle(c, x=0, y=0, r=1, color=_default_color,
         thickness=-1, antialiased=True, blend=True, layer=None):
@@ -80,54 +140,6 @@ def background(c, color=_default_color):
     raise NotImplementedError
 
 
-class artist():
-    
-    @staticmethod
-    def _constant(x):
-        def func(t):
-            return x
-        return func
-
-    @staticmethod
-    def _create_interpolation(y):
-       t = np.linspace(0, 1, len(y))
-       f = scipy.interpolate.interp1d(t, y)
-       def func(x):
-           return f(x)
-       return func
-
-    def __init__(self, **kwargs):
-        '''
-        When an artist is initiated, all of the attributes can be set
-        as a function of time. These attributes can be a constant, a numpy
-        array (interpolation will be used if needed), or a function.
-        '''
-
-        attributes = dir(self)
-        for key, val in kwargs.items():
-
-            # Can't set attributes an object doesn't have
-            if key not in attributes:
-                msg = f"{key} not in class {self}"
-                raise AttributeError(msg)
-
-            # If the val is callable, that's what we use
-            if callable(val):
-                setattr(self, key, val)
-
-            # If the val is a numpy array
-            elif isinstance(val, np.ndarray):
-                interpfunc = self._create_interpolation(val)
-                setattr(self, key, interpfunc)
-
-            # Otherwise we assume it's a constant of this value
-            else:
-                setattr(self, key, self._constant(val))
-
-    def __call__(self, t):
-        # Virtual class, need to override
-        raise NotImplementedError
-
 
 #############################################################################
 
@@ -136,9 +148,16 @@ def constant(x):
         return x
     return func
 
+def constant(x):
+    # Constant factory, needed for constant arguments
+    def constant_factory(value):
+        return itertools.repeat(value).next
+    def func(t):
+        return x
+
 class animated_circle(artist):
 
-    x = y = constant(0.0)
+    x = y = artist._constant(0.0)
     r = constant(1.0)
     color = constant([255,255,255])
     thickness = constant(-1)

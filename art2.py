@@ -9,7 +9,11 @@ _default_color = 'white'
 
 
 #########################################################################
-    
+def constant(x):
+    def func(self, t):
+        return x
+    return func
+
 class artist():
 
     '''
@@ -66,57 +70,63 @@ class artist():
         raise NotImplementedError
 
 
-'''
-def circle(c, x=0, y=0, r=1, color=_default_color,
-        thickness=-1, antialiased=True, blend=True, layer=None):
-
-    x, y = c.transform_coordinates(x, y)
-    r = c.transform_length(r)
-    thickness = c.transform_length(thickness)
-    lineType = c.get_lineType(antialiased)
-    color=c.transform_color(color)
-
-    args = (x,y), r, color, thickness, lineType
-    c.append(cv2.circle, args, blend=blend, layer=None)
-'''
 
 
 #############################################################################
-def constant(x):
-    def func(self, t):
-        return x
-    return func
+def canvas_transform(fn):
+    '''
+    Decorator to apply to artists. These transforms will be applied 
+    automatically if the artist has the attribute. i.e. "x" will be 
+    transformed if it exists within the class.
+    '''
+    transforms = {
+            'x' : 'transform_x',
+            'y' : 'transform_y',
+            'r' : 'transform_length',
+            'color' : 'transform_color',
+            'thickness' : 'transform_thickness',
+            'antialiased' : 'get_lineType',
+    }
+    
+    def wrapper(art, cvs, t=0.0, **kw):
 
-class animated_circle(artist):
+        for key, func_name in transforms.items():
+            if hasattr(art, key):
+                func = getattr(cvs, func_name)
+                key_func = getattr(art, key)
+                kw[key] = func(key_func(t))
+            
+
+        return fn(art, cvs, t, **kw)
+    
+    return wrapper
+
+class circle(artist):
 
     x = constant(0.0)
     y = constant(0.0)
     r = constant(1.0)
     color = constant(_default_color)
     thickness = constant(-1)
+    blend = constant(True)
+    antialiased = constant(True)
+    
+    @canvas_transform
+    def __call__(self, cvs, t=0.0, **kw):
+        print(kw)
 
-    def __call__(self, t, cvs):
-
-        blend = 0
-        layer = None
-        antialiased = True
-
-        x, y = c.transform_coordinates(self.x(t), self.y(t))
-        r = c.transform_length(self.r(t))
-        thickness = c.transform_length(self.thickness(t))
-        color=c.transform_color(self.color(t))
-        lineType = c.get_lineType(antialiased)
-
-        args = (x,y), r, color, thickness, lineType
-
-        cvs.append(cv2.circle, args, blend)
+        args = ((kw['x'],kw['y']),
+                kw['r'], kw['color'],
+                kw['thickness'], kw['antialiased'])
+        
+        cvs.append(cv2.circle, args, self.blend(t))
 
 
 if __name__== "__main__":
     c = canvas.canvas()
 
-    #c.append(0.0, animated_circle())
-    animated_circle()(0.0, c)
+    circle(x=1,color='r')(c,t=0.5)
+    circle(x=-1,color='b',blend=False)(c)
 
     c.show()
     

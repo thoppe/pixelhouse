@@ -1,5 +1,6 @@
 import canvas
-from animation import animation, animated_circle, animated_line, animated_ellipse
+from animation import animation
+from artists import animated_circle, animated_line, animated_ellipse
 import numpy as np
 import os
 import itertools
@@ -32,7 +33,8 @@ palettes = ColorLoversPalette()
 
 
 def simple_circles():
-    from canvas import circle
+    from artists import circle
+
     c = canvas.canvas(**canvas_args)
     q = 155
     
@@ -50,7 +52,7 @@ def simple_circles():
     return c
 
 def simple_rectangles():
-    from canvas import rectangle
+    from artists import rectangle
     
     c = canvas.canvas(**canvas_args)
 
@@ -62,7 +64,7 @@ def simple_rectangles():
 
 
 def simple_lines():
-    from canvas import line
+    from artists import line
     
     c = canvas.canvas(**canvas_args)
     
@@ -83,7 +85,8 @@ def simple_lines():
 
 
 def teyleen_982():
-    from canvas import ellipse
+    from artists import ellipse
+
     c = canvas.canvas(**canvas_args)
     pi = np.pi
     
@@ -108,7 +111,7 @@ def teyleen_982():
     return c
 
 def teyleen_116():
-    from canvas import circle
+    from artists import circle
     
     c = canvas.canvas(**canvas_args)
     pal = palettes(152)
@@ -208,16 +211,16 @@ def pacman():
 
 if __name__ == "__main__":
 
-    simple_lines().save("examples/simple_lines.png")
-    simple_circles().save("examples/simple_circles.png")
-    simple_rectangles().save("examples/simple_rectangle.png")
+    #simple_lines().save("examples/simple_lines.png")
+    #simple_circles().save("examples/simple_circles.png")
+    #simple_rectangles().save("examples/simple_rectangle.png")
 
     pacman().to_gif("examples/pacman.gif", **gif_args)
-    rotating_circles().to_gif("examples/moving_circles.gif", **gif_args)
-    checkerboard().to_gif("examples/checkerboard.gif", **gif_args)
-    timer().to_gif("examples/timer.gif", **gif_args)
+    #rotating_circles().to_gif("examples/moving_circles.gif", **gif_args)
+    #checkerboard().to_gif("examples/checkerboard.gif", **gif_args)
+    #timer().to_gif("examples/timer.gif", **gif_args)
 
-    teyleen_982().save("examples/teyleen_982.png")
-    teyleen_116().save("examples/teyleen_116.png")
+    #teyleen_982().save("examples/teyleen_982.png")
+    #teyleen_116().save("examples/teyleen_116.png")
     
     
