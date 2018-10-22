@@ -1,4 +1,4 @@
-import canvas
+from canvas import Canvas
 import pixelhouse.motion.easing as easing
 
 import cv2
@@ -10,7 +10,7 @@ import scipy.interpolate
 import imageio
 from tqdm import tqdm
 
-class animation():
+class Animation():
 
     def __init__(
             self,
@@ -25,7 +25,7 @@ class animation():
         n_frames = int(fps*duration)
 
         self.frames = [
-            canvas.canvas(width, height, extent) for _ in
+            Canvas(width, height, extent) for _ in
             range(n_frames)
         ]
         self.has_rendered = [False,]*len(self)
@@ -101,7 +101,7 @@ class animation():
 if __name__ == "__main__":
     from artists import line
     
-    A = animation(width=400, height=400, fps=10)
+    A = Animation(width=400, height=400, fps=10)
 
     # Use an ease function to go in an out
     tc = 0.315

@@ -5,8 +5,7 @@ from pixelhouse.color.colors import NamedColors
 
 matplotlib_colors = NamedColors()
 
-
-class canvas():
+class Canvas():
     '''
     Basic canvas object for quad drawings. 
     Extent measures along the x-axis.
@@ -46,7 +45,7 @@ class canvas():
     def cv2_draw(self, func, args, blend, **kwargs):
         # Saturate or blend the images together
         if blend:
-            dst = canvas(self.width, self.height).img
+            dst = Canvas(self.width, self.height).img
             func(dst, *args)
             cv2.add(self._img, dst, self._img)
         else:
@@ -114,7 +113,7 @@ class canvas():
 if __name__ == "__main__":
     from artists import circle
     
-    cvs = canvas(200,200,extent=4)
+    cvs = Canvas(200,200,extent=4)
 
     color = 'olive'
     circle(thickness=0.5,color='olive')(cvs)

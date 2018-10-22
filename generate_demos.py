@@ -1,5 +1,5 @@
-import canvas
-from animation import animation
+from canvas import Canvas, matplotlib_colors
+from animation import Animation
 from artists import circle, line, ellipse, rectangle
 import numpy as np
 import os
@@ -33,7 +33,7 @@ palettes = ColorLoversPalette()
 
 
 def simple_circles():
-    c = canvas.canvas(**canvas_args)
+    c = Canvas(**canvas_args)
 
     n = 3
     t = np.arange(0, 2*np.pi, 2*np.pi/n) + np.pi/6
@@ -49,7 +49,7 @@ def simple_circles():
     return c
 
 def simple_rectangles():
-    c = canvas.canvas(**canvas_args)
+    c = Canvas(**canvas_args)
 
     rectangle(x=-1,y=-1,x1=1,y1=1,color='lightcoral')(c)
     rectangle(x=0,y=0,x1=2,y1=-2,color='lime')(c)
@@ -59,7 +59,7 @@ def simple_rectangles():
 
 
 def simple_lines():
-    c = canvas.canvas(**canvas_args)
+    c = Canvas(**canvas_args)
     
     line(x=-4, y=0, x1=4, y1=0, thickness=0.05)(c)
     line(x=0, y=4, x1=0, y1=-4, thickness=0.05)(c)
@@ -82,10 +82,10 @@ def simple_lines():
 
 
 def teyleen_982():
-    c = canvas.canvas(**canvas_args)
+    c = Canvas(**canvas_args)
     pi = np.pi
     
-    pal = [canvas.matplotlib_colors("lavender"),] + palettes(96)
+    pal = [matplotlib_colors("lavender"),] + palettes(96)
     tc = 0.025
 
     dx = pi/8
@@ -107,7 +107,7 @@ def teyleen_982():
     return c
 
 def teyleen_116():
-    c = canvas.canvas(**canvas_args)
+    c = Canvas(**canvas_args)
     pal = palettes(152)
 
     x = 0.25
@@ -126,7 +126,7 @@ def teyleen_116():
 
 
 def rotating_circles():
-    A = animation(**animation_args)
+    A = Animation(**animation_args)
     x = easing.easeReturn('easeInOutQuad', -1, 1, len(A))
 
     A.add(circle(x=x, y=1, r=1.25,color=[0,250,150]))
@@ -136,7 +136,7 @@ def rotating_circles():
 
 
 def checkerboard():
-    A = animation(**animation_args)
+    A = Animation(**animation_args)
     z = easing.easeReturn('easeInOutQuad', 0, 1, len(A))
         
     r = 0.20
@@ -159,7 +159,7 @@ def checkerboard():
 
 
 def timer():
-    A = animation(**animation_args)
+    A = Animation(**animation_args)
     
     tc = 0.315
     r = 3.0
@@ -185,7 +185,7 @@ def timer():
 def pacman():
     args = animation_args.copy()
     args["duration"] = 0.5
-    A = animation(**args)
+    A = Animation(**args)
 
     pac_color = (253,255,0)
 

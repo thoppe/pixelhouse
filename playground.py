@@ -1,10 +1,11 @@
 # A working file to test various aspects of the module
-from canvas import canvas, circle
+from canvas import Canvas
+from artists import circle
 from pixelhouse.filter.filters import *
-c = canvas()
+c = Canvas()
 
-circle(c, -1, color='b', blend=False)
-circle(c, color='r', blend=False)
+circle(x=-1, color='b', blend=False)(c)
+circle(color='r', blend=False)(c)
 
 
 c.show()
