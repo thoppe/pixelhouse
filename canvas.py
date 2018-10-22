@@ -22,7 +22,6 @@ class canvas():
         self._img = np.zeros((height, width, 3), np.uint8)
         self.name = name
         self.extent = extent
-        self.layers = collections.defaultdict(list)
         
 
     def __repr__(self):
@@ -30,12 +29,6 @@ class canvas():
             f"pixelhouse (w/h) {self.height}x{self.width}, " \
             f"extent {self.extent}"
         )
-
-    def get_max_layer_number(self):
-        if not self.layers:
-            return 0
-        else:
-            return max(self.layers.keys())
 
     @property
     def height(self):
@@ -47,28 +40,17 @@ class canvas():
 
     @property
     def img(self):
-        self._img = np.zeros_like(self._img)
-
-        for ln in sorted(self.layers.keys()):
-            for layer in self.layers[ln]:
-                func, args, blend = layer
-
-                # Saturate or blend the images together
-                if blend:
-                    dst = canvas(self.width, self.height).img
-                    func(dst, *args)
-                    cv2.add(self._img, dst, self._img)
-                else:
-                    func(self._img, *args)
-
         return self._img
 
     
-    def append(self, func, args, blend, layer=None, **kwargs):
-        if layer is None:
-            layer = self.get_max_layer_number()
-            
-        self.layers[layer].append( [func, args, blend] )
+    def cv2_draw(self, func, args, blend, **kwargs):
+        # Saturate or blend the images together
+        if blend:
+            dst = canvas(self.width, self.height).img
+            func(dst, *args)
+            cv2.add(self._img, dst, self._img)
+        else:
+            func(self._img, *args)
 
 
     def transform_x(self, x):

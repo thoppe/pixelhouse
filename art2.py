@@ -109,21 +109,50 @@ class circle(artist):
     thickness = constant(-1)
     blend = constant(True)
     antialiased = constant(True)
-    
-    @canvas_transform
-    def __call__(self, cvs, t=0.0, **kw):
-        kw['center'] = (kw['x'], kw['y'])
-        order = ('center', 'r', 'color', 'thickness', 'antialiased')
-        args = (kw[k] for k in order)
-        
-        cvs.append(cv2.circle, args, self.blend(t))
 
+    def __call__(self, cvs, t=0.0):
+
+        x = cvs.transform_x(self.x(t))
+        y = cvs.transform_y(self.y(t))
+        r = cvs.transform_length(self.r(t))
+        thickness = cvs.transform_length(self.thickness(t))
+        lineType = cvs.get_lineType(self.antialiased(t))
+        color=cvs.transform_color(self.color(t))
+        
+        args = (x,y), r, color, thickness, lineType
+        cvs.cv2_draw(cv2.circle, args, blend=self.blend(t))
+
+class rectangle(artist):
+
+    x0 = constant(0.0)
+    y0 = constant(0.0)
+    x1 = constant(1.0)
+    y1 = constant(1.0)
+    color = constant(_default_color)
+    thickness = constant(-1)
+    blend = constant(True)
+    antialiased = constant(True)
+
+    def __call__(self, cvs, t=0.0):
+        x0 = c.transform_x(self.x0(t))
+        x1 = c.transform_x(self.x1(t))
+        y0 = c.transform_y(self.y0(t))
+        y1 = c.transform_y(self.y1(t))
+
+        thickness = c.transform_length(self.thickness(t))
+        lineType = c.get_lineType(self.antialiased(t))
+        color=c.transform_color(self.color(t))
+
+        args = (x0,y0), (x1, y1), color, thickness, lineType
+        cvs.cv2_draw(cv2.rectangle, args, blend=self.blend(t))
 
 if __name__== "__main__":
     c = canvas.canvas()
 
     circle(x=1,color='r')(c,t=0.5)
-    circle(x=-1,color='b',blend=False)(c)
+    circle(x=-1,color='b')(c)
+
+    rectangle(x0=-3,y0=-3,color='g')(c)
 
     c.show()
     
