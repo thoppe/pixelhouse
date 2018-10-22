@@ -129,8 +129,8 @@ def rotating_circles():
     A = animation(**animation_args)
     x = easing.easeReturn('easeInOutQuad', -1, 1, len(A))
 
-    A.add(animated_circle(x=x, y=1, r=1.25,color=[0,250,150]))
-    A.add(animated_circle(x=-x, y=-1, r=1.25,color=[255,5,100]))
+    A.add(circle(x=x, y=1, r=1.25,color=[0,250,150]))
+    A.add(circle(x=-x, y=-1, r=1.25,color=[255,5,100]))
         
     return A
 
@@ -144,16 +144,16 @@ def checkerboard():
     coord = [-2, 0, 2]
 
     for dx, dy in itertools.product(coord, repeat=2):
-        A.add(animated_circle(x=z+dx, y=z+dy, r=r,color=c))
-        A.add(animated_circle(x=z+dx, y=-z+dy, r=r,color=c))
-        A.add(animated_circle(x=-z+dx, y=-z+dy, r=r,color=c))
-        A.add(animated_circle(x=-z+dx, y=z+dy, r=r,color=c))
+        A.add(circle(x=z+dx, y=z+dy, r=r,color=c))
+        A.add(circle(x=z+dx, y=-z+dy, r=r,color=c))
+        A.add(circle(x=-z+dx, y=-z+dy, r=r,color=c))
+        A.add(circle(x=-z+dx, y=z+dy, r=r,color=c))
 
-        A.add(animated_circle(x=dx, y=z+dy, r=r,color=c))
-        A.add(animated_circle(x=z+dx, y=dy, r=r,color=c))
+        A.add(circle(x=dx, y=z+dy, r=r,color=c))
+        A.add(circle(x=z+dx, y=dy, r=r,color=c))
 
-        A.add(animated_circle(x=dx, y=-z+dy, r=r,color=c))
-        A.add(animated_circle(x=-z+dx, y=dy, r=r,color=c))
+        A.add(circle(x=dx, y=-z+dy, r=r,color=c))
+        A.add(circle(x=-z+dx, y=dy, r=r,color=c))
     
     return A
 
@@ -169,8 +169,8 @@ def timer():
 
         theta = easing.OffsetEase(lag, stop=2*np.pi, duration=len(A))()
 
-        L = animated_line(
-            x0=0, y0=0, x1=r*np.cos(theta),
+        L = line(
+            x1=r*np.cos(theta),
             y1=r*np.sin(theta),
             thickness=tc, color='indigo',
         )
@@ -195,7 +195,8 @@ def pacman():
     x1 = easing.easeInQuad(dp, 0, len(A)//2)()
     z = np.hstack([x0,x1])
 
-    pacman = animated_ellipse(
+    pacman = ellipse(
+        a=1, b=1,
         angle_start=z, angle_end=2*np.pi-z, color=pac_color)
 
     A.add(pacman)
@@ -209,10 +210,10 @@ if __name__ == "__main__":
     simple_circles().save("examples/simple_circles.png")
     simple_rectangles().save("examples/simple_rectangle.png")
 
-    #pacman().to_gif("examples/pacman.gif", **gif_args)
-    #rotating_circles().to_gif("examples/moving_circles.gif", **gif_args)
-    #checkerboard().to_gif("examples/checkerboard.gif", **gif_args)
-    #timer().to_gif("examples/timer.gif", **gif_args)
+    rotating_circles().to_gif("examples/moving_circles.gif", **gif_args)
+    pacman().to_gif("examples/pacman.gif", **gif_args)
+    checkerboard().to_gif("examples/checkerboard.gif", **gif_args)
+    timer().to_gif("examples/timer.gif", **gif_args)
 
     teyleen_982().save("examples/teyleen_982.png")
     teyleen_116().save("examples/teyleen_116.png")
