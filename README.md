@@ -55,7 +55,7 @@ _Very much a work in progress!_
 + [ ] Random palettes
 
 #### Devops
-+ [ ] Unified class for artists
++ [x] Unified class for artists
 + [ ] Context mangager for canvas and animation
 + [x] Save to gif
 + [x] Save to mp4 

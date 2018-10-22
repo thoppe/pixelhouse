@@ -4,7 +4,7 @@ import collections
 from pixelhouse.color.colors import NamedColors
 
 matplotlib_colors = NamedColors()
-_default_color = 'white'
+
 
 class canvas():
     '''
@@ -22,7 +22,6 @@ class canvas():
         self._img = np.zeros((height, width, 3), np.uint8)
         self.name = name
         self.extent = extent
-        self.layers = collections.defaultdict(list)
         
 
     def __repr__(self):
@@ -30,12 +29,6 @@ class canvas():
             f"pixelhouse (w/h) {self.height}x{self.width}, " \
             f"extent {self.extent}"
         )
-
-    def get_max_layer_number(self):
-        if not self.layers:
-            return 0
-        else:
-            return max(self.layers.keys())
 
     @property
     def height(self):
@@ -47,36 +40,41 @@ class canvas():
 
     @property
     def img(self):
-        self._img = np.zeros_like(self._img)
-
-        for ln in sorted(self.layers.keys()):
-            for layer in self.layers[ln]:
-                func, args, blend = layer
-
-                # Saturate or blend the images together
-                if blend:
-                    dst = canvas(self.width, self.height).img
-                    func(dst, *args)
-                    cv2.add(self._img, dst, self._img)
-                else:
-                    func(self._img, *args)
-
         return self._img
 
-    def transform_coordinates(self, x, y):
+    
+    def cv2_draw(self, func, args, blend, **kwargs):
+        # Saturate or blend the images together
+        if blend:
+            dst = canvas(self.width, self.height).img
+            func(dst, *args)
+            cv2.add(self._img, dst, self._img)
+        else:
+            func(self._img, *args)
+
+
+    def transform_x(self, x):
         x *= self.width / 2.0
         x /= self.extent
         x += self.width / 2
+        return int(x)
 
+    def transform_y(self, y):
         y *= -self.height / 2.0
         y /= self.extent
-        y += self.height / 2
-        
-        return (int(x), int(y))
+        y += self.height / 2        
+        return int(y)
 
     def transform_length(self, r):
         r *= (self.width/self.extent)
         return int(r)
+    
+    def transform_thickness(self, r):
+        # If thickness is negative, leave it alone
+        if r>0:
+            return self.transform_length(r)
+        return r
+    
 
     def transform_color(self, c):
         if isinstance(c, str):
@@ -109,98 +107,17 @@ class canvas():
         dst = cv2.cvtColor(self.img, cv2.COLOR_RGB2BGR)
         cv2.imwrite(f_save, dst)
 
-    def append(self, func, args, blend, layer=None, **kwargs):
-        if layer is None:
-            layer = self.get_max_layer_number()
-            
-        self.layers[layer].append( [func, args, blend] )
-
 
 ######################################################################
 
-        
-def circle(c, x=0, y=0, r=1, color=_default_color,
-        thickness=-1, antialiased=True, blend=True, layer=None):
-
-    x, y = c.transform_coordinates(x, y)
-    r = c.transform_length(r)
-    thickness = c.transform_length(thickness)
-    lineType = c.get_lineType(antialiased)
-    color=c.transform_color(color)
-
-    args = (x,y), r, color, thickness, lineType
-    c.append(cv2.circle, args, blend=blend, layer=None)
-
-
-def rectangle(c, x0=0, y0=0, x1=1, y1=1, color=_default_color,
-              thickness=-1, antialiased=True, blend=True, layer=None):
-
-    x0, y0 = c.transform_coordinates(x0, y0)
-    x1, y1 = c.transform_coordinates(x1, y1)
-    thickness = c.transform_length(thickness)
-    lineType = c.get_lineType(antialiased)
-    color=c.transform_color(color)
-
-    args = (x0,y0), (x1, y1), color, thickness, lineType
-    c.append(cv2.rectangle, args, blend=blend, layer=layer)
-
-def line(c, x0=0, y0=0, x1=1, y1=1, color=_default_color,
-         thickness=1, antialiased=True, blend=True, layer=None):
-
-    x0, y0 = c.transform_coordinates(x0, y0)
-    x1, y1 = c.transform_coordinates(x1, y1)
-    thickness = c.transform_length(thickness)
-    lineType = c.get_lineType(antialiased)
-    color=c.transform_color(color)
-
-    args = (x0,y0), (x1, y1), color, thickness, lineType
-    c.append(cv2.line, args, blend=blend, layer=None)
-
-def ellipse(c, x=0, y=0,
-            major_length=1, minor_length=1,
-            rotation=0,
-            angle_start=0,
-            angle_end=2*np.pi,
-            color=_default_color,
-            thickness=-1,
-            antialiased=True,
-            blend=True,
-            layer=None,
-):
-    # Angles measured in radians
-
-    x, y = c.transform_coordinates(x, y)
-    major_length = c.transform_length(major_length)
-    minor_length = c.transform_length(minor_length)
-    thickness = c.transform_length(thickness)
-    lineType = c.get_lineType(antialiased)
-    color=c.transform_color(color)
-
-    rotation_degree = c.transform_angle(rotation)
-    start_degree = c.transform_angle(angle_start)
-    end_degree = c.transform_angle(angle_end)
-
-
-    args = ((x,y), (major_length, minor_length),
-            rotation_degree, start_degree, end_degree,
-            color, thickness, lineType)
-
-    c.append(cv2.ellipse, args, blend=blend, layer=layer)
-
-
-def background(c, color=_default_color):
-    ### This doesn't work yet!
-    raise NotImplementedError
-
-
 
 if __name__ == "__main__":
-    c = canvas(200,200,extent=4)
+    from artists import circle
+    
+    cvs = canvas(200,200,extent=4)
 
     color = 'olive'
-    #c.circle(thickness=0.5,color=color)
-    circle(c, thickness=0.5,color=color)
+    circle(thickness=0.5,color='olive')(cvs)
     
-   
-    c.show()
+    cvs.show()
     
