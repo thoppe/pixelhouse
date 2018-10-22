@@ -1,12 +1,12 @@
-from canvas import Canvas, matplotlib_colors
-from animation import Animation
-from artists import circle, line, ellipse, rectangle
+from pixelhouse import Canvas, Animation
+from pixelhouse import circle, line, ellipse, rectangle
+from pixelhouse.color import matplotlib_colors, ColorLoversPalette
+
+import pixelhouse.motion as motion
+
 import numpy as np
 import os
 import itertools
-
-import pixelhouse.motion.easing as easing
-from pixelhouse.color.palettes import ColorLoversPalette
 
 save_dest = "examples"
 
@@ -127,7 +127,7 @@ def teyleen_116():
 
 def rotating_circles():
     A = Animation(**animation_args)
-    x = easing.easeReturn('easeInOutQuad', -1, 1, len(A))
+    x = motion.easeReturn('easeInOutQuad', -1, 1, len(A))
 
     A.add(circle(x=x, y=1, r=1.25,color=[0,250,150]))
     A.add(circle(x=-x, y=-1, r=1.25,color=[255,5,100]))
@@ -137,7 +137,7 @@ def rotating_circles():
 
 def checkerboard():
     A = Animation(**animation_args)
-    z = easing.easeReturn('easeInOutQuad', 0, 1, len(A))
+    z = motion.easeReturn('easeInOutQuad', 0, 1, len(A))
         
     r = 0.20
     c = [150, 250, 0]
@@ -167,7 +167,7 @@ def timer():
 
     for k in range(20):
 
-        theta = easing.OffsetEase(lag, stop=2*np.pi, duration=len(A))()
+        theta = motion.offsetEase(lag, stop=2*np.pi, duration=len(A))()
 
         L = line(
             x1=r*np.cos(theta),
@@ -191,8 +191,8 @@ def pacman():
 
     # Chomping easing function
     dp = np.pi/4
-    x0 = easing.easeOutQuad(0, dp, len(A)//2)()
-    x1 = easing.easeInQuad(dp, 0, len(A)//2)()
+    x0 = motion.easeOutQuad(0, dp, len(A)//2)()
+    x1 = motion.easeInQuad(dp, 0, len(A)//2)()
     z = np.hstack([x0,x1])
 
     pacman = ellipse(

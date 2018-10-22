@@ -79,7 +79,7 @@ for key, vals in named_easings.items():
 #########################################################################
 
     
-class OffsetEase(BezierEase):
+class offsetEase(BezierEase):
     
     def __init__(self, dx=0.0, dy=0.1, baseEase='easeInSine', *args, **kwargs):
         x0, x1, y0, y1 = named_easings[baseEase]

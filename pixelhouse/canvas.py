@@ -1,9 +1,7 @@
 import cv2
 import numpy as np
 import collections
-from pixelhouse.color.colors import NamedColors
-
-matplotlib_colors = NamedColors()
+from .color import matplotlib_colors
 
 class Canvas():
     '''

@@ -1,8 +1,9 @@
 import numpy as np
 import scipy
-import canvas
 import cv2
 import itertools
+
+from . import canvas
 
 _DEFAULT_COLOR = 'white'
 _DEFAULT_THICKNESS = -1
@@ -158,7 +159,7 @@ class ellipse(artist):
         cvs.cv2_draw(cv2.ellipse, args, blend=self.blend(t))
 
 if __name__== "__main__":
-    c = canvas.canvas()
+    c = canvas.Canvas()
 
     circle(x=1,color='r')(c,t=0.5)
     circle(x=-1,color='b')(c)
