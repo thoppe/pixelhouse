@@ -36,9 +36,9 @@ class artist():
         return func
 
     @staticmethod
-    def _create_interpolation(y):
-       t = np.linspace(0, 1, len(y))
-       f = scipy.interpolate.interp1d(t, y)
+    def _create_interpolation(z):
+       t = np.linspace(0, 1, len(z))
+       f = scipy.interpolate.interp1d(t, z)
        def func(x):
            return f(x)
        return func
@@ -76,6 +76,15 @@ class artist():
         # Virtual class, need to override
         raise NotImplementedError
 
+    def basic_transforms(self, cvs, t):
+        x = cvs.transform_x(self.x(t))
+        y = cvs.transform_y(self.y(t))
+        thickness = cvs.transform_thickness(self.thickness(t))
+        color = cvs.transform_color(self.color(t))
+        lineType = cvs.get_lineType(self.antialiased(t))
+
+        return x, y, thickness, color, lineType
+
 
 
 
@@ -88,13 +97,8 @@ class circle(artist):
     r = constant(1.0)
 
     def __call__(self, cvs, t=0.0):
-
-        x = cvs.transform_x(self.x(t))
-        y = cvs.transform_y(self.y(t))
+        x, y, thickness, color, lineType = self.basic_transforms(cvs, t)
         r = cvs.transform_length(self.r(t))
-        thickness = cvs.transform_thickness(self.thickness(t))
-        lineType = cvs.get_lineType(self.antialiased(t))
-        color=cvs.transform_color(self.color(t))
         
         args = (x,y), r, color, thickness, lineType
         cvs.cv2_draw(cv2.circle, args, blend=self.blend(t))
@@ -105,14 +109,9 @@ class rectangle(artist):
     y1 = constant(1.0)
 
     def __call__(self, cvs, t=0.0):
-        x = cvs.transform_x(self.x(t))
+        x, y, thickness, color, lineType = self.basic_transforms(cvs, t)
         x1 = cvs.transform_x(self.x1(t))
-        y = cvs.transform_y(self.y(t))
         y1 = cvs.transform_y(self.y1(t))
-
-        thickness = cvs.transform_thickness(self.thickness(t))
-        lineType = cvs.get_lineType(self.antialiased(t))
-        color=cvs.transform_color(self.color(t))
 
         args = (x,y), (x1, y1), color, thickness, lineType
         cvs.cv2_draw(cv2.rectangle, args, blend=self.blend(t))
@@ -125,17 +124,11 @@ class line(artist):
     thickness = constant(0.1)
 
     def __call__(self, cvs, t=0.0):
-        x = cvs.transform_x(self.x(t))
+        x, y, thickness, color, lineType = self.basic_transforms(cvs, t)
         x1 = cvs.transform_x(self.x1(t))
-        y = cvs.transform_y(self.y(t))
         y1 = cvs.transform_y(self.y1(t))
 
-        thickness = cvs.transform_thickness(self.thickness(t))
-        lineType = cvs.get_lineType(self.antialiased(t))
-        color=cvs.transform_color(self.color(t))
-
         args = (x,y), (x1, y1), color, thickness, lineType
-        print(args)
         cvs.cv2_draw(cv2.line, args, blend=self.blend(t))
 
 class ellipse(artist):
@@ -148,19 +141,14 @@ class ellipse(artist):
     angle_end = constant(2*np.pi)
 
     def __call__(self, cvs, t=0.0):
-        x = cvs.transform_x(self.x(t))
-        y = cvs.transform_y(self.y(t))
+        x, y, thickness, color, lineType = self.basic_transforms(cvs, t)
 
         a = cvs.transform_length(self.a(t))
         b = cvs.transform_length(self.b(t))
-
+        
         rotation = cvs.transform_angle(self.rotation(t))
         angle_start = cvs.transform_angle(self.angle_start(t))
         angle_end = cvs.transform_angle(self.angle_end(t))
-
-        thickness = cvs.transform_thickness(self.thickness(t))
-        lineType = cvs.get_lineType(self.antialiased(t))
-        color=cvs.transform_color(self.color(t))
 
         args = ((x,y), (a, b),
                 rotation, angle_start, angle_end, color, thickness, lineType)
