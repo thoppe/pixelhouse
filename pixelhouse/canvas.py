@@ -16,7 +16,8 @@ class Canvas():
             extent=4.0,
             name='pixelhouseImage',
     ):
-        self._img = np.zeros((height, width, 3), np.uint8)
+        channels = 3
+        self._img = np.zeros((height, width, channels), np.uint8)
         self.name = name
         self.extent = extent
         
@@ -39,15 +40,54 @@ class Canvas():
     def img(self):
         return self._img
 
+    def blank(self):
+        # Return an empty canvas of the same size
+        return Canvas(self.width, self.height)
     
     def cv2_draw(self, func, args, blend, **kwargs):
         # Saturate or blend the images together
         if blend:
-            dst = Canvas(self.width, self.height).img
-            func(dst, *args)
-            cv2.add(self._img, dst, self._img)
+            rhs = self.blank()
+            func(rhs.img, *args)
+            self.combine(rhs, mode='saturate')
         else:
             func(self._img, *args)
+
+    def combine(self, rhs, mode="saturate"):
+        if(rhs.width != self.width):
+            raise ValueError("Can't combine images with different widths")
+
+        if(rhs.height != self.height):
+            raise ValueError("Can't combine images with different heights")
+
+        if mode == "saturate":
+            cv2.add(self._img, rhs.img, self._img)
+        elif mode == "desaturate":
+            cv2.subtract(self._img, rhs.img, self._img)
+        elif mode == "overlay":
+            #gray_overlay = cv2.cvtColor(rhs.img, cv2.COLOR_BGR2GRAY)
+            #overlay_mask = cv2.threshold(gray_overlay, 1, 255,
+            #                             cv2.THRESH_BINARY)[1]
+
+            overlay_mask = 255*(rhs.img > 0).any(axis=2).astype(np.uint8)
+
+            
+            background_mask = 255 - overlay_mask
+            overlay_mask = cv2.cvtColor(overlay_mask, cv2.COLOR_GRAY2BGR)
+            background_mask = cv2.cvtColor(background_mask, cv2.COLOR_GRAY2BGR)
+
+            dx = 1/255.0
+            face_part = (self.img*dx) * (background_mask*dx)
+            overlay_part = (rhs.img*dx)*(overlay_mask*dx)
+
+            self._img = np.uint8(cv2.addWeighted(
+                face_part, 255.0, overlay_part, 255.0, 0.0))
+            
+
+
+        
+        else:
+            raise ValueError(f"Unknown mode {mode}")
 
 
     def transform_x(self, x):
