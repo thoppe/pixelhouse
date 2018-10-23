@@ -16,7 +16,7 @@ class Canvas():
             extent=4.0,
             name='pixelhouseImage',
     ):
-        channels = 3
+        channels = 4
         self._img = np.zeros((height, width, channels), np.uint8)
         self.name = name
         self.extent = extent
@@ -65,9 +65,43 @@ class Canvas():
         elif mode == "desaturate":
             cv2.subtract(self._img, rhs.img, self._img)
         elif mode == "overlay":
+            # https://stackoverflow.com/a/37198079/249341
+            overlay_t_img = rhs.img
+            face_img = self.img[:, :, :3]
+            print(self.img.shape)
+            print(rhs.img.shape)
+
+
+            # Split out the transparency mask from the colour info
+            overlay_img = overlay_t_img[:,:,:3] # Grab the BRG planes
+            overlay_mask = overlay_t_img[:,:,3:]  # And the alpha plane
+
+            # Again calculate the inverse mask
+            background_mask = 255 - overlay_mask
+
+            # Turn the masks into three channel, so we can use them as weights
+            overlay_mask = cv2.cvtColor(overlay_mask, cv2.COLOR_GRAY2BGR)
+            background_mask = cv2.cvtColor(background_mask, cv2.COLOR_GRAY2BGR)
+
+            # Create a masked out face image, and masked out overlay
+            # We convert the images to floating point in range 0.0 - 1.0
+            dx = 1 / 255.0
+
+            overlay_part = (overlay_img*dx) * (overlay_mask*dx)
+            face_part = (face_img*dx) * (background_mask*dx)
+
+            # And finally just add them together,
+            # and rescale it back to an 8bit integer image    
+            self._img = np.uint8(cv2.addWeighted(
+                face_part, 255.0, overlay_part, 255.0, 0.0))
+            
+            '''
             #gray_overlay = cv2.cvtColor(rhs.img, cv2.COLOR_BGR2GRAY)
             #overlay_mask = cv2.threshold(gray_overlay, 1, 255,
             #                             cv2.THRESH_BINARY)[1]
+
+            print(self.img[:,:,3].mean())
+            exit()
 
             overlay_mask = 255*(rhs.img > 0).any(axis=2).astype(np.uint8)
 
@@ -82,8 +116,8 @@ class Canvas():
 
             self._img = np.uint8(cv2.addWeighted(
                 face_part, 255.0, overlay_part, 255.0, 0.0))
+            '''
             
-
 
         
         else:
@@ -128,7 +162,12 @@ class Canvas():
 
     def transform_color(self, c):
         if isinstance(c, str):
-            return matplotlib_colors(c)
+            c = matplotlib_colors(c)
+
+        # Force add in the alpha channel
+        if len(c) == 3:
+            return c + [255,]
+        
         return c
 
     @staticmethod
