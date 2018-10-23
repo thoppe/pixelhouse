@@ -62,9 +62,22 @@ class Canvas():
         y += self.height / 2        
         return int(y)
 
-    def transform_length(self, r):
+    def transform_length(self, r, is_discrete=True):
         r *= (self.width/self.extent)
-        return int(r)
+        if is_discrete:
+            return int(r)
+        return r
+
+    def transform_kernel_length(self, r):
+        # Kernels must be positive and odd integers
+        r = self.transform_length(r, is_discrete=False)
+
+        remainder = r%2
+        r = int(r - r%2)
+        r += -1 if remainder < 1 else 1
+
+        r = max(1, r)
+        return r
     
     def transform_thickness(self, r):
         # If thickness is negative, leave it alone
