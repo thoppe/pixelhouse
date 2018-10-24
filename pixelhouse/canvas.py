@@ -18,7 +18,7 @@ class Canvas():
             name='pixelhouseImage',
     ):
         channels = 4
-        self._img = np.ones((height, width, channels), np.uint8)
+        self._img = 0*np.ones((height, width, channels), np.uint8)
 
         self.bg = bg
         #bg = np.array(self.transform_color(bg)).astype(np.uint8)
@@ -150,7 +150,7 @@ class Canvas():
 
         # Force add in the alpha channel
         if len(c) == 3:
-            c += [255,]
+            c = list(c) + [255,]
 
         return c
 
