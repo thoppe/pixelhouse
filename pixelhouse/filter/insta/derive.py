@@ -1,4 +1,5 @@
 import cv2
+import os
 import numpy as np
 
 import keras
@@ -88,20 +89,31 @@ def train(img0, img1, n_epochs=40):
     img2 = (255*np.clip(yp, 0,1)).astype(np.uint8)
     img2 = img2[:, :3].reshape(h, w, 3)
     
-    print(W.get_weights())    
-    return model, img2
+    return img2, W.get_weights()
 
 
 #f_source = 'data/crema-e1448847288573.jpg'
 f_source = 'data/nashville-e1448853218475.jpg'
 #f_source = 'data/Moon-Filter.jpg'
 
-
 img0, img1 = read_source(f_source)
-clf, img2 = train(img0, img1, 100)
+img2, weights = train(img0, img1, 100)
+
+save_dest_models = 'models'
+os.system(f'mkdir -p {save_dest_models}')
+
+save_dest_images = 'examples'
+os.system(f'mkdir -p {save_dest_images}')
+
+cv2.imwrite(os.path.join(save_dest_images,'0_'+os.path.basename(f_source)),img0)
+cv2.imwrite(os.path.join(save_dest_images,'1_'+os.path.basename(f_source)),img1)
+cv2.imwrite(os.path.join(save_dest_images,'2_'+os.path.basename(f_source)),img2)
+
+
 
 display_img = np.concatenate((img0, img1, img2), axis=1)
 cv2.imshow(f_source, display_img)
 cv2.waitKey(0)
+
 
 
