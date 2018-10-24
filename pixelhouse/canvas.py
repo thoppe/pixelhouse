@@ -179,18 +179,3 @@ class Canvas():
         # Before we save we have to convert back to BGR
         dst = cv2.cvtColor(self.img, cv2.COLOR_RGB2BGR)
         cv2.imwrite(f_save, dst)
-
-
-######################################################################
-
-
-if __name__ == "__main__":
-    from artists import circle
-    
-    cvs = Canvas(200,200,extent=4)
-
-    color = 'olive'
-    circle(thickness=0.5,color='olive')(cvs)
-    
-    cvs.show()
-    
