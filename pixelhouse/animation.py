@@ -93,35 +93,3 @@ class Animation():
 
             fs = os.stat(f_mp4).st_size
             print(f"Rendered {f_mp4}, filesize {fs}")
-            
-#############################################################################
-
-#############################################################################
-
-if __name__ == "__main__":
-    from artists import line
-    
-    A = Animation(width=400, height=400, fps=10)
-
-    # Use an ease function to go in an out
-    tc = 0.315
-
-    r = 3.0
-    lag = 0.1
-    c = [65, 0, 20]
-
-    for k in range(20):
-
-        theta = easing.OffsetEase(lag, stop=2*np.pi, duration=len(A))()
-
-        L = line(
-            x1=r*np.cos(theta),
-            y1=r*np.sin(theta),
-            thickness=tc, color=c
-        )
-        A.add(L)
-        
-        r *= 0.98
-        lag *= 1.17
-        
-    A.show(repeat=True)

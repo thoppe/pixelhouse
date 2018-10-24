@@ -26,8 +26,11 @@ class NamedColors():
         if name not in self.colors:
             msg = f"Color {name} not a known color."
             raise KeyError(msg)
-        
-        return self.colors[name]
+
+        color = self.colors[name]
+
+        # Add in the alpha channel
+        return color
 
 
     def __len__(self):

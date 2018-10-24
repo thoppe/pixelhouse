@@ -1,6 +1,6 @@
 import numpy as np
 import cv2
-from ..artists import Artist, constant
+from ..artist import Artist, constant
 import warnings
 
 class gaussian_blur(Artist):

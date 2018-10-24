@@ -39,12 +39,12 @@ def simple_circles():
     t = np.arange(0, 2*np.pi, 2*np.pi/n) + np.pi/6
     x,y = np.cos(t), np.sin(t)
 
-    circle(x=x[0], y=y[0], r=1, color=[0,255,0])(c)
-    circle(x=x[1], y=y[1], r=1, color=[255,0,0])(c)
-    circle(x=x[2], y=y[2], r=1, color=[0,0,255])(c)
+    circle(x=x[0], y=y[0], r=1, color=[0,255,0],mode='add')(c)
+    circle(x=x[1], y=y[1], r=1, color=[255,0,0],mode='add')(c)
+    circle(x=x[2], y=y[2], r=1, color=[0,0,255],mode='add')(c)
 
     # An example of not saturating the images together
-    circle(x=0, y=0, r=0.25, color=[155,155,155], blend=False)(c)
+    circle(x=0, y=0, r=0.25, color=[155,155,155])(c)
     
     return c
 
@@ -60,23 +60,24 @@ def simple_rectangles():
 
 def simple_lines():
     c = Canvas(**canvas_args)
-    
-    line(x=-4, y=0, x1=4, y1=0, thickness=0.05)(c)
-    line(x=0, y=4, x1=0, y1=-4, thickness=0.05)(c)
 
     tc = 0.04
+
+ 
+    for i in np.arange(-4,5,.5):
+        line(x=-4, y=i, x1=4, y1=i,
+             thickness=tc, color=[20,]*3)(c)
+        line(x=i, y=4, x1=i, y1=-4,
+             thickness=tc, color=[20,]*3)(c)
 
     for i in np.arange(-4,5,1):
         line(x=-4, y=i, x1=4, y1=i, thickness=tc,
              color=[100,int(100+i*10),100])(c)
         line(x=i, y=4, x1=i, y1=-4, thickness=tc,
              color=[100,100,int(100+i*10)])(c)
-
-    for i in np.arange(-4,5,.5):
-        line(x=-4, y=i, x1=4, y1=i,
-             thickness=tc, color=[20,]*3)(c)
-        line(x=i, y=4, x1=i, y1=-4,
-             thickness=tc, color=[20,]*3)(c)
+    
+    line(x=-4, y=0, x1=4, y1=0, thickness=0.05)(c)
+    line(x=0, y=4, x1=0, y1=-4, thickness=0.05)(c)
 
     return c
 
@@ -111,10 +112,10 @@ def teyleen_116():
     pal = palettes(152)
 
     x = 0.25
-    circle(x=x,y=x, r=x/2, color=pal[0])
-    circle(x=-x,y=x, r=x/2, color=pal[1])
-    circle(x=x,y=-x, r=x/2, color=pal[2])
-    circle(x=-x,y=-x, r=x/2, color=pal[3])
+    circle(x=x,y=x, r=x/2, color=pal[0])(c)
+    circle(x=-x,y=x, r=x/2, color=pal[1])(c)
+    circle(x=x,y=-x, r=x/2, color=pal[2])(c)
+    circle(x=-x,y=-x, r=x/2, color=pal[3])(c)
 
     circle(y=x/2, r=2-x, color=pal[4],thickness=x/20)(c)
     circle(y=-x/2, r=2-x, color=pal[4],thickness=x/20)(c)
@@ -129,8 +130,8 @@ def rotating_circles():
     A = Animation(**animation_args)
     x = motion.easeReturn('easeInOutQuad', -1, 1, len(A))
 
-    A.add(circle(x=x, y=1, r=1.25,color=[0,250,150]))
-    A.add(circle(x=-x, y=-1, r=1.25,color=[255,5,100]))
+    A.add(circle(x=x, y=1, r=1.25,color=[0,250,150],mode='add'))
+    A.add(circle(x=-x, y=-1, r=1.25,color=[255,5,100],mode='add'))
         
     return A
 
@@ -142,18 +143,20 @@ def checkerboard():
     r = 0.20
     c = [150, 250, 0]
     coord = [-2, 0, 2]
+    args = {"r":r, "color":c, "mode":"add"}
 
     for dx, dy in itertools.product(coord, repeat=2):
-        A.add(circle(x=z+dx, y=z+dy, r=r,color=c))
-        A.add(circle(x=z+dx, y=-z+dy, r=r,color=c))
-        A.add(circle(x=-z+dx, y=-z+dy, r=r,color=c))
-        A.add(circle(x=-z+dx, y=z+dy, r=r,color=c))
+        A.add(circle(x=z+dx, y=z+dy, **args))
+        A.add(circle(x=z+dx, y=-z+dy, **args))
+        A.add(circle(x=-z+dx, y=-z+dy, **args))
+        A.add(circle(x=-z+dx, y=z+dy, **args))
 
-        A.add(circle(x=dx, y=z+dy, r=r,color=c))
-        A.add(circle(x=z+dx, y=dy, r=r,color=c))
+        A.add(circle(x=dx, y=z+dy, **args))
+        A.add(circle(x=z+dx, y=dy, **args))
 
-        A.add(circle(x=dx, y=-z+dy, r=r,color=c))
-        A.add(circle(x=-z+dx, y=dy, r=r,color=c))
+        A.add(circle(x=dx, y=-z+dy, **args))
+        
+        A.add(circle(x=-z+dx, y=dy, **args))
     
     return A
 
@@ -173,6 +176,7 @@ def timer():
             x1=r*np.cos(theta),
             y1=r*np.sin(theta),
             thickness=tc, color='indigo',
+            mode='add',
         )
         A.add(L)
         
