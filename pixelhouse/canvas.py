@@ -18,12 +18,14 @@ class Canvas():
             name='pixelhouseImage',
     ):
         channels = 4
-        self._img = 0*np.ones((height, width, channels), np.uint8)
+        self._img = np.zeros((height, width, channels), np.uint8)
 
+        # Assign the background color, but make sure it is fully transparent
+        # needed for antialiased edges
         self.bg = bg
-        #bg = np.array(self.transform_color(bg)).astype(np.uint8)
-        #bg[3] = 0
-        #self._img *= bg
+        bg = np.array(self.transform_color(bg)).astype(np.uint8)
+        bg[3] = 0
+        self._img[:,:] = bg
         
         self.name = name
         self.extent = extent
@@ -47,9 +49,12 @@ class Canvas():
     def img(self):
         return self._img
 
-    def blank(self):
+    def blank(self, bg=None):
         # Return an empty canvas of the same size
-        return Canvas(self.width, self.height, bg=self.bg)
+        if bg is None:
+            bg = self.bg
+            
+        return Canvas(self.width, self.height, bg=bg)
 
     def combine(self, rhs, mode="overlay"):
         if(rhs.width != self.width):
@@ -77,6 +82,10 @@ class Canvas():
             self.combine(rhs, mode=mode)
 
     def overlay(self, rhs):
+
+        # Saturate the transparent channel
+        alpha = np.clip(self.img[:,:,3] + rhs.img[:,:,3], 0, 255)
+        
         # https://stackoverflow.com/a/37198079/249341
         overlay_t_img = rhs.img
         face_img = self.img[:, :, :3]
@@ -104,8 +113,7 @@ class Canvas():
         self._img = np.uint8(cv2.addWeighted(
             face_part, 255.0, overlay_part, 255.0, 0.0))
 
-        # Add back in a fully opaque channel
-        alpha = 255*np.ones_like(self._img[:,:,0])
+        # Add back in the saturated alpha channel
         self._img = np.dstack((self._img, alpha))
 
     def transform_x(self, x):

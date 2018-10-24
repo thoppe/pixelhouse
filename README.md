@@ -25,7 +25,7 @@ _Very much a work in progress!_
 + [x] Circle
 + [x] Ellipse
 + [ ] Polyline
-+ [ ] Backgrounds
++ [x] Backgrounds
 + [ ] Text
 
 #### Transforms
@@ -34,6 +34,13 @@ _Very much a work in progress!_
 + [ ] Shear
 + [ ] Subpixel resolution
 + [x] Hide cv2 weird colorspace, BGR -> RGB
+
+#### Gradients
++ [ ] Linear gradients
++ [ ] Transparent gradients
++ [ ] Hue, Saturation, Value interpolation
++ [ ] Hue, Chroma, Lightness interpolation
+
 
 #### Layers
 + [x] Additive
@@ -54,6 +61,7 @@ _Very much a work in progress!_
 + [x] Named colors
 + [x] Top palettes
 + [ ] Random palettes
+
 
 #### File IO
 + [x] Save to gif
