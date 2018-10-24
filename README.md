@@ -36,12 +36,13 @@ _Very much a work in progress!_
 + [x] Hide cv2 weird colorspace, BGR -> RGB
 
 #### Layers
-+ [x] Simple additive
-+ [x] Simple blend
-+ [ ] Alpha additive
++ [x] Additive
++ [x] Subtractive
++ [x] Overlay
++ [x] Direct (for primitives)
 
 #### Filters
-+ [ ] Blur
++ [x] Blur
 + [ ] Color mixing
 + [ ] Histogram normlization
 
