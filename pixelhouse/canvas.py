@@ -18,12 +18,12 @@ class Canvas():
             name='pixelhouseImage',
     ):
         channels = 4
-        self._img = 0*np.ones((height, width, channels), np.uint8)
+        self._img = np.zeros((height, width, channels), np.uint8)
 
         self.bg = bg
-        #bg = np.array(self.transform_color(bg)).astype(np.uint8)
-        #bg[3] = 0
-        #self._img *= bg
+        bg = np.array(self.transform_color(bg)).astype(np.uint8)
+        bg[3] = 0
+        self._img[:,:] = bg
         
         self.name = name
         self.extent = extent
@@ -47,9 +47,12 @@ class Canvas():
     def img(self):
         return self._img
 
-    def blank(self):
+    def blank(self, bg=None):
         # Return an empty canvas of the same size
-        return Canvas(self.width, self.height, bg=self.bg)
+        if bg is None:
+            bg = self.bg
+            
+        return Canvas(self.width, self.height, bg=bg)
 
     def combine(self, rhs, mode="overlay"):
         if(rhs.width != self.width):
