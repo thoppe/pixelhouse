@@ -30,7 +30,7 @@ class NamedColors():
         color = self.colors[name]
 
         # Add in the alpha channel
-        return color + [155,]
+        return color
 
 
     def __len__(self):

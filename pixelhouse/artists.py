@@ -4,6 +4,7 @@ import itertools
 
 
 #########################################################################
+_DEFAULT_MODE = 'overlay'
 
 def constant(x):
     def func(self, t=0):
@@ -16,6 +17,8 @@ class Artist():
     To be a proper artist, all derived classes must accept their arguments
     as functions.
     '''
+
+    mode = constant(_DEFAULT_MODE)
     
     @staticmethod
     def _create_interpolation(z):

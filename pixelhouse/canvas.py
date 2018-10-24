@@ -14,10 +14,17 @@ class Canvas():
             width=200,
             height=200,
             extent=4.0,
+            bg='black',
             name='pixelhouseImage',
     ):
         channels = 4
-        self._img = np.zeros((height, width, channels), np.uint8)
+        self._img = np.ones((height, width, channels), np.uint8)
+
+        self.bg = bg
+        #bg = np.array(self.transform_color(bg)).astype(np.uint8)
+        #bg[3] = 0
+        #self._img *= bg
+        
         self.name = name
         self.extent = extent
         
@@ -42,87 +49,64 @@ class Canvas():
 
     def blank(self):
         # Return an empty canvas of the same size
-        return Canvas(self.width, self.height)
-    
-    def cv2_draw(self, func, args, blend, **kwargs):
-        # Saturate or blend the images together
-        if blend:
-            rhs = self.blank()
-            func(rhs.img, *args)
-            self.combine(rhs, mode='saturate')
-        else:
-            func(self._img, *args)
+        return Canvas(self.width, self.height, bg=self.bg)
 
-    def combine(self, rhs, mode="saturate"):
+    def combine(self, rhs, mode="overlay"):
         if(rhs.width != self.width):
             raise ValueError("Can't combine images with different widths")
 
         if(rhs.height != self.height):
             raise ValueError("Can't combine images with different heights")
 
-        if mode == "saturate":
+        if mode == "overlay":
+            self.overlay(rhs)
+        elif mode == "add":
             cv2.add(self._img, rhs.img, self._img)
-        elif mode == "desaturate":
+        elif mode == "subtract":
             cv2.subtract(self._img, rhs.img, self._img)
-        elif mode == "overlay":
-            # https://stackoverflow.com/a/37198079/249341
-            overlay_t_img = rhs.img
-            face_img = self.img[:, :, :3]
-            print(self.img.shape)
-            print(rhs.img.shape)
-
-
-            # Split out the transparency mask from the colour info
-            overlay_img = overlay_t_img[:,:,:3] # Grab the BRG planes
-            overlay_mask = overlay_t_img[:,:,3:]  # And the alpha plane
-
-            # Again calculate the inverse mask
-            background_mask = 255 - overlay_mask
-
-            # Turn the masks into three channel, so we can use them as weights
-            overlay_mask = cv2.cvtColor(overlay_mask, cv2.COLOR_GRAY2BGR)
-            background_mask = cv2.cvtColor(background_mask, cv2.COLOR_GRAY2BGR)
-
-            # Create a masked out face image, and masked out overlay
-            # We convert the images to floating point in range 0.0 - 1.0
-            dx = 1 / 255.0
-
-            overlay_part = (overlay_img*dx) * (overlay_mask*dx)
-            face_part = (face_img*dx) * (background_mask*dx)
-
-            # And finally just add them together,
-            # and rescale it back to an 8bit integer image    
-            self._img = np.uint8(cv2.addWeighted(
-                face_part, 255.0, overlay_part, 255.0, 0.0))
-            
-            '''
-            #gray_overlay = cv2.cvtColor(rhs.img, cv2.COLOR_BGR2GRAY)
-            #overlay_mask = cv2.threshold(gray_overlay, 1, 255,
-            #                             cv2.THRESH_BINARY)[1]
-
-            print(self.img[:,:,3].mean())
-            exit()
-
-            overlay_mask = 255*(rhs.img > 0).any(axis=2).astype(np.uint8)
-
-            
-            background_mask = 255 - overlay_mask
-            overlay_mask = cv2.cvtColor(overlay_mask, cv2.COLOR_GRAY2BGR)
-            background_mask = cv2.cvtColor(background_mask, cv2.COLOR_GRAY2BGR)
-
-            dx = 1/255.0
-            face_part = (self.img*dx) * (background_mask*dx)
-            overlay_part = (rhs.img*dx)*(overlay_mask*dx)
-
-            self._img = np.uint8(cv2.addWeighted(
-                face_part, 255.0, overlay_part, 255.0, 0.0))
-            '''
-            
-
-        
         else:
             raise ValueError(f"Unknown mode {mode}")
 
+    
+    def cv2_draw(self, func, args, mode, **kwargs):
+        if mode=='direct':
+            func(self._img, *args)
+        else:
+            rhs = self.blank()
+            func(rhs.img, *args)
+            self.combine(rhs, mode=mode)
+
+    def overlay(self, rhs):
+        # https://stackoverflow.com/a/37198079/249341
+        overlay_t_img = rhs.img
+        face_img = self.img[:, :, :3]
+
+        # Split out the transparency mask from the colour info
+        overlay_img = overlay_t_img[:,:,:3] # Grab the BRG planes
+        overlay_mask = overlay_t_img[:,:,3:]  # And the alpha plane
+
+        # Again calculate the inverse mask
+        background_mask = 255 - overlay_mask
+
+        # Turn the masks into three channel, so we can use them as weights
+        overlay_mask = cv2.cvtColor(overlay_mask, cv2.COLOR_GRAY2BGR)
+        background_mask = cv2.cvtColor(background_mask, cv2.COLOR_GRAY2BGR)
+
+        # Create a masked out face image, and masked out overlay
+        # We convert the images to floating point in range 0.0 - 1.0
+        dx = 1 / 255.0
+
+        overlay_part = (overlay_img*dx) * (overlay_mask*dx)
+        face_part = (face_img*dx) * (background_mask*dx)
+
+        # And finally just add them together,
+        # and rescale it back to an 8bit integer image    
+        self._img = np.uint8(cv2.addWeighted(
+            face_part, 255.0, overlay_part, 255.0, 0.0))
+
+        # Add back in a fully opaque channel
+        alpha = 255*np.ones_like(self._img[:,:,0])
+        self._img = np.dstack((self._img, alpha))
 
     def transform_x(self, x):
         x *= self.width / 2.0
@@ -166,8 +150,8 @@ class Canvas():
 
         # Force add in the alpha channel
         if len(c) == 3:
-            return c + [255,]
-        
+            c += [255,]
+
         return c
 
     @staticmethod
