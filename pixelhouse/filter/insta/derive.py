@@ -1,9 +1,10 @@
 import cv2
-from tqdm import tqdm
 import os
+import glob
 import numpy as np
 import json
 import pandas as pd
+from tqdm import tqdm 
 
 import keras
 from keras.models import Sequential, Model
@@ -22,8 +23,6 @@ def scale_values(img):
 
 
 def train(img0, img1, n_epochs=40):
-        
-    # Printing log
 
     class Histories(keras.callbacks.Callback):
         def on_epoch_end(self, epoch, logs={}):
@@ -55,7 +54,7 @@ def train(img0, img1, n_epochs=40):
 
     loss = history.history['loss']
     
-    yp = model.predict(x)
+    yp = model.predict(x, batch_size=2*12)
     
     img2 = (255*np.clip(yp, 0,1)).astype(np.uint8)
     img2 = img2[:, :3].reshape(h, w, 3)
@@ -69,7 +68,8 @@ class NumpyEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 def train_from_target(f_target, n_epochs):
-    
+
+    name = os.path.basename(f_target).replace('.jpg', '')
     f_json = os.path.join(save_dest_models, name + '.json')
     f_source = 'samples/Normal.jpg'
 
@@ -79,16 +79,15 @@ def train_from_target(f_target, n_epochs):
     img2, weights, loss = train(img0, img1, n_epochs)
 
     W, b = weights
-    name = os.path.basename(f_target).replace('.jpg', '')
-    print(1)
+
     js = {
         "W": json.loads(json.dumps(W, cls=NumpyEncoder)),
         "b": json.loads(json.dumps(b, cls=NumpyEncoder)),
         "name" : name,
         "color_order" : "BGR HSV LAB",
         "loss" : loss,
+        "n_epochs" : n_epochs,
     }
-    print(js)
 
     with open(f_json, 'w') as FOUT:
         FOUT.write(json.dumps(js, indent=2))
@@ -99,11 +98,17 @@ def train_from_target(f_target, n_epochs):
     f1 = os.path.join(save_dest_images, name + '_1.jpg')
     cv2.imwrite(f1,img1)
 
-    #display_img = np.concatenate((img0, img1, img2), axis=1)
-    #cv2.imshow(f_source, display_img)
-    #cv2.waitKey(0)
-
 if __name__ == "__main__":
     
-    f_target = 'samples/Charmes.jpg'
-    train_from_target(f_target, 1)
+    TARGETS = glob.glob('samples/*')
+    for f_target in tqdm(TARGETS):
+        if "Normal_" in f_target:
+            continue
+
+        name = os.path.basename(f_target).replace('.jpg', '')
+        f_json = os.path.join(save_dest_models, name + '.json')
+        
+        if os.path.exists(f_json):
+            continue
+        
+        train_from_target(f_target, 100)
