@@ -40,9 +40,15 @@ def train(img0, img1, n_epochs=40):
     
     x = np.hstack([xBGR, xHSV, xLAB])
     y = np.hstack([yBGR, yHSV, yLAB])
+    colorspace = 9
+    inner_layers = 2
 
-    W = Dense(9, input_shape=(9,))
-    model = Sequential([W,])
+    layers = [Dense(9**2, input_shape=(colorspace,), activation='tanh')]
+    for n in range(inner_layers):
+        layers.append(Dense(9**2, activation='tanh'))
+
+    layers.append(Dense(colorspace, activation=None))
+    model = Sequential(layers)
 
     model.compile(optimizer='ADAM',  loss='mae')
     
@@ -56,10 +62,17 @@ def train(img0, img1, n_epochs=40):
     
     yp = model.predict(x, batch_size=2*12)
     
-    img2 = (255*np.clip(yp, 0,1)).astype(np.uint8)
-    img2 = img2[:, :3].reshape(h, w, 3)
+    img_ALL = (255*np.clip(yp, 0,1)).astype(np.uint8)
+    imgRGB = img_ALL[:, :3].reshape(h, w, 3)
+    imgHSV = img_ALL[:, 3:6].reshape(h, w, 3)
+    imgLAB = img_ALL[:, 6:9].reshape(h, w, 3)
+
+    # Convert these colorspaces back to BGR for saving
+    imgHSV = cv2.cvtColor(imgHSV, cv2.COLOR_HSV2BGR)
+    imgLAB = cv2.cvtColor(imgLAB, cv2.COLOR_LAB2BGR)
     
-    return img2, W.get_weights(), loss
+        
+    return model, imgRGB, imgHSV, imgLAB
 
 class NumpyEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -70,14 +83,15 @@ class NumpyEncoder(json.JSONEncoder):
 def train_from_target(f_target, n_epochs):
 
     name = os.path.basename(f_target).replace('.jpg', '')
-    f_json = os.path.join(save_dest_models, name + '.json')
+    f_save = os.path.join(save_dest_models, name + '.h5')
     f_source = 'samples/Normal.jpg'
 
     img0 = cv2.imread(f_source)
     img1 = cv2.imread(f_target)
 
-    img2, weights, loss = train(img0, img1, n_epochs)
+    model, imgRGB, imgHSV, imgLAB = train(img0, img1, n_epochs)
 
+    '''
     W, b = weights
 
     js = {
@@ -91,24 +105,34 @@ def train_from_target(f_target, n_epochs):
 
     with open(f_json, 'w') as FOUT:
         FOUT.write(json.dumps(js, indent=2))
+    '''
+    model.save(f_save)
 
     f0 = os.path.join(save_dest_images, name + '_0.jpg')
-    cv2.imwrite(f0,img0)
+    cv2.imwrite(f0,img1)
 
-    f1 = os.path.join(save_dest_images, name + '_1.jpg')
-    cv2.imwrite(f1,img1)
+    f1 = os.path.join(save_dest_images, name + '_1_RGB.jpg')
+    cv2.imwrite(f1,imgRGB)
+
+    f1 = os.path.join(save_dest_images, name + '_1_HSV.jpg')
+    cv2.imwrite(f1,imgHSV)
+
+    f1 = os.path.join(save_dest_images, name + '_1_LAB.jpg')
+    cv2.imwrite(f1,imgLAB)
+    
 
 if __name__ == "__main__":
     
     TARGETS = glob.glob('samples/*')
     for f_target in tqdm(TARGETS):
-        if "Normal_" in f_target:
+        if "Normal" in f_target:
             continue
 
         name = os.path.basename(f_target).replace('.jpg', '')
-        f_json = os.path.join(save_dest_models, name + '.json')
+        f_save = os.path.join(save_dest_models, name + '.h5')
         
-        if os.path.exists(f_json):
+        if os.path.exists(f_save):
             continue
-        
-        train_from_target(f_target, 100)
+
+        print(f"Starting {name}")
+        train_from_target(f_target, 40)
