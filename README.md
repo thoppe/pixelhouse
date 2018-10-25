@@ -50,7 +50,8 @@ _Very much a work in progress!_
 
 #### Filters
 + [x] Blur
-+ [ ] Color mixing
++ [x] Instagram-style filters
++ [ ] Decouple instagram filters from keras
 + [ ] Histogram normlization
 
 #### Easing
