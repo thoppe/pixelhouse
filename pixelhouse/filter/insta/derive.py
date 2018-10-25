@@ -1,47 +1,30 @@
 import cv2
+from tqdm import tqdm
 import os
 import numpy as np
+import json
+import pandas as pd
 
 import keras
-from tensorflow.keras.models import Sequential, Model
-from tensorflow.keras.layers import Dense, Activation, Input, Lambda
+from keras.models import Sequential, Model
+from keras.layers import Dense, Activation, Input, Lambda
 
-# Source images from
-# https://www.makeuseof.com/tag/instagram-filters-work-can-tell-difference/
+save_dest_models = 'models'
+os.system(f'mkdir -p {save_dest_models}')
 
-def read_source(f_source):
-    img = cv2.imread(f_source,)
-    h, w, channels = img.shape
+save_dest_images = 'examples'
+os.system(f'mkdir -p {save_dest_images}')
 
-    b = (img.mean(axis=2).sum(axis=0)/h)
-    pixel_n = (b>=254).sum()
-    print(w, pixel_n)
-    assert((w-pixel_n) % 2 == 0)
-
-    # Split the image in half
-    img0 = img[:, :w//2]
-    img1 = img[:, w//2:]
-
-    # Remove the whitespace between the images
-    img0 = img0[:, :-pixel_n//2]
-    img1 = img1[:,  pixel_n//2:]
-
-    # Clip a border to help artifacts
-    img0 = img0[2:-2, 2:-2]
-    img1 = img1[2:-2, 2:-2]
-
-    assert(img0.shape == img1.shape)
-
-    return img0, img1
 
 def scale_values(img):
-    h, w, channels = img0.shape
+    h, w, channels = img.shape
     return img.reshape(h*w, channels).astype(np.float32)/255
 
 
 def train(img0, img1, n_epochs=40):
         
     # Printing log
+
     class Histories(keras.callbacks.Callback):
         def on_epoch_end(self, epoch, logs={}):
             print(logs)
@@ -56,64 +39,71 @@ def train(img0, img1, n_epochs=40):
     yHSV = scale_values(cv2.cvtColor(img1, cv2.COLOR_BGR2HSV))
     yLAB = scale_values(cv2.cvtColor(img1, cv2.COLOR_BGR2LAB))
     
-    
     x = np.hstack([xBGR, xHSV, xLAB])
     y = np.hstack([yBGR, yHSV, yLAB])
 
     W = Dense(9, input_shape=(9,))
     model = Sequential([W,])
 
-    '''
-    # Very simple one-layer model that take BGR+HSV and converts to new filter
-    A0 = Input(shape=(9,))
-    W = Dense(3)(A0)
-
-    from keras import backend as K
-    alpha = K.variable(value=0.5, dtype='float32', name='alpha')
-    beta = K.variable(value=0.5, dtype='float32', name='alpha')
-    
-    A1 = Lambda(lambda x: x*alpha + beta)(W)
-    model = Model(inputs=A0, outputs=A1)
-    '''
-
     model.compile(optimizer='ADAM',  loss='mae')
     
-    model.fit(
+    history = model.fit(
         x, y,
         epochs=n_epochs, batch_size=2**9,verbose=10,
         callbacks=[Histories()]
     )
+
+    loss = history.history['loss']
     
     yp = model.predict(x)
     
     img2 = (255*np.clip(yp, 0,1)).astype(np.uint8)
     img2 = img2[:, :3].reshape(h, w, 3)
     
-    return img2, W.get_weights()
+    return img2, W.get_weights(), loss
 
+class NumpyEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, np.ndarray):
+            return obj.tolist()
+        return json.JSONEncoder.default(self, obj)
 
-#f_source = 'data/crema-e1448847288573.jpg'
-f_source = 'data/nashville-e1448853218475.jpg'
-#f_source = 'data/Moon-Filter.jpg'
+def train_from_target(f_target, n_epochs):
+    
+    f_json = os.path.join(save_dest_models, name + '.json')
+    f_source = 'samples/Normal.jpg'
 
-img0, img1 = read_source(f_source)
-img2, weights = train(img0, img1, 100)
+    img0 = cv2.imread(f_source)
+    img1 = cv2.imread(f_target)
 
-save_dest_models = 'models'
-os.system(f'mkdir -p {save_dest_models}')
+    img2, weights, loss = train(img0, img1, n_epochs)
 
-save_dest_images = 'examples'
-os.system(f'mkdir -p {save_dest_images}')
+    W, b = weights
+    name = os.path.basename(f_target).replace('.jpg', '')
+    print(1)
+    js = {
+        "W": json.loads(json.dumps(W, cls=NumpyEncoder)),
+        "b": json.loads(json.dumps(b, cls=NumpyEncoder)),
+        "name" : name,
+        "color_order" : "BGR HSV LAB",
+        "loss" : loss,
+    }
+    print(js)
 
-cv2.imwrite(os.path.join(save_dest_images,'0_'+os.path.basename(f_source)),img0)
-cv2.imwrite(os.path.join(save_dest_images,'1_'+os.path.basename(f_source)),img1)
-cv2.imwrite(os.path.join(save_dest_images,'2_'+os.path.basename(f_source)),img2)
+    with open(f_json, 'w') as FOUT:
+        FOUT.write(json.dumps(js, indent=2))
 
+    f0 = os.path.join(save_dest_images, name + '_0.jpg')
+    cv2.imwrite(f0,img0)
 
+    f1 = os.path.join(save_dest_images, name + '_1.jpg')
+    cv2.imwrite(f1,img1)
 
-display_img = np.concatenate((img0, img1, img2), axis=1)
-cv2.imshow(f_source, display_img)
-cv2.waitKey(0)
+    #display_img = np.concatenate((img0, img1, img2), axis=1)
+    #cv2.imshow(f_source, display_img)
+    #cv2.waitKey(0)
 
-
-
+if __name__ == "__main__":
+    
+    f_target = 'samples/Charmes.jpg'
+    train_from_target(f_target, 1)
