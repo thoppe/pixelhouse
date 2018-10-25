@@ -84,6 +84,15 @@ def train_from_target(f_target, n_epochs):
 
     name = os.path.basename(f_target).replace('.jpg', '')
     f_save = os.path.join(save_dest_models, name + '.h5')
+
+    if os.path.exists(f_save):
+        return False
+
+    if "Normal" in f_target:
+        return False
+
+    print(f"Starting {name}")
+    
     f_source = 'samples/Normal.jpg'
 
     img0 = cv2.imread(f_source)
@@ -122,17 +131,11 @@ def train_from_target(f_target, n_epochs):
     
 
 if __name__ == "__main__":
-    
+    import joblib
     TARGETS = glob.glob('samples/*')
-    for f_target in tqdm(TARGETS):
-        if "Normal" in f_target:
-            continue
 
-        name = os.path.basename(f_target).replace('.jpg', '')
-        f_save = os.path.join(save_dest_models, name + '.h5')
-        
-        if os.path.exists(f_save):
-            continue
+    func = joblib.delayed(train_from_target)
 
-        print(f"Starting {name}")
-        train_from_target(f_target, 40)
+    ITR = tqdm(TARGETS)
+    with joblib.Parallel(20) as MP:
+        MP(func(f, 200) for f in ITR)
