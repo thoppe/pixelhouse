@@ -42,6 +42,7 @@ class PseudoFilter(object):
         xHSV = self._scale(cv2.cvtColor(img, cv2.COLOR_BGR2HSV))
         xLAB = self._scale(cv2.cvtColor(img, cv2.COLOR_BGR2LAB))
         x = np.hstack([xBGR, xHSV, xLAB])
+
         yp = self.clf.predict(x, batch_size=2*12)
 
         h, w, channels = img.shape
