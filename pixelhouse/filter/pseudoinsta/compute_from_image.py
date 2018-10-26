@@ -26,6 +26,13 @@ def scale_values(img, norm0=255, norm1=255, norm2=255):
         
     return flat
 
+def saturation_and_lightness(BGR):
+    mx, mn = BGR.max(axis=1), BGR.min(axis=1)
+    avg = BGR.mean(axis=1)
+    
+    return np.array([avg, mx-mn]).T
+
+
 def train(img0, img1, n_epochs=40, name=None):
 
     class Histories(keras.callbacks.Callback):
@@ -34,27 +41,29 @@ def train(img0, img1, n_epochs=40, name=None):
 
     h, w, channels = img0.shape
     xBGR = scale_values(img0)
+    xLS = saturation_and_lightness(xBGR)
+    
     #xHSV = scale_values(cv2.cvtColor(img0, cv2.COLOR_BGR2HSV), norm0=180)
     #xLAB = scale_values(cv2.cvtColor(img0, cv2.COLOR_BGR2LAB))
     #xYCrCb = scale_values(cv2.cvtColor(img0, cv2.COLOR_BGR2YCrCb))
     
     yBGR = scale_values(img1)
+    yLS = saturation_and_lightness(yBGR)
+    
     #yHSV = scale_values(cv2.cvtColor(img1, cv2.COLOR_BGR2HSV), norm0=180)
     #yLAB = scale_values(cv2.cvtColor(img1, cv2.COLOR_BGR2LAB))
     
-    #x = np.hstack([xBGR, xHSV])
-    #y = np.hstack([yBGR, yHSV])
+    x = np.hstack([xBGR,xLS])
+    y = np.hstack([yBGR,yLS])
 
-    x = np.hstack([xBGR,])
-    y = np.hstack([yBGR,])
-
-    colorspace = cs = 3
+    colorspace = cs = 5
     #colorspace = cs = 6
-    inner_layers = 2
-
+    inner_layers = 4
+    
     layers = [Dense(cs**2, input_shape=(cs,), activation='tanh')]
     for n in range(inner_layers):
         layers.append(Dense(cs**2, activation='tanh'))
+    #layers = []
 
     layers.append(Dense(cs, activation=None))
     model = Sequential(layers)
@@ -72,7 +81,7 @@ def train(img0, img1, n_epochs=40, name=None):
     yp = model.predict(x, batch_size=2*12)
     
     img_ALL = np.clip(yp, 0,1)
-    img_ALL = (img_ALL*[255,255,255,]).astype(np.uint8)
+    img_ALL = (img_ALL*([255,]*cs)).astype(np.uint8)
     #img_ALL = (img_ALL*[255,255,255,180,255,255]).astype(np.uint8)
     
     imgRGB = img_ALL[:, :3].reshape(h, w, 3)
@@ -87,11 +96,13 @@ def train(img0, img1, n_epochs=40, name=None):
     #return model, imgRGB, imgHSV
     return model, imgRGB
 
+'''
 class NumpyEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, np.ndarray):
             return obj.tolist()
         return json.JSONEncoder.default(self, obj)
+'''
 
 def train_from_target(f_target, n_epochs):
 
@@ -130,6 +141,7 @@ def train_from_target(f_target, n_epochs):
     with open(f_json, 'w') as FOUT:
         FOUT.write(json.dumps(js, indent=2))
     '''
+    
     model.save(f_save)
 
     f0 = os.path.join(save_dest_images, name + '_0.jpg')
@@ -147,7 +159,7 @@ def train_from_target(f_target, n_epochs):
 
 if __name__ == "__main__":
     import joblib
-    n_jobs = -1
+    n_jobs = 25
     n_iterations = 200
     
     TARGETS = glob.glob('samples/*')
