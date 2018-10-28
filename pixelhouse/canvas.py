@@ -46,8 +46,16 @@ class Canvas():
         return self._img.shape[1]
 
     @property
+    def channels(self):
+        return self._img.shape[2]
+
+    @property
     def img(self):
         return self._img
+
+    @property
+    def shape(self):
+        return self.height, self.width, self.channels
 
     def blank(self, bg=None):
         # Return an empty canvas of the same size
@@ -173,9 +181,6 @@ class Canvas():
             return cv2.LINE_AA
         return 8
 
-    def load(self, f_image):
-        raise NotImplementedError
-
     def show(self, delay=0):
         # Before we show we have to convert back to BGR
         dst = cv2.cvtColor(self.img, cv2.COLOR_RGB2BGR)
@@ -187,3 +192,15 @@ class Canvas():
         # Before we save we have to convert back to BGR
         dst = cv2.cvtColor(self.img, cv2.COLOR_RGB2BGR)
         cv2.imwrite(f_save, dst)
+
+    def load(self, f_img):
+        # Read the image in and convert to RGB space
+        self._img =  cv2.cvtColor(cv2.imread(f_img), cv2.COLOR_BGR2RGB)
+        return self
+
+    def rescale(self, dx=1.0, dy=None):
+        # Rescale the canvas by the factors (dx, dy). Let dy=dx if not provided.
+        if dy is None:
+            dy = dx
+            
+        self._img = cv2.resize(self._img, (0,0), fx=dx, fy=dy) 

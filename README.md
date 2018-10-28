@@ -10,6 +10,8 @@ _Very much a work in progress!_
 ![](examples/teyleen_982.png)
 ![](examples/teyleen_116.png)
 
+![](examples/instafilters_from_file.png)
+
 ![](examples/moving_circles.gif)
 ![](examples/checkerboard.gif)
 ![](examples/pacman.gif)
@@ -41,7 +43,6 @@ _Very much a work in progress!_
 + [ ] Hue, Saturation, Value interpolation
 + [ ] Hue, Chroma, Lightness interpolation
 
-
 #### Layers
 + [x] Additive
 + [x] Subtractive
@@ -50,7 +51,7 @@ _Very much a work in progress!_
 
 #### Filters
 + [x] Blur
-+ [ ] Color mixing
++ [x] Instagram-style filters (keras not needed)
 + [ ] Histogram normlization
 
 #### Easing
@@ -61,7 +62,6 @@ _Very much a work in progress!_
 + [x] Named colors
 + [x] Top palettes
 + [ ] Random palettes
-
 
 #### File IO
 + [x] Save to gif

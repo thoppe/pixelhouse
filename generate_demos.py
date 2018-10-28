@@ -1,7 +1,7 @@
 from pixelhouse import Canvas, Animation
 from pixelhouse import circle, line, ellipse, rectangle
 from pixelhouse.color import matplotlib_colors, ColorLoversPalette
-
+from pixelhouse.filter import instafilter
 import pixelhouse.motion as motion
 
 import numpy as np
@@ -80,6 +80,15 @@ def simple_lines():
     line(x=0, y=4, x1=0, y1=-4, thickness=0.05)(c)
 
     return c
+
+def instagram_filters():
+
+    c1 = Canvas(**canvas_args, bg='w')
+    c1.load('pixelhouse/filter/insta/samples/Normal.jpg').rescale(0.25)
+    circle(r=0.50, color='r')(c1)
+    instafilter('Ludwig', weight=0.80)(c1)
+
+    return c1
 
 
 def teyleen_982():
@@ -213,6 +222,8 @@ if __name__ == "__main__":
     simple_lines().save("examples/simple_lines.png")
     simple_circles().save("examples/simple_circles.png")
     simple_rectangles().save("examples/simple_rectangle.png")
+
+    instagram_filters().save("examples/instafilters_from_file.png")
 
     rotating_circles().to_gif("examples/moving_circles.gif", **gif_args)
     pacman().to_gif("examples/pacman.gif", **gif_args)
