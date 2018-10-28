@@ -10,6 +10,8 @@ _Very much a work in progress!_
 ![](examples/teyleen_982.png)
 ![](examples/teyleen_116.png)
 
+![](examples/instafilters_from_file.png)
+
 ![](examples/moving_circles.gif)
 ![](examples/checkerboard.gif)
 ![](examples/pacman.gif)
