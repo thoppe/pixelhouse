@@ -6,9 +6,13 @@ import json
 import pandas as pd
 from tqdm import tqdm 
 
+os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+
 import keras
 from keras.models import Sequential, Model
 from keras.layers import Dense, Activation, Input, Lambda
+
+
 
 save_dest_models = 'models'
 os.system(f'mkdir -p {save_dest_models}')
@@ -37,7 +41,7 @@ def train(img0, img1, n_epochs=40, name=None):
 
     class Histories(keras.callbacks.Callback):
         def on_epoch_end(self, epoch, logs={}):
-            print(logs, name)
+            print(logs, epoch, name)
 
     h, w, channels = img0.shape
     xBGR = scale_values(img0)
@@ -59,10 +63,12 @@ def train(img0, img1, n_epochs=40, name=None):
     colorspace = cs = 5
     #colorspace = cs = 6
     inner_layers = 4
+    inner_activation = 'tanh'
+    #inner_activation = None
     
-    layers = [Dense(cs**2, input_shape=(cs,), activation='tanh')]
+    layers = [Dense(cs**2, input_shape=(cs,), activation=inner_activation)]
     for n in range(inner_layers):
-        layers.append(Dense(cs**2, activation='tanh'))
+        layers.append(Dense(cs**2, activation=inner_activation))
     #layers = []
 
     layers.append(Dense(cs, activation=None))
@@ -159,10 +165,13 @@ def train_from_target(f_target, n_epochs):
 
 if __name__ == "__main__":
     import joblib
-    n_jobs = 25
+    n_jobs = -1
     n_iterations = 200
-    
+
+    import random
     TARGETS = glob.glob('samples/*')
+
+    random.shuffle(TARGETS)
 
     func = joblib.delayed(train_from_target)
 
