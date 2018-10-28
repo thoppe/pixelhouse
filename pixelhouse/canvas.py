@@ -187,3 +187,8 @@ class Canvas():
         # Before we save we have to convert back to BGR
         dst = cv2.cvtColor(self.img, cv2.COLOR_RGB2BGR)
         cv2.imwrite(f_save, dst)
+
+    def load(self, f_img):
+        # Read the image in and convert to RGB space
+        self._img =  cv2.cvtColor(cv2.imread(f_img), cv2.COLOR_BGR2RGB)
+

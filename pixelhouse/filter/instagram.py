@@ -2,7 +2,7 @@
 Pseudo-instagram filters (weights derived from samples).
 '''
 
-#from ..artist import Artist, constant
+from ..artist import Artist, constant
 import numpy as np
 import cv2
 import glob
@@ -16,7 +16,7 @@ known_models = set([
     glob.glob(os.path.join(_model_path, '*.npz'))
 ])
 
-class PseudoFilter(object):    
+class instafilter(Artist):    
 
     def __init__(self, name):
         super().__init__()
@@ -45,7 +45,14 @@ class PseudoFilter(object):
         h, w, channels = img.shape
         return img.reshape(h*w, channels).astype(np.float32)/255
 
-    def __call__(self, img, t=0.0):
+    def __call__(self, cvs, t=0.0):
+
+        print("WARNING! chopping alpha channel")
+        img = cvs.img[:, :, :3]
+
+        # Model expect BGR, canvas uses RGB
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        
         height, width, channels = img.shape
         assert(channels==3)
         
@@ -63,14 +70,15 @@ class PseudoFilter(object):
 
         yp = np.clip(y*255, 0, 255).astype(np.uint8)
         imgBGR = yp[:, :3].reshape(height, width, 3)
-
-        return imgBGR
+        
+        # Convert back to RGB colorspace
+        cvs._img = cv2.cvtColor(imgBGR, cv2.COLOR_BGR2RGB)
 
 if __name__ == "__main__":
     img = cv2.imread('insta/samples/Normal.jpg')
     
     print("Loading image and model")
-    F = PseudoFilter('Ludwig')
+    F = instafilter('Ludwig')
 
     print("Applying sampling")
     img2 = F(img)
