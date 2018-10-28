@@ -46,8 +46,16 @@ class Canvas():
         return self._img.shape[1]
 
     @property
+    def channels(self):
+        return self._img.shape[2]
+
+    @property
     def img(self):
         return self._img
+
+    @property
+    def shape(self):
+        return self.height, self.width, self.channels
 
     def blank(self, bg=None):
         # Return an empty canvas of the same size

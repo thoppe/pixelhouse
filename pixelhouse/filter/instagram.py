@@ -47,14 +47,16 @@ class instafilter(Artist):
 
     def __call__(self, cvs, t=0.0):
 
-        print("WARNING! chopping alpha channel")
+        height, width, channels = cvs.shape
+
         img = cvs.img[:, :, :3]
+        alpha = None
+
+        if channels != 3:
+            alpha = cvs.img[:, :, 3:]
 
         # Model expect BGR, canvas uses RGB
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        
-        height, width, channels = img.shape
-        assert(channels==3)
         
         xBGR = self._scale(img)
         xLS = self._saturation_and_lightness(xBGR)
@@ -73,6 +75,9 @@ class instafilter(Artist):
         
         # Convert back to RGB colorspace
         cvs._img = cv2.cvtColor(imgBGR, cv2.COLOR_BGR2RGB)
+
+        if alpha is not None:
+            cvs._img = np.dstack([cvs._img, alpha])
 
 if __name__ == "__main__":
     img = cv2.imread('insta/samples/Normal.jpg')
