@@ -1,3 +1,8 @@
+'''
+Converts MLP keras models from compute_from_image.py to something that
+is pure numpy.
+'''
+
 import os, glob
 import numpy as np
 import h5py
@@ -7,8 +12,6 @@ F_MODELS = glob.glob("models/*.h5")
 for f in F_MODELS:
     name = os.path.basename(f).split('.h5')[0]
     f_new = os.path.join('models', name + '.npz')
-    #if os.path.exists(f_new):
-    #    continue
     
     W, b = [], []
     
