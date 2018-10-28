@@ -16,10 +16,12 @@ known_models = set([
     glob.glob(os.path.join(_model_path, '*.npz'))
 ])
 
-class instafilter(Artist):    
+class instafilter(Artist):
 
-    def __init__(self, name):
-        super().__init__()
+    weight = constant(1.0)
+
+    def __init__(self, name, **kwargs):
+        super().__init__(**kwargs)
         
         if name not in known_models:
             msg = f'Model {name} not in {known_models}'
@@ -47,6 +49,11 @@ class instafilter(Artist):
 
     def __call__(self, cvs, t=0.0):
 
+        weight = self.weight(t)
+        if weight <= 0:
+            # With zero weight, skip the filter
+            return None
+        
         height, width, channels = cvs.shape
 
         img = cvs.img[:, :, :3]
@@ -74,11 +81,18 @@ class instafilter(Artist):
         imgBGR = yp[:, :3].reshape(height, width, 3)
         
         # Convert back to RGB colorspace
-        cvs._img = cv2.cvtColor(imgBGR, cv2.COLOR_BGR2RGB)
+        img2 = cv2.cvtColor(imgBGR, cv2.COLOR_BGR2RGB)
 
         if alpha is not None:
-            cvs._img = np.dstack([cvs._img, alpha])
+            img2 = np.dstack([img2, alpha])
 
+        # With weight > 1 apply the whole filter
+        if weight >= 1:
+            cvs._img = img2
+        # Otherwise blend
+        cvs._img = cv2.addWeighted(
+            cvs.img, 1-weight, img2, weight, gamma=0.0)
+        
 if __name__ == "__main__":
     img = cv2.imread('insta/samples/Normal.jpg')
     
