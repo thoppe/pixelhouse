@@ -4,13 +4,14 @@ import h5py
 
 F_MODELS = glob.glob("models/*.h5")
 
-W, b = [], []
 for f in F_MODELS:
     name = os.path.basename(f).split('.h5')[0]
     f_new = os.path.join('models', name + '.npz')
-    if os.path.exists(f_new):
-        continue
-
+    #if os.path.exists(f_new):
+    #    continue
+    
+    W, b = [], []
+    
     with h5py.File(f, 'r') as h5:
         for key in h5["model_weights"]:
             g = h5['model_weights'][key][key]
