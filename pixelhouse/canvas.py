@@ -173,9 +173,6 @@ class Canvas():
             return cv2.LINE_AA
         return 8
 
-    def load(self, f_image):
-        raise NotImplementedError
-
     def show(self, delay=0):
         # Before we show we have to convert back to BGR
         dst = cv2.cvtColor(self.img, cv2.COLOR_RGB2BGR)
@@ -191,4 +188,11 @@ class Canvas():
     def load(self, f_img):
         # Read the image in and convert to RGB space
         self._img =  cv2.cvtColor(cv2.imread(f_img), cv2.COLOR_BGR2RGB)
+        return self
 
+    def rescale(self, dx=1.0, dy=None):
+        # Rescale the canvas by the factors (dx, dy). Let dy=dx if not provided.
+        if dy is None:
+            dy = dx
+            
+        self._img = cv2.resize(self._img, (0,0), fx=dx, fy=dy) 

@@ -41,7 +41,6 @@ _Very much a work in progress!_
 + [ ] Hue, Saturation, Value interpolation
 + [ ] Hue, Chroma, Lightness interpolation
 
-
 #### Layers
 + [x] Additive
 + [x] Subtractive
@@ -50,8 +49,7 @@ _Very much a work in progress!_
 
 #### Filters
 + [x] Blur
-+ [x] Instagram-style filters
-+ [ ] Decouple instagram filters from keras
++ [x] Instagram-style filters (keras not needed)
 + [ ] Histogram normlization
 
 #### Easing
@@ -62,7 +60,6 @@ _Very much a work in progress!_
 + [x] Named colors
 + [x] Top palettes
 + [ ] Random palettes
-
 
 #### File IO
 + [x] Save to gif
