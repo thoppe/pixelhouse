@@ -6,12 +6,12 @@ import json
 import pandas as pd
 from tqdm import tqdm 
 
+# To help run this in parallel, run everything in the CPU
 os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 
 import keras
 from keras.models import Sequential, Model
 from keras.layers import Dense, Activation, Input, Lambda
-
 
 
 save_dest_models = 'models'
@@ -116,6 +116,7 @@ def train_from_target(f_target, n_epochs):
     f_save = os.path.join(save_dest_models, name + '.h5')
 
     if os.path.exists(f_save):
+        print(f"Skipping {f_target}")
         return False
 
     if "Normal" in f_target:
