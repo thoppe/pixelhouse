@@ -34,13 +34,15 @@ class Animation():
     def __len__(self):
         return len(self.frames)
 
-    def add(self, art):
+    def __call__(self, art):
         self.artists.append(art)
+        return self
 
     def render(self, n):
         assert(0 <= n < len(self))
 
         if not self.has_rendered[n]:
+            print(f"Rendering {n}/{len(self)}")
 
             t = self.timepoints[n]
 

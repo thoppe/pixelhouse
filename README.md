@@ -31,17 +31,15 @@ _Very much a work in progress!_
 + [ ] Text
 
 #### Transforms
-+ [ ] Rotation
++ [x] Rotation
++ [x] Translation
 + [ ] Scale
-+ [ ] Shear
-+ [ ] Subpixel resolution
-+ [x] Hide cv2 weird colorspace, BGR -> RGB
++ [x] Elastic distortion
++ [ ] Generic elastic deformations
 
 #### Gradients
 + [ ] Linear gradients
 + [ ] Transparent gradients
-+ [ ] Hue, Saturation, Value interpolation
-+ [ ] Hue, Chroma, Lightness interpolation
 
 #### Layers
 + [x] Additive
@@ -52,7 +50,7 @@ _Very much a work in progress!_
 #### Filters
 + [x] Blur
 + [x] Instagram-style filters (keras not needed)
-+ [ ] Histogram normlization
++ [ ] Histogram normalization
 
 #### Easing
 + [x] Named easing, Pennser equations
@@ -74,9 +72,12 @@ _Very much a work in progress!_
 + [x] Proper library
 + [ ] setup.py
 + [ ] pip install
-+ [ ] Context mangager for canvas and animatino
++ [ ] Context mangager for canvas and animation
 + [ ] Unit tests
 + [ ] Doc coverage
++ [ ] Subpixel resolution
++ [x] Hide cv2 weird colorspace, BGR -> RGB
+
 
 ## Credits
 
