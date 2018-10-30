@@ -64,6 +64,9 @@ class line(PrimitiveArtist):
         x1 = cvs.transform_x(self.x1(t))
         y1 = cvs.transform_y(self.y1(t))
 
+        # Thickness must be at least one pixel
+        thickness = max(thickness, 1)
+
         args = (x,y), (x1, y1), color, thickness, lineType
         cvs.cv2_draw(cv2.line, args, mode=self.mode(t))
 

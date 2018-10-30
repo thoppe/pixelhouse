@@ -172,6 +172,7 @@ class Canvas():
         # If thickness is negative, leave it alone
         if r>0:
             return self.transform_length(r)
+
         return r
     
 
