@@ -8,7 +8,7 @@ from ..artist import Artist, constant
 class pull(Artist):
     x = constant(0.0)
     y = constant(0.0)
-    sigma = constant(1.0)
+    sigma = constant(0.01)
     alpha = constant(1.0)
     mode = constant("constant")
     args = ("x", "y", "sigma", "alpha", "mode")
@@ -19,47 +19,38 @@ class pull(Artist):
         x = cvs.transform_x(self.x(t))
         y = cvs.transform_y(self.y(t))
         alpha = cvs.transform_length(self.alpha(t), is_discrete=False)
-        sigma = cvs.transform_length(self.sigma(t))
+        sigma = cvs.transform_length(self.sigma(t), is_discrete=False)
         mode = self.mode(t)
 
         shape = cvs.shape        
         
-        dx = gaussian_filter(
-            [[1,2.,3,4],[2.,3,4,5]], sigma,
-            mode=mode, cval=0) * alpha
-
-        print(dx)
-        exit()
-        
-        dy = gaussian_filter(
-            (y * 2 - 1,0), sigma,
-            mode=mode, cval=0) * alpha
-
-        #print(x,y)
-        #print((x*2-1,))
-        #print(dx,dy)
-        #exit()
-
-
-        x, y, z = np.meshgrid(
-            np.arange(shape[0]),
+        xg, yg, zg = np.meshgrid(
             np.arange(shape[1]),
+            np.arange(shape[0]),
             np.arange(shape[2])
         )
 
+        #print(cvs.transform_x(xg.astype(np.float64), False))
+        #exit()
+
+        dist_pixels = np.sqrt((xg-x)**2 + (yg-y)**2)
+        dist = dist_pixels * (cvs.extent/cvs.width)
+        amp = np.exp(-dist/sigma**2)
+        
+        theta = np.arctan2(yg-y, xg-x)
+        dx = alpha*amp*np.cos(theta)
+        dy = alpha*amp*np.sin(theta)
 
         indices = (
-            np.reshape(y+dy, (-1, 1)),
-            np.reshape(x+dx, (-1, 1)),
-            np.reshape(z, (-1, 1)),
+            np.reshape(yg+dy, (-1, 1)),
+            np.reshape(xg+dx, (-1, 1)),
+            np.reshape(zg, (-1, 1)),
         )
 
         distored_image = map_coordinates(
-            cvs.img, indices, order=3, mode='reflect')
+            cvs.img, indices, order=3, mode=mode)
         
         cvs._img = distored_image.reshape(cvs.shape)
-
-
         
 
 
@@ -81,30 +72,31 @@ class distort(Artist):
         random_state = np.random.RandomState(self.seed(t))
 
         mode = self.mode(t)
-        
-        dx = gaussian_filter(
-            (random_state.rand(*shape) * 2 - 1), sigma,
-            mode=mode, cval=0) * alpha
-        
-        dy = gaussian_filter(
-            (random_state.rand(*shape) * 2 - 1), sigma,
-            mode=mode, cval=0) * alpha
 
-        x, y, z = np.meshgrid(
+        xg, yg, zg = np.meshgrid(
             np.arange(shape[1]),
             np.arange(shape[0]),
             np.arange(shape[2])
         )
 
+        displacement_x = random_state.rand(*shape) * 2 - 1
+        displacement_y = random_state.rand(*shape) * 2 - 1
+
+        dx = gaussian_filter(
+            displacement_x, sigma, mode=mode, cval=0) * alpha
+        
+        dy = gaussian_filter(
+            displacement_y, sigma, mode=mode, cval=0) * alpha
+
 
         indices = (
-            np.reshape(y+dy, (-1, 1)),
-            np.reshape(x+dx, (-1, 1)),
-            np.reshape(z, (-1, 1)),
+            np.reshape(yg+dy, (-1, 1)),
+            np.reshape(xg+dx, (-1, 1)),
+            np.reshape(zg, (-1, 1)),
         )
 
         distored_image = map_coordinates(
-            cvs.img, indices, order=3, mode='reflect')
+            cvs.img, indices, order=3, mode=mode)
         
         cvs._img = distored_image.reshape(cvs.shape)
 

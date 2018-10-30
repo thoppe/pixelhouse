@@ -139,20 +139,24 @@ class Canvas():
         # Add back in the saturated alpha channel
         self._img = np.dstack((self._img, alpha))
 
-    def transform_x(self, x):
+    def transform_x(self, x, is_discrete=True):
         x *= self.width / 2.0
         x /= self.extent
         x += self.width / 2
-        return int(x)
+        if is_discrete:
+            return int(x)
+        return x
 
-    def transform_y(self, y):
+    def transform_y(self, y, is_discrete=True):
         y *= -self.height / 2.0
         y /= self.extent
-        y += self.height / 2        
-        return int(y)
+        y += self.height / 2
+        if is_discrete:
+            return int(y)
+        return y
 
     def transform_length(self, r, is_discrete=True):
-        r *= (self.width/self.extent)
+        r *= (float(self.width)/self.extent)
         if is_discrete:
             return int(r)
         return r
