@@ -9,6 +9,7 @@ class distort(Artist):
     sigma = constant(0.1)
     alpha = constant(10.0)
     seed = constant(None)
+    mode = constant("constant")
     
     def __call__(self, cvs, t=0.0):
 
@@ -18,8 +19,7 @@ class distort(Artist):
         shape = cvs.shape
         random_state = np.random.RandomState(self.seed(t))
 
-        mode = "constant"
-        #mode = "reflect"
+        mode = self.mode(t)
         
         dx = gaussian_filter(
             (random_state.rand(*shape) * 2 - 1), sigma,

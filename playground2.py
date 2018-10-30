@@ -18,7 +18,6 @@ A = Animation(duration=2, fps=15)
 A(circle(x=0, color='w'))
 A(circle(x=-1, r=0.25, color='purple'))
 
-#theta = motion.offsetEase(lag, stop=2*np.pi, duration=len(A))()
 theta = motion.easeReturn('easeInOutQuad', 0, np.pi, len(A))
 A(rotate(theta=theta))
 
