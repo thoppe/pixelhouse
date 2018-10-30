@@ -34,7 +34,8 @@ _Very much a work in progress!_
 + [x] Rotation
 + [x] Translation
 + [ ] Scale
-+ [ ] Elastic deformations
++ [x] Elastic distortion
++ [ ] Generic elastic deformations
 
 #### Gradients
 + [ ] Linear gradients
@@ -71,7 +72,7 @@ _Very much a work in progress!_
 + [x] Proper library
 + [ ] setup.py
 + [ ] pip install
-+ [ ] Context mangager for canvas and animatino
++ [ ] Context mangager for canvas and animation
 + [ ] Unit tests
 + [ ] Doc coverage
 + [ ] Subpixel resolution

@@ -72,6 +72,13 @@ class Canvas():
             art(self)
         return self
 
+    def __len__(self):
+        '''
+        Return 2 so calling functions work seamlessly between 
+        Canvas and Animation (allows for interpolation to not complain).
+        '''
+        return 2
+
     def combine(self, rhs, mode="overlay"):
         if(rhs.width != self.width):
             raise ValueError("Can't combine images with different widths")
