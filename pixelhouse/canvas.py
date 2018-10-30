@@ -64,6 +64,9 @@ class Canvas():
             
         return Canvas(self.width, self.height, bg=bg)
 
+    def __call__(self, art):
+        art(self)
+
     def combine(self, rhs, mode="overlay"):
         if(rhs.width != self.width):
             raise ValueError("Can't combine images with different widths")
