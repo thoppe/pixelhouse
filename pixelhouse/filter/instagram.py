@@ -19,6 +19,7 @@ known_models = set([
 class instafilter(Artist):
 
     weight = constant(1.0)
+    args = ("weight",)
 
     def __init__(self, name, **kwargs):
         super().__init__(**kwargs)

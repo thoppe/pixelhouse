@@ -42,7 +42,7 @@ class Animation():
         assert(0 <= n < len(self))
 
         if not self.has_rendered[n]:
-            print(f"Rendering {n}/{len(self)}")
+            #print(f"Rendering {n}/{len(self)}")
 
             t = self.timepoints[n]
 
@@ -54,15 +54,23 @@ class Animation():
         return self.frames[n]
 
     def show(self, delay=50, repeat=True):
+
+        is_status_bar = True
         while True:
-            for n in range(len(self)):
+            if is_status_bar:
+                ITR = tqdm(range(len(self)))
+                is_status_bar = False
+            else:
+                ITR = range(len(self))
+                
+            for n in ITR:
                 img = self.render(n)
                 img.show(delay=delay)
             if not repeat:
                 break
 
     def to_gif(self, f_gif, palettesize=256, gifsicle=False):
-        images = [self.render(n).img for n in range(len(self))]
+        images = [self.render(n).img for n in tqdm(range(len(self)))]
         
         imageio.mimsave(f_gif, images,
                         #fps=self.fps*2,

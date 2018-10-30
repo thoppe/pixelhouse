@@ -2,12 +2,10 @@ import numpy as np
 import cv2
 from ..artist import Artist, constant
 
-# See more here
-# https://docs.opencv.org/2.4/modules/imgproc/doc/geometric_transformations.html#warpaffine
-
 class translate(Artist):
     x = constant(0.5)
     y = constant(0.0)
+    args = ("x", "y")
     
     def __call__(self, cvs, t=0.0):
         x = cvs.transform_length(self.x(t))
@@ -18,6 +16,7 @@ class translate(Artist):
     
 class rotate(Artist):
     theta = constant(np.pi/4)
+    args = ("theta",)
     
     def __call__(self, cvs, t=0.0):
         theta = cvs.transform_angle(self.theta(t))

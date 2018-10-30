@@ -8,8 +8,10 @@ from ..artist import Artist, constant
 class distort(Artist):
     sigma = constant(0.1)
     alpha = constant(10.0)
-    seed = constant(None)
     mode = constant("constant")
+    seed = constant(None)
+
+    args = ("sigma", "alpha", "mode", "seed")
     
     def __call__(self, cvs, t=0.0):
 

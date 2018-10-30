@@ -30,6 +30,7 @@ class PrimitiveArtist(Artist):
 
 class circle(PrimitiveArtist):
     r = constant(1.0)
+    args = ('x', 'y', 'r', 'color', 'thickness', 'linetype')
 
     def __call__(self, cvs, t=0.0):
         x, y, thickness, color, lineType = self.basic_transforms(cvs, t)
@@ -41,6 +42,7 @@ class circle(PrimitiveArtist):
 class rectangle(PrimitiveArtist):
     x1 = constant(1.0)
     y1 = constant(1.0)
+    args = ('x', 'y', 'x1', 'y1', 'color', 'thickness', 'lineType')
 
     def __call__(self, cvs, t=0.0):
         x, y, thickness, color, lineType = self.basic_transforms(cvs, t)
@@ -55,6 +57,7 @@ class line(PrimitiveArtist):
     x1 = constant(1.0)
     y1 = constant(1.0)
     thickness = constant(0.1)
+    args = ('x', 'y', 'x1', 'y1', 'color', 'thickness', 'lineType')
 
     def __call__(self, cvs, t=0.0):
         x, y, thickness, color, lineType = self.basic_transforms(cvs, t)
@@ -71,6 +74,9 @@ class ellipse(PrimitiveArtist):
     rotation = constant(0.0)
     angle_start = constant(0.0)
     angle_end = constant(2*np.pi)
+    args = ('x', 'y', 'a', 'b', 'rotation',
+            'angle_start', 'angle_end', 'color',
+            'thickness', 'lineType')
 
     def __call__(self, cvs, t=0.0):
         x, y, thickness, color, lineType = self.basic_transforms(cvs, t)
@@ -86,15 +92,3 @@ class ellipse(PrimitiveArtist):
                 rotation, angle_start, angle_end, color, thickness, lineType)
 
         cvs.cv2_draw(cv2.ellipse, args, mode=self.mode(t))
-
-
-if __name__== "__main__":
-    c = canvas.Canvas()
-
-    circle(x=1,color='r')(c,t=0.5)
-    circle(x=-1,color='b')(c)
-    rectangle(x=-3,y=-3,color='g')(c)
-    line(x=-3,y=-3,color='g')(c)
-    ellipse(color='purple')(c)
-
-    c.show()

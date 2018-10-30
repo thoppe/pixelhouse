@@ -33,53 +33,53 @@ palettes = ColorLoversPalette()
 
 
 def simple_circles():
-    c = Canvas(**canvas_args)
+    C = Canvas(**canvas_args)
 
     n = 3
     t = np.arange(0, 2*np.pi, 2*np.pi/n) + np.pi/6
     x,y = np.cos(t), np.sin(t)
 
-    circle(x=x[0], y=y[0], r=1, color=[0,255,0],mode='add')(c)
-    circle(x=x[1], y=y[1], r=1, color=[255,0,0],mode='add')(c)
-    circle(x=x[2], y=y[2], r=1, color=[0,0,255],mode='add')(c)
+    C(circle(x[0], y[0], 1, color=[0,255,0],mode='add'))
+    C(circle(x[1], y[1], 1, color=[255,0,0],mode='add'))
+    C(circle(x[2], y[2], 1, color=[0,0,255],mode='add'))
 
     # An example of not saturating the images together
-    circle(x=0, y=0, r=0.25, color=[155,155,155])(c)
+    C(circle(0, 0, 0.25, color=[155,155,155]))
     
-    return c
+    return C
 
 def simple_rectangles():
-    c = Canvas(**canvas_args)
+    C = Canvas(**canvas_args)
 
-    rectangle(x=-1,y=-1,x1=1,y1=1,color='lightcoral')(c)
-    rectangle(x=0,y=0,x1=2,y1=-2,color='lime')(c)
-    rectangle(x=-3,y=-3,x1=0.5,y1=0.5,color='royalblue')(c)
+    C(rectangle(-1,-1,1,1,color='lightcoral'))
+    C(rectangle(0,0,2,-2,color='lime'))
+    C(rectangle(-3,-3,0.5,0.5,color='royalblue'))
 
-    return c
+    return C
 
 
 def simple_lines():
-    c = Canvas(**canvas_args)
+    C = Canvas(**canvas_args)
 
     tc = 0.04
 
  
     for i in np.arange(-4,5,.5):
         line(x=-4, y=i, x1=4, y1=i,
-             thickness=tc, color=[20,]*3)(c)
+             thickness=tc, color=[20,]*3)(C)
         line(x=i, y=4, x1=i, y1=-4,
-             thickness=tc, color=[20,]*3)(c)
+             thickness=tc, color=[20,]*3)(C)
 
     for i in np.arange(-4,5,1):
         line(x=-4, y=i, x1=4, y1=i, thickness=tc,
-             color=[100,int(100+i*10),100])(c)
+             color=[100,int(100+i*10),100])(C)
         line(x=i, y=4, x1=i, y1=-4, thickness=tc,
-             color=[100,100,int(100+i*10)])(c)
+             color=[100,100,int(100+i*10)])(C)
     
-    line(x=-4, y=0, x1=4, y1=0, thickness=0.05)(c)
-    line(x=0, y=4, x1=0, y1=-4, thickness=0.05)(c)
+    line(-4, 0, 4, 0, thickness=0.05)(C)
+    line(0, 4, 0, -4, thickness=0.05)(C)
 
-    return c
+    return C
 
 def instagram_filters():
 
@@ -92,7 +92,7 @@ def instagram_filters():
 
 
 def teyleen_982():
-    c = Canvas(**canvas_args)
+    C = Canvas(**canvas_args)
     pi = np.pi
     
     pal = [matplotlib_colors("lavender"),] + palettes(96)
@@ -107,29 +107,29 @@ def teyleen_982():
         ellipse(a=r,b=r,rotation=pi/2,
                 angle_start=t0,angle_end=t1,
                 color=pal[n],
-                thickness=tc)(c)
+                thickness=tc)(C)
 
         dx *= 1.4
         t0 = dx
         t1 = 2*pi-dx
         r -= 0.2
 
-    return c
+    return C
 
 def teyleen_116():
-    c = Canvas(**canvas_args)
+    C = Canvas(**canvas_args)
     pal = palettes(152)
 
     x = 0.25
-    circle(x=x,y=x, r=x/2, color=pal[0])(c)
-    circle(x=-x,y=x, r=x/2, color=pal[1])(c)
-    circle(x=x,y=-x, r=x/2, color=pal[2])(c)
-    circle(x=-x,y=-x, r=x/2, color=pal[3])(c)
+    circle(x,x, r=x/2, color=pal[0])(C)
+    circle(-x,x, r=x/2, color=pal[1])(C)
+    circle(x,-x, r=x/2, color=pal[2])(C)
+    circle(-x,-x, r=x/2, color=pal[3])(C)
 
-    circle(y=x/2, r=2-x, color=pal[4],thickness=x/20)(c)
-    circle(y=-x/2, r=2-x, color=pal[4],thickness=x/20)(c)
+    circle(y=x/2, r=2-x, color=pal[4],thickness=x/20)(C)
+    circle(y=-x/2, r=2-x, color=pal[4],thickness=x/20)(C)
 
-    return c
+    return C
 
 
 #########################################################################
@@ -139,8 +139,8 @@ def rotating_circles():
     A = Animation(**animation_args)
     x = motion.easeReturn('easeInOutQuad', -1, 1, len(A))
 
-    A(circle(x=x, y=1, r=1.25,color=[0,250,150],mode='add'))
-    A(circle(x=-x, y=-1, r=1.25,color=[255,5,100],mode='add'))
+    A(circle(x, 1, r=1.25,color=[0,250,150],mode='add'))
+    A(circle(-x, -1, r=1.25,color=[255,5,100],mode='add'))
         
     return A
 
@@ -155,17 +155,16 @@ def checkerboard():
     args = {"r":r, "color":c, "mode":"add"}
 
     for dx, dy in itertools.product(coord, repeat=2):
-        A(circle(x=z+dx, y=z+dy, **args))
-        A(circle(x=z+dx, y=-z+dy, **args))
-        A(circle(x=-z+dx, y=-z+dy, **args))
-        A(circle(x=-z+dx, y=z+dy, **args))
+        A(circle(z+dx, z+dy, **args))
+        A(circle(z+dx, -z+dy, **args))
+        A(circle(-z+dx, -z+dy, **args))
+        A(circle(-z+dx, z+dy, **args))
 
-        A(circle(x=dx, y=z+dy, **args))
-        A(circle(x=z+dx, y=dy, **args))
+        A(circle(dx, z+dy, **args))
+        A(circle(z+dx, dy, **args))
 
-        A(circle(x=dx, y=-z+dy, **args))
-        
-        A(circle(x=-z+dx, y=dy, **args))
+        A(circle(dx, -z+dy, **args))
+        A(circle(-z+dx, dy, **args))
     
     return A
 

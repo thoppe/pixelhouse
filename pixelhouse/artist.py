@@ -15,10 +15,12 @@ class Artist():
     '''
     Artists are the backbone of pixelhouse. They draw what's on the screen.
     To be a proper artist, all derived classes must accept their arguments
-    as functions.
+    as functions. To work with both *arg and **kwargs, child classes must
+    define the class member "args" for the argument order.
     '''
 
     mode = constant(_DEFAULT_MODE)
+    args = []
     
     @staticmethod
     def _create_interpolation(z):
@@ -28,12 +30,15 @@ class Artist():
            return f(x)
        return func
 
-    def __init__(self,  **kwargs):
+    def __init__(self,  *args, **kwargs):
         '''
         When an artist is initiated, all of the attributes can be set
         as a function of time. These attributes can be a constant, a numpy
         array (interpolation will be used if needed), or a function.
         '''
+
+        for key, val in zip(self.args, args):
+            kwargs[key] = val        
 
         attributes = dir(self)
         for key, val in kwargs.items():
