@@ -34,11 +34,9 @@ class Animation():
     def __len__(self):
         return len(self.frames)
 
-    def add(self, art):
-        self.artists.append(art)
-
     def __call__(self, art):
         self.artists.append(art)
+        return self
 
     def render(self, n):
         assert(0 <= n < len(self))

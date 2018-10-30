@@ -139,8 +139,8 @@ def rotating_circles():
     A = Animation(**animation_args)
     x = motion.easeReturn('easeInOutQuad', -1, 1, len(A))
 
-    A.add(circle(x=x, y=1, r=1.25,color=[0,250,150],mode='add'))
-    A.add(circle(x=-x, y=-1, r=1.25,color=[255,5,100],mode='add'))
+    A(circle(x=x, y=1, r=1.25,color=[0,250,150],mode='add'))
+    A(circle(x=-x, y=-1, r=1.25,color=[255,5,100],mode='add'))
         
     return A
 
@@ -155,17 +155,17 @@ def checkerboard():
     args = {"r":r, "color":c, "mode":"add"}
 
     for dx, dy in itertools.product(coord, repeat=2):
-        A.add(circle(x=z+dx, y=z+dy, **args))
-        A.add(circle(x=z+dx, y=-z+dy, **args))
-        A.add(circle(x=-z+dx, y=-z+dy, **args))
-        A.add(circle(x=-z+dx, y=z+dy, **args))
+        A(circle(x=z+dx, y=z+dy, **args))
+        A(circle(x=z+dx, y=-z+dy, **args))
+        A(circle(x=-z+dx, y=-z+dy, **args))
+        A(circle(x=-z+dx, y=z+dy, **args))
 
-        A.add(circle(x=dx, y=z+dy, **args))
-        A.add(circle(x=z+dx, y=dy, **args))
+        A(circle(x=dx, y=z+dy, **args))
+        A(circle(x=z+dx, y=dy, **args))
 
-        A.add(circle(x=dx, y=-z+dy, **args))
+        A(circle(x=dx, y=-z+dy, **args))
         
-        A.add(circle(x=-z+dx, y=dy, **args))
+        A(circle(x=-z+dx, y=dy, **args))
     
     return A
 
@@ -187,7 +187,7 @@ def timer():
             thickness=tc, color='indigo',
             mode='add',
         )
-        A.add(L)
+        A(L)
         
         r *= 0.98
         lag *= 1.17
@@ -212,7 +212,7 @@ def pacman():
         a=1, b=1,
         angle_start=z, angle_end=2*np.pi-z, color=pac_color)
 
-    A.add(pacman)
+    A(pacman)
     return A
 
 #########################################################################

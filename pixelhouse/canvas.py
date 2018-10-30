@@ -64,8 +64,13 @@ class Canvas():
             
         return Canvas(self.width, self.height, bg=bg)
 
-    def __call__(self, art):
-        art(self)
+    def __call__(self, art=None):
+        '''
+        Calls an artist on the canvas.
+        '''
+        if art is not None:
+            art(self)
+        return self
 
     def combine(self, rhs, mode="overlay"):
         if(rhs.width != self.width):
