@@ -24,7 +24,8 @@ class NamedColors():
     def __call__(self, name):
 
         if name not in self.colors:
-            msg = f"Color {name} not a known color."
+            color_list = self.colors.keys()
+            msg = f"{color_list} are known colors, {name} is unknown."
             raise KeyError(msg)
 
         color = self.colors[name]

@@ -87,3 +87,31 @@ class distort(ElasticTransform):
         dy = gaussian_filter(dy, sigma, mode=mode)
 
         self.transform(cvs, dy*alpha, dx*alpha, coords, self.mode(t))
+
+class motion_lines(ElasticTransform):
+    alpha = constant(0.15)
+    theta = constant(0.0)
+    mode = constant("constant")
+    args = ("alpha", "mode")
+  
+    def __call__(self, cvs, t=0.0):
+        alpha = cvs.transform_length(self.alpha(t), is_discrete=False)
+        
+        theta = self.theta(t)
+        mode = self.mode(t)
+
+        coords = self.grid_coordinates(cvs)
+
+        y = cvs.inverse_transform_y(coords[1].astype(float))
+        x = cvs.inverse_transform_y(coords[0].astype(float))
+        
+        x = np.abs(x)
+        y = np.abs(y)
+        
+        dx = np.cos(theta)*x
+        dy = np.sin(theta)*y
+
+        print(dx.max(), dx.min())
+        
+        self.transform(cvs, alpha*dy, alpha*dx, coords, self.mode(t))
+

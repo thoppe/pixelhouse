@@ -142,18 +142,31 @@ class Canvas():
     def transform_x(self, x, is_discrete=True):
         x *= self.width / 2.0
         x /= self.extent
-        x += self.width / 2
+        x += self.width / 2.0
         if is_discrete:
             return int(x)
+        return x
+
+    def inverse_transform_x(self, x):
+        x -= self.width / 2
+        x *= self.extent
+        x /= self.width / 2.0
         return x
 
     def transform_y(self, y, is_discrete=True):
         y *= -self.height / 2.0
         y /= self.extent
-        y += self.height / 2
+        y += self.height / 2.0
         if is_discrete:
             return int(y)
         return y
+    
+    def inverse_transform_y(self, y):
+        y -= self.height / 2
+        y *= self.extent
+        y /= self.height / 2.0
+        return y
+    
 
     def transform_length(self, r, is_discrete=True):
         r *= (float(self.width)/self.extent)
