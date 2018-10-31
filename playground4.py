@@ -2,8 +2,8 @@
 import numpy as np
 from pixelhouse import Artist
 from pixelhouse import Canvas, Animation, circle, motion,rectangle, line, ellipse
-from pixelhouse.transform.simple import translate, rotate
-from pixelhouse.transform.elastic import distort, pull, motion_lines
+from pixelhouse.transform import translate, rotate
+from pixelhouse.transform import distort, pull, motion_lines
 
 #A = Canvas(width=300, height=300)
 #A = Animation(width=300, height=300, fps=25)

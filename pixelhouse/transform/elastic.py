@@ -10,15 +10,15 @@ class ElasticTransform(Artist):
 
     @staticmethod
     def grid_coordinates(cvs):
-        shape = cvs.shape        
-        
+        shape = tuple(cvs.shape)
+
         xg, yg, zg = np.meshgrid(
             np.arange(shape[1]),
             np.arange(shape[0]),
             np.arange(shape[2])
         )
 
-        return xg, yg, zg
+        return (xg, yg, zg)
 
     @staticmethod
     def transform(cvs, dy, dx, coords, mode):
@@ -104,14 +104,9 @@ class motion_lines(ElasticTransform):
 
         y = cvs.inverse_transform_y(coords[1].astype(float))
         x = cvs.inverse_transform_y(coords[0].astype(float))
-        
-        x = np.abs(x)
-        y = np.abs(y)
-        
-        dx = np.cos(theta)*x
-        dy = np.sin(theta)*y
-
-        print(dx.max(), dx.min())
+                
+        dx = np.cos(theta)*np.abs(x)
+        dy = np.sin(theta)*np.abs(y)
         
         self.transform(cvs, alpha*dy, alpha*dx, coords, self.mode(t))
 
