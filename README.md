@@ -33,9 +33,9 @@ _Very much a work in progress!_
 #### Transforms
 + [x] Rotation
 + [x] Translation
-+ [ ] Scale
++ [x] Scale
 + [x] Elastic distortion
-+ [ ] Generic elastic deformations
++ [x] Generic elastic deformations
 
 #### Gradients
 + [ ] Linear gradients

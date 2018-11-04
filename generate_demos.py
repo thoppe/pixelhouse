@@ -2,6 +2,7 @@ from pixelhouse import Canvas, Animation
 from pixelhouse import circle, line, ellipse, rectangle
 from pixelhouse.color import matplotlib_colors, ColorLoversPalette
 from pixelhouse.filter import instafilter
+from pixelhouse.transform import scale
 import pixelhouse.motion as motion
 
 from pixelhouse import canvas2mp4, canvas2gif
@@ -86,7 +87,8 @@ def simple_lines():
 def instagram_filters():
 
     c1 = Canvas(**canvas_args, bg='w')
-    c1.load('pixelhouse/filter/insta/samples/Normal.jpg').rescale(0.25)
+    c1.load('pixelhouse/filter/insta/samples/Normal.jpg')
+    scale(fx=0.25)(c1)
     circle(r=0.50, color='r')(c1)
     instafilter('Ludwig', weight=0.80)(c1)
 

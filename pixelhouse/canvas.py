@@ -230,10 +230,3 @@ class Canvas():
         # Read the image in and convert to RGB space
         self._img =  cv2.cvtColor(cv2.imread(f_img), cv2.COLOR_BGR2RGB)
         return self
-
-    def rescale(self, dx=1.0, dy=None):
-        # Rescale the canvas by the factors (dx, dy). Let dy=dx if not provided.
-        if dy is None:
-            dy = dx
-            
-        self._img = cv2.resize(self._img, (0,0), fx=dx, fy=dy) 
