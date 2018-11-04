@@ -26,7 +26,7 @@ _Very much a work in progress!_
 + [x] Line
 + [x] Circle
 + [x] Ellipse
-+ [ ] Polyline
++ [x] Polyline
 + [x] Backgrounds
 + [ ] Text
 

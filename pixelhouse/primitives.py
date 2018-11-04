@@ -95,3 +95,30 @@ class ellipse(PrimitiveArtist):
                 rotation, angle_start, angle_end, color, thickness, lineType)
 
         cvs.cv2_draw(cv2.ellipse, args, mode=self.mode(t))
+
+
+
+class polyline(PrimitiveArtist):
+    xpts = constant([0.0, 1.0, 2.0])
+    ypts = constant([0.0, 2.0, 0.0])
+    thickness = constant(0.1)
+    is_closed = constant(1)
+    
+    args = ('xpts', 'ypts', 'is_closed', 'color', 'thickness', 'lineType')
+
+    def __call__(self, cvs, t=0.0):
+        print (np.array(self.xpts(t)).dtype)
+
+        xpts = cvs.transform_x(np.array(self.xpts(t)), False)
+        ypts = cvs.transform_y(np.array(self.ypts(t)), False)
+
+        thickness = cvs.transform_thickness(self.thickness(t))
+        color = cvs.transform_color(self.color(t))
+        lineType = cvs.get_lineType(self.antialiased(t))
+        is_closed = self.is_closed(t)
+        
+        pts = np.vstack([xpts, ypts]).T.astype(np.int32)
+        print(pts.shape, pts.dtype)
+                
+        args = [pts], is_closed, color, thickness, lineType
+        cvs.cv2_draw(cv2.polylines, args, mode=self.mode(t))
