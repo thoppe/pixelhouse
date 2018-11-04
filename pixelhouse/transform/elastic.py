@@ -10,6 +10,11 @@ class ElasticTransform(Artist):
 
     @staticmethod
     def grid_coordinates(cvs):
+
+        attrs = cvs.shared_attributes
+        if 'coordinates' in cvs.shared_attributes.keys():
+            return attrs['coordinates']
+        
         shape = tuple(cvs.shape)
 
         xg, yg, zg = np.meshgrid(
@@ -18,7 +23,8 @@ class ElasticTransform(Artist):
             np.arange(shape[2])
         )
 
-        return (xg, yg, zg)
+        attrs['coordinates'] = (xg, yg, zg)
+        return attrs['coordinates']
 
     @staticmethod
     def transform(cvs, dy, dx, coords, mode):
@@ -32,7 +38,7 @@ class ElasticTransform(Artist):
         )
 
         distored_image = map_coordinates(
-            cvs.img, indices, order=3, mode=mode)
+            cvs.img, indices, order=2, mode=mode)
         
         cvs._img = distored_image.reshape(cvs.shape)
 

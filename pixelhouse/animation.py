@@ -40,7 +40,6 @@ class Animation():
         assert(0 <= n < len(self))
 
         if not self.has_rendered[n]:
-            #print(f"Rendering {n}/{len(self)}")
 
             t = self.timepoints[n]
 
@@ -48,6 +47,11 @@ class Animation():
                 art(self.frames[n], t)
 
             self.has_rendered[n] = True
+
+            # Copy any shared attributes to the next frame
+            if n < len(self)-1:
+                self.frames[n+1].shared_attributes.update(
+                    self.frames[n].shared_attributes)
 
         return self.frames[n]
 

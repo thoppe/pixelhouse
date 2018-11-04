@@ -29,6 +29,10 @@ class Canvas():
         
         self.name = name
         self.extent = extent
+
+        # When animating, we may want to pass attributes from one canvas
+        # to another. Do so in the shared_attributes
+        self.shared_attributes = {}
         
 
     def __repr__(self):
