@@ -61,6 +61,15 @@ class Canvas():
     def shape(self):
         return self.height, self.width, self.channels
 
+    @property
+    def mask(self):
+        '''
+        Return a bitwise mask from the alpha channel.
+        '''
+        alpha = self.img[:, :, 3] > 0
+        return alpha
+        
+
     def blank(self, bg=None):
         # Return an empty canvas of the same size
         if bg is None:
