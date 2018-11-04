@@ -12,7 +12,7 @@ circle(x=0, y=2, r=0.7, color='r')(c2)
 c3 = c1.blank('w')
 circle(x=0, y=-2, r=0.7,color='k')(c3)
 
-gaussian_blur(blur_x=1)(c1)
+gaussian_blur(blur_x=2)(c1)
 
 circle(x=0, color='w')(c1)
 circle(x=0, y=2, r=0.7, color='r')(c2)
