@@ -4,6 +4,8 @@ from pixelhouse.color import matplotlib_colors, ColorLoversPalette
 from pixelhouse.filter import instafilter
 import pixelhouse.motion as motion
 
+from pixelhouse import canvas2mp4, canvas2gif
+
 import numpy as np
 import os
 import itertools
@@ -224,10 +226,11 @@ if __name__ == "__main__":
 
     instagram_filters().save("examples/instafilters_from_file.png")
 
-    rotating_circles().to_gif("examples/moving_circles.gif", **gif_args)
-    pacman().to_gif("examples/pacman.gif", **gif_args)
-    checkerboard().to_gif("examples/checkerboard.gif", **gif_args)
-    timer().to_gif("examples/timer.gif", **gif_args)
+    canvas2gif(rotating_circles(), "examples/moving_circles.gif", **gif_args)
+    canvas2gif(pacman(), "examples/pacman.gif", **gif_args)
+    canvas2gif(checkerboard(), "examples/checkerboard.gif", **gif_args)
+
+    canvas2gif(timer(), "examples/timer.gif", **gif_args)
 
     teyleen_982().save("examples/teyleen_982.png")
     teyleen_116().save("examples/teyleen_116.png")
