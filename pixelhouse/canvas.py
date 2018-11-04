@@ -62,12 +62,11 @@ class Canvas():
         return self.height, self.width, self.channels
 
     @property
-    def mask(self):
+    def alpha(self):
         '''
-        Return a bitwise mask from the alpha channel.
+        Return the alpha channel from the image
         '''
-        alpha = self.img[:, :, 3] > 0
-        return alpha
+        return self.img[:, :, 3]
         
 
     def blank(self, bg=None):
@@ -76,6 +75,12 @@ class Canvas():
             bg = self.bg
             
         return Canvas(self.width, self.height, bg=bg)
+
+    def copy(self, bg=None):
+        # Returns a deep copy of this canvas
+        cvs = Canvas(self.width, self.height, bg=self.bg)
+        cvs._img = self.img.copy()
+        return cvs
 
     def __call__(self, art=None):
         '''

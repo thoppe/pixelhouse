@@ -13,14 +13,16 @@ class linear_gradient(LocalCoordinateArtist):
 
     args = ('color0', 'color1', 'theta')
     
-    def __call__(self, cvs, t=0.0, mask=None):
+    def __call__(self, cvs, mask, t=0.0):
+        # Assume mask is of type Canvas
+        mask_idx = mask.alpha > 0
 
         theta = self.theta(t)
         A = np.array([np.cos(theta), np.sin(theta)])
 
         # Project each masked grid point onto the angle mapped by theta
         xg, yg = cvs.grid_points()
-        B = np.vstack([xg[mask], yg[mask]])
+        B = np.vstack([xg[mask_idx], yg[mask_idx]])
 
         pro = A.dot(B)
         pro -= pro.min()
@@ -35,8 +37,14 @@ class linear_gradient(LocalCoordinateArtist):
         B = np.interp(pro, [0,1], [c0[2], c1[2]])
         A = np.interp(pro, [0,1], [c0[3], c1[3]])
 
-        C = np.clip(np.vstack([R,G,B,]).T, 0, 255).astype(np.uint8)
-
-        #color = cvs.transform_color(self.color(t))
+        # Smooth the image based off the alpha from the mask image
+        alpha = (mask.alpha/255.0)[mask_idx]
+        A *= alpha
         
-        cvs._img[mask, :3] = C
+        C = np.clip(np.vstack([R,G,B,A]).T, 0, 255).astype(np.uint8)
+
+        rhs = cvs.copy()
+        rhs._img[mask_idx] = C
+
+        cvs.overlay(rhs)
+
