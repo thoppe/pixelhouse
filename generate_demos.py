@@ -229,7 +229,6 @@ if __name__ == "__main__":
     canvas2gif(rotating_circles(), "examples/moving_circles.gif", **gif_args)
     canvas2gif(pacman(), "examples/pacman.gif", **gif_args)
     canvas2gif(checkerboard(), "examples/checkerboard.gif", **gif_args)
-
     canvas2gif(timer(), "examples/timer.gif", **gif_args)
 
     teyleen_982().save("examples/teyleen_982.png")
