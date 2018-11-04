@@ -9,24 +9,6 @@ from ..artist import Artist, constant
 class ElasticTransform(Artist):
 
     @staticmethod
-    def grid_coordinates(cvs):
-
-        attrs = cvs.shared_attributes
-        if 'coordinates' in cvs.shared_attributes.keys():
-            return attrs['coordinates']
-        
-        shape = tuple(cvs.shape)
-
-        xg, yg, zg = np.meshgrid(
-            np.arange(shape[1]),
-            np.arange(shape[0]),
-            np.arange(shape[2])
-        )
-
-        attrs['coordinates'] = (xg, yg, zg)
-        return attrs['coordinates']
-
-    @staticmethod
     def transform(cvs, dy, dx, coords, mode):
         
         xg, yg, zg = coords
@@ -57,7 +39,7 @@ class pull(ElasticTransform):
         y = float(cvs.transform_y(self.y(t)))
         alpha = cvs.transform_length(self.alpha(t), is_discrete=False)
 
-        coords = self.grid_coordinates(cvs)
+        coords = cvs.grid_coordinates()
         
         theta = np.arctan2(coords[1]-y, coords[0]-x)        
         dx = alpha*np.cos(theta)
@@ -84,7 +66,7 @@ class distort(ElasticTransform):
         shape = cvs.shape
         random_state = np.random.RandomState(self.seed(t))
 
-        coords = self.grid_coordinates(cvs)
+        coords = cvs.grid_coordinates()
 
         dx = random_state.rand(*shape) * 2 - 1
         dy = random_state.rand(*shape) * 2 - 1
@@ -106,7 +88,7 @@ class motion_lines(ElasticTransform):
         theta = self.theta(t)
         mode = self.mode(t)
 
-        coords = self.grid_coordinates(cvs)
+        coords = cvs.grid_coordinates()
 
         y = cvs.inverse_transform_y(coords[1].astype(float))
         x = cvs.inverse_transform_y(coords[0].astype(float))

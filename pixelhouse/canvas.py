@@ -216,6 +216,51 @@ class Canvas():
 
         return c
 
+    def grid_coordinates(self):
+
+        attrs = self.shared_attributes
+        
+        if ('grid_coordinates' in attrs.keys() and
+            attrs['prior_shape'] == self.shape):
+            return attrs['grid_coordinates']
+        
+        shape = tuple(self.shape)
+
+        xg, yg, zg = np.meshgrid(
+            np.arange(shape[1]),
+            np.arange(shape[0]),
+            np.arange(shape[2])
+        )
+
+        attrs['grid_coordinates'] = (xg, yg, zg)
+        attrs['prior_shape'] = self.shape
+        
+        return attrs['grid_coordinates']
+
+
+    def grid_points(self):
+
+        attrs = self.shared_attributes
+        
+        if ('grid_points' in attrs.keys() and
+            attrs['prior_shape'] == self.shape):
+            return attrs['grid_points']
+
+        xg, yg, _ = self.grid_coordinates()
+        xg = xg[:,:,0]
+        yg = yg[:,:,0]
+
+        xp = self.inverse_transform_x(xg.astype(np.float32))
+        yp = self.inverse_transform_y(yg.astype(np.float32))
+
+        attrs['grid_points'] = (xp, yp)
+        attrs['prior_shape'] = self.shape
+        
+        return attrs['grid_points']
+
+
+    
+
     @staticmethod
     def transform_angle(rads):
         # From radians into degrees, counterclockwise
