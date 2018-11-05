@@ -13,13 +13,17 @@ class linear_gradient(Artist):
     interpolation = constant('LAB')
 
     args = ('color0', 'color1', 'theta', 'interpolation')
-    
-    def __call__(self, cvs, mask, t=0.0):
+
+    def __call__(self, cvs, t=0.0, mask=None):
         '''
         Assume the mask is of type Canvas. 
         Interpolation can be LAB or RGB.
         Theta controls the angle along the shape.
+
+        If mask is None, return True to show that a gradient exists
         '''
+        if mask is None:
+            return True
 
         mask_idx = mask.alpha > 0
 

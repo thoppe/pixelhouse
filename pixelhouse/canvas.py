@@ -115,8 +115,13 @@ class Canvas():
 
     
     def cv2_draw(self, func, args, mode, **kwargs):
+        
         if mode=='direct':
             func(self._img, *args)
+        elif mode=='gradient':
+            rhs = self.blank()
+            func(rhs.img, *args)            
+            kwargs['gradient'](self, t=0.0, mask=rhs)
         else:
             rhs = self.blank()
             func(rhs.img, *args)

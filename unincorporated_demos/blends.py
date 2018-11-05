@@ -5,14 +5,13 @@ from pixelhouse.gradient import linear_gradient
 
 sx = 400
 
-c0 = Canvas(width=sx, height=sx, bg='white')
-circle(x=-2,r=0.5)(c0)
 
-c1 = Canvas(width=sx, height=sx, bg='white')
-circle()(c1)
+c = Canvas(width=sx, height=sx, bg='purple')
 
-c2 = Canvas(width=sx, height=sx, bg='purple')
-linear_gradient(color0='white', color1=[255,255,155,0])(c2, mask=c1)
-linear_gradient(theta=0,color0='red', color1='green')(c2, mask=c0)
+lg0 = linear_gradient(theta=0,color0='red', color1='green')
+lg1 = linear_gradient(color0='white', color1=[255,255,155,20])
 
-c2.show()
+circle(gradient=lg1)(c)
+circle(x=2.5,y=-2.5,r=0.5,gradient=lg0)(c)
+
+c.show()

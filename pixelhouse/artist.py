@@ -7,7 +7,7 @@ import itertools
 _DEFAULT_MODE = 'overlay'
 
 def constant(x):
-    def func(self, t=0):
+    def func(self, t=0, *args, **kwargs):
         return x
     return func
 
