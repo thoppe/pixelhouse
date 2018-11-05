@@ -62,12 +62,11 @@ class Canvas():
         return self.height, self.width, self.channels
 
     @property
-    def mask(self):
+    def alpha(self):
         '''
-        Return a bitwise mask from the alpha channel.
+        Return the alpha channel from the image
         '''
-        alpha = self.img[:, :, 3] > 0
-        return alpha
+        return self.img[:, :, 3]
         
 
     def blank(self, bg=None):
@@ -76,6 +75,12 @@ class Canvas():
             bg = self.bg
             
         return Canvas(self.width, self.height, bg=bg)
+
+    def copy(self, bg=None):
+        # Returns a deep copy of this canvas
+        cvs = Canvas(self.width, self.height, bg=self.bg)
+        cvs._img = self.img.copy()
+        return cvs
 
     def __call__(self, art=None):
         '''
@@ -215,6 +220,51 @@ class Canvas():
             c = list(c) + [255,]
 
         return c
+
+    def grid_coordinates(self):
+
+        attrs = self.shared_attributes
+        
+        if ('grid_coordinates' in attrs.keys() and
+            attrs['prior_shape'] == self.shape):
+            return attrs['grid_coordinates']
+        
+        shape = tuple(self.shape)
+
+        xg, yg, zg = np.meshgrid(
+            np.arange(shape[1]),
+            np.arange(shape[0]),
+            np.arange(shape[2])
+        )
+
+        attrs['grid_coordinates'] = (xg, yg, zg)
+        attrs['prior_shape'] = self.shape
+        
+        return attrs['grid_coordinates']
+
+
+    def grid_points(self):
+
+        attrs = self.shared_attributes
+        
+        if ('grid_points' in attrs.keys() and
+            attrs['prior_shape'] == self.shape):
+            return attrs['grid_points']
+
+        xg, yg, _ = self.grid_coordinates()
+        xg = xg[:,:,0]
+        yg = yg[:,:,0]
+
+        xp = self.inverse_transform_x(xg.astype(np.float32))
+        yp = self.inverse_transform_y(yg.astype(np.float32))
+
+        attrs['grid_points'] = (xp, yp)
+        attrs['prior_shape'] = self.shape
+        
+        return attrs['grid_points']
+
+
+    
 
     @staticmethod
     def transform_angle(rads):

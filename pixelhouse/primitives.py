@@ -3,6 +3,7 @@ import cv2
 from .artist import Artist, constant
 
 _DEFAULT_COLOR = 'white'
+_DEFAULT_SECONDARY_COLOR = 'black'
 _DEFAULT_THICKNESS = -1
 _DEFAULT_ANTIALIASED = True
 _DEFAULT_MODE = 'direct'
