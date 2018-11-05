@@ -38,8 +38,8 @@ _Very much a work in progress!_
 + [x] Generic elastic deformations
 
 #### Gradients
-+ [ ] Linear gradients
-+ [ ] Transparent gradients
++ [x] Linear gradients
++ [ ] Gradients built into primitives
 
 #### Layers
 + [x] Additive
