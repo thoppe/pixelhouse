@@ -2,55 +2,25 @@ import numpy as np
 import cv2
 from ..artist import Artist, constant
 from ..primitives import _DEFAULT_COLOR, _DEFAULT_SECONDARY_COLOR
+from ..color import RGBa_interpolation, LABa_interpolation
 import cv2
 
-def lerp(t, y0, y1, x0=0, x1=1):
-    return np.interp(t, [x0, x1], [y0, y1])
-
-def RGBa_interpolation(t, c0, c1, alpha):
-    R = lerp(t, c0[0], c1[0])
-    G = lerp(t, c0[1], c1[1])
-    B = lerp(t, c0[2], c1[2])
-    a = lerp(t, c0[3], c1[3])*alpha
-    return np.vstack([R,G,B,a]).T
-
-def LABa_interpolation(t, c0, c1, alpha):
-    # Slice off the alpha channel
-    a_start, c0 = c0[3], c0[:3]
-    a_final, c1 = c1[3], c1[:3]
-
-    # Convert colors to LAB    
-    C = np.array([c0,c1]).astype(np.uint8).reshape((2,1,3))
-    c0, c1 = cv2.cvtColor(C, cv2.COLOR_RGB2LAB).reshape(2,3)
-
-    # Interpolate in LAB space
-    L = lerp(t, c0[0], c1[0])
-    A = lerp(t, c0[1], c1[1])
-    B = lerp(t, c0[2], c1[2])
-    
-    # Convert back to RGB
-    C = np.vstack([L,A,B]).T.reshape(-1,1,3).astype(np.uint8)
-    C = cv2.cvtColor(C, cv2.COLOR_LAB2RGB).reshape(-1,3)
-
-    # Add back in the weighted alpha channel
-    a = lerp(t, a_start, a_final)
-    a = np.clip(a*alpha, 0, 255).astype(np.uint8)
-
-    # Stack them all together
-    C = np.hstack([C,a.reshape(-1,1)])
-
-    return C
-    
 
 class linear_gradient(Artist):
     color0 = constant(_DEFAULT_COLOR)
     color1 = constant(_DEFAULT_COLOR)
     theta = constant(np.pi/4)
+    interpolation = constant('LAB')
 
-    args = ('color0', 'color1', 'theta')
+    args = ('color0', 'color1', 'theta', 'interpolation')
     
     def __call__(self, cvs, mask, t=0.0):
-        # Assume mask is of type Canvas
+        '''
+        Assume the mask is of type Canvas. 
+        Interpolation can be LAB or RGB.
+        Theta controls the angle along the shape.
+        '''
+
         mask_idx = mask.alpha > 0
 
         theta = self.theta(t)
@@ -70,13 +40,17 @@ class linear_gradient(Artist):
         # Smooth the image based off the alpha from the mask image
         alpha = (mask.alpha/255.0)[mask_idx]
 
-        # RGBA interpolation (not great!)
-        #C = RGBa_interpolation(pro, c0, c1,alpha)
-
-        # LAB interpolation (better!)
-        C = LABa_interpolation(pro, c0, c1,alpha)
+        imode = self.interpolation(t)
+        if imode == "LAB":
+            C = LABa_interpolation(pro, c0, c1,alpha)
+        elif imode == "RGB":
+            # RGBA interpolation (not great!)
+            C = RGBa_interpolation(pro, c0, c1,alpha)
+        else:
+            raise KeyError(f"Unknown interpolation {imode}")
         
 
+        # Blend the new shape in
         rhs = cvs.copy()
         rhs._img[mask_idx] = C
 
