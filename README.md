@@ -39,7 +39,6 @@ _Very much a work in progress!_
 
 #### Gradients
 + [x] Linear gradients
-+ [ ] Gradients built into primitives
 
 #### Layers
 + [x] Additive

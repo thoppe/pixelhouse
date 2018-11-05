@@ -121,7 +121,7 @@ class Canvas():
         elif mode=='gradient':
             rhs = self.blank()
             func(rhs.img, *args)            
-            kwargs['gradient'](self, t=0.0, mask=rhs)
+            kwargs['gradient'](self, t=kwargs['t'], mask=rhs)
         else:
             rhs = self.blank()
             func(rhs.img, *args)

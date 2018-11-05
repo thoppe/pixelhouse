@@ -44,7 +44,7 @@ class circle(PrimitiveArtist):
         r = cvs.transform_length(self.r(t))
         
         args = (x,y), r, color, thickness, lineType
-        cvs.cv2_draw(cv2.circle, args, mode=mode, gradient=self.gradient)
+        cvs.cv2_draw(cv2.circle, args, mode=mode, gradient=self.gradient, t=t)
 
 
 class rectangle(PrimitiveArtist):
@@ -58,7 +58,7 @@ class rectangle(PrimitiveArtist):
         y1 = cvs.transform_y(self.y1(t))
 
         args = (x,y), (x1, y1), color, thickness, lineType
-        cvs.cv2_draw(cv2.rectangle, args, mode=mode, gradient=self.gradient)
+        cvs.cv2_draw(cv2.rectangle, args, mode=mode, gradient=self.gradient, t=t)
 
 
 class line(PrimitiveArtist):
@@ -76,7 +76,7 @@ class line(PrimitiveArtist):
         thickness = max(thickness, 1)
 
         args = (x,y), (x1, y1), color, thickness, lineType
-        cvs.cv2_draw(cv2.line, args, mode=mode, gradient=self.gradient)
+        cvs.cv2_draw(cv2.line, args, mode=mode, gradient=self.gradient, t=t)
 
 class ellipse(PrimitiveArtist):
     a = constant(2.0)
@@ -102,7 +102,7 @@ class ellipse(PrimitiveArtist):
         args = ((x,y), (a, b),
                 rotation, angle_start, angle_end, color, thickness, lineType)
 
-        cvs.cv2_draw(cv2.ellipse, args, mode=mode, gradient=self.gradient)
+        cvs.cv2_draw(cv2.ellipse, args, mode=mode, gradient=self.gradient, t=t)
 
 
 

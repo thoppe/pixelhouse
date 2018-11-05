@@ -28,6 +28,8 @@ class linear_gradient(Artist):
         mask_idx = mask.alpha > 0
 
         theta = self.theta(t)
+        print("HERE", theta)
+        
         A = np.array([np.cos(theta), np.sin(theta)])
 
         # Project each masked grid point onto the angle mapped by theta

@@ -13,7 +13,8 @@ class Animation():
     def __init__(
             self,
             duration=5, fps=5,
-            width=200, height=200, extent=4
+            width=200, height=200, extent=4,
+            bg='black',
     ):
         
         self.duration = duration
@@ -23,7 +24,7 @@ class Animation():
         n_frames = int(fps*duration)
 
         self.frames = [
-            Canvas(width, height, extent) for _ in
+            Canvas(width, height, extent, bg=bg) for _ in
             range(n_frames)
         ]
         self.has_rendered = [False,]*len(self)
