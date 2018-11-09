@@ -1,4 +1,4 @@
 include README.md
 include pixelhouse/color/named_colors/*
 include pixelhouse/color/palettes/*
-include pixelhouse/filter/insta/models/*.npy
+include pixelhouse/filter/insta/models/*.npz
