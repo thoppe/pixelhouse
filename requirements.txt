@@ -1,10 +1,2 @@
-# Image
-opencv-python 
-imageio
-
-# Numerical
-numpy
-scipy
-
-# Helper
-tqdm
+# Install what is needed via the setup file
+-e .

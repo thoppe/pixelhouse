@@ -2,6 +2,8 @@
 A minimalist drawing library for making beautiful animations in python.
 _Very much a work in progress!_
 
+    pip install pixelhouse
+
 ## Examples
 
 ![](examples/simple_circles.png)

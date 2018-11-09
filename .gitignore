@@ -3,3 +3,7 @@
 .\#*
 __pycache__/
 pixelhouse/filter/insta/examples
+
+# Auto-generated testing files
+.tox
+pixelhouse.egg-info/
