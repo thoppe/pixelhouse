@@ -38,6 +38,7 @@ _Very much a work in progress!_
 + [x] Scale
 + [x] Elastic distortion
 + [x] Generic elastic deformations
++ [ ] "copy" and paste, w/masks
 
 #### Gradients
 + [x] Linear gradients
@@ -71,8 +72,8 @@ _Very much a work in progress!_
 #### Devops
 + [x] Unified class for artists
 + [x] Proper library
-+ [ ] setup.py
-+ [ ] pip install
++ [x] setup.py
++ [x] pip install
 + [ ] Context mangager for canvas and animation
 + [ ] Unit tests
 + [ ] Doc coverage
