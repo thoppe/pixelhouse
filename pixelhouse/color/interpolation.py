@@ -37,7 +37,8 @@ def LABa_interpolation(t, c0, c1, alpha):
     B = lerp(t, c0[2], c1[2])
     
     # Convert back to RGB
-    C = np.vstack([L,A,B]).T.reshape(-1,1,3).astype(np.uint8)
+    C = np.vstack([L,A,B]).T.reshape(-1,1,3)
+    C = C.astype(np.uint8)
     C = cv2.cvtColor(C, cv2.COLOR_LAB2RGB).reshape(-1,3)
 
     # Add back in the weighted alpha channel

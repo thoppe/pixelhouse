@@ -127,6 +127,17 @@ class Canvas():
             func(rhs.img, *args)
             self.combine(rhs, mode=mode)
 
+    def blend(self, rhs):
+        # Smooth the image based off the alpha from the mask image
+
+        a = rhs.alpha.reshape(self.height, self.width,-1).astype(np.float32)
+        a /= 255
+
+        MX = (1-a)*self._img + a*rhs._img        
+        MX = np.clip(MX, 0, 255).astype(np.uint8)
+        self._img = MX
+        
+
     def overlay(self, rhs):
 
         # Saturate the transparent channel
@@ -297,4 +308,8 @@ class Canvas():
     def load(self, f_img):
         # Read the image in and convert to RGB space
         self._img =  cv2.cvtColor(cv2.imread(f_img), cv2.COLOR_BGR2RGB)
+
+        alpha = np.zeros_like(self._img[:,:,0])
+        self._img = np.dstack((self._img, alpha))
+        
         return self

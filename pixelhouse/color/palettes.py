@@ -25,7 +25,8 @@ class ColorLoversPalette():
             msg = f"Only {len(self)} palettes known, requested number {n}"
             raise KeyError(msg)
 
-        pal = self.colors[n]
+        pal = [x + [255,] for x in self.colors[n]] 
+        
 
         return pal
 

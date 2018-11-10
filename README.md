@@ -6,6 +6,8 @@ _Very much a work in progress!_
 
 ## Examples
 
+![](examples/teyleen_unknown.jpg)
+
 ![](examples/simple_circles.png)
 ![](examples/simple_rectangle.png)
 ![](examples/simple_lines.png)
@@ -38,7 +40,6 @@ _Very much a work in progress!_
 + [x] Scale
 + [x] Elastic distortion
 + [x] Generic elastic deformations
-+ [ ] "copy" and paste, w/masks
 
 #### Gradients
 + [x] Linear gradients

@@ -28,7 +28,6 @@ class linear_gradient(Artist):
         mask_idx = mask.alpha > 0
 
         theta = self.theta(t)
-        print("HERE", theta)
         
         A = np.array([np.cos(theta), np.sin(theta)])
 
@@ -60,5 +59,9 @@ class linear_gradient(Artist):
         rhs = cvs.copy()
         rhs._img[mask_idx] = C
 
-        cvs.overlay(rhs)
+        #cvs.overlay(rhs)
+        cvs.blend(rhs)
+        #rhs.blend(cvs)
+        #cvs.show()
+        #exit()
 
