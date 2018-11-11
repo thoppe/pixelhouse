@@ -36,17 +36,17 @@ def draw_circles(C, dx=0.25, tc=0.1):
 
 pal = ColorLoversPalette()(19)
     
-C1 = Canvas().load("asphalt-dark-dawn-531321.jpg")
-C1(instafilter('1977'))
+C = Canvas().load("asphalt-dark-dawn-531321.jpg")
+C(instafilter('1977'))
     
-C0 = C1.copy()
+C2 = C.copy()
     
-draw_circles(C0)
-gaussian_blur()(C0)
-draw_circles(C0)
+draw_circles(C2)
+gaussian_blur()(C2)
+draw_circles(C2)
 
-C1.blend(C0)
-C1.save("../examples/teyleen_unknown.jpg")
-C1.show()
+C += C2
+C.save("../examples/teyleen_unknown.jpg")
+C.show()
 
 

@@ -5,7 +5,7 @@ from .color import matplotlib_colors
 
 class Canvas():
     '''
-    Basic canvas object for quad drawings. 
+    Basic canvas object for pixelhouse drawings. 
     Extent measures along the x-axis.
     '''
 
@@ -112,7 +112,11 @@ class Canvas():
             cv2.subtract(self._img, rhs.img, self._img)
         else:
             raise ValueError(f"Unknown mode {mode}")
+        
+        return self
 
+    def __iadd__(self, rhs):
+        return self.combine(rhs)
     
     def cv2_draw(self, func, args, mode, **kwargs):
         
@@ -125,7 +129,8 @@ class Canvas():
         else:
             rhs = self.blank()
             func(rhs.img, *args)
-            self.combine(rhs, mode=mode)
+            self.combine(rhs, mode)
+
 
     def blend(self, rhs):
         # Smooth the image based off the alpha from the mask image
