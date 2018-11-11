@@ -14,7 +14,7 @@ class linear_gradient(Artist):
 
     args = ('color0', 'color1', 'theta', 'interpolation')
 
-    def draw(self, cvs, t=0.0, mask=None):
+    def __call__(self, cvs, t=0.0, mask=None):
         '''
         Assume the mask is of type Canvas. 
         Interpolation can be LAB or RGB.
@@ -58,10 +58,5 @@ class linear_gradient(Artist):
         # Blend the new shape in
         rhs = cvs.copy()
         rhs._img[mask_idx] = C
-
-        #cvs.overlay(rhs)
         cvs.blend(rhs)
-        #rhs.blend(cvs)
-        #cvs.show()
-        #exit()
 

@@ -10,10 +10,12 @@ C = Canvas(width=sx, height=sx, bg='purple')
 
 z = motion.easeInOutQuad(0, 2*np.pi, len(C))()
 lg0 = linear_gradient(color0='red', color1='green')
+print(lg0(.5))
+exit()
 lg1 = linear_gradient(theta=z,color0='w', color1=[255,255,155,0])
-C(circle(r=z/4,gradient=lg1))
-C(circle(x=2.5,y=-2.5,r=0.5,gradient=lg0))
-C.show()
+C(circle(r=z/4, gradient=lg1))
+#C(circle(x=2.5,y=-2.5,r=0.5,gradient=lg0))
+#C.show()
 
 
 
