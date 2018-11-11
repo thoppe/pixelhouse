@@ -7,7 +7,7 @@ class scale(Artist):
     fy = constant(None)
     args = ("fx", "fy")
     
-    def __call__(self, cvs, t=0.0):
+    def draw(self, cvs, t=0.0):
         
         fx, fy = self.fx(t), self.fy(t)
         if fy is None:
@@ -20,7 +20,7 @@ class translate(Artist):
     y = constant(0.0)
     args = ("x", "y")
     
-    def __call__(self, cvs, t=0.0):
+    def draw(self, cvs, t=0.0):
         x = cvs.transform_length(self.x(t))
         y = cvs.transform_length(self.y(t))
         
@@ -31,7 +31,7 @@ class rotate(Artist):
     theta = constant(np.pi/4)
     args = ("theta",)
     
-    def __call__(self, cvs, t=0.0):
+    def draw(self, cvs, t=0.0):
         theta = cvs.transform_angle(self.theta(t))
 
         cols, rows = cvs.shape[:2]

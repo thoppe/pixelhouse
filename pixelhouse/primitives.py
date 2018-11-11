@@ -39,7 +39,7 @@ class circle(PrimitiveArtist):
     r = constant(1.0)
     args = ('x', 'y', 'r', 'color', 'thickness', 'linetype')
 
-    def __call__(self, cvs, t=0.0):
+    def draw(self, cvs, t=0.0):
         x, y, thickness, color, lineType, mode = self.basic_transforms(cvs, t)
         r = cvs.transform_length(self.r(t))
         
@@ -52,7 +52,7 @@ class rectangle(PrimitiveArtist):
     y1 = constant(1.0)
     args = ('x', 'y', 'x1', 'y1', 'color', 'thickness', 'lineType')
 
-    def __call__(self, cvs, t=0.0):
+    def draw(self, cvs, t=0.0):
         x, y, thickness, color, lineType, mode = self.basic_transforms(cvs, t)
         x1 = cvs.transform_x(self.x1(t))
         y1 = cvs.transform_y(self.y1(t))
@@ -67,7 +67,7 @@ class line(PrimitiveArtist):
     thickness = constant(0.1)
     args = ('x', 'y', 'x1', 'y1', 'color', 'thickness', 'lineType')
 
-    def __call__(self, cvs, t=0.0):
+    def draw(self, cvs, t=0.0):
         x, y, thickness, color, lineType, mode = self.basic_transforms(cvs, t)
         x1 = cvs.transform_x(self.x1(t))
         y1 = cvs.transform_y(self.y1(t))
@@ -89,7 +89,7 @@ class ellipse(PrimitiveArtist):
             'angle_start', 'angle_end', 'color',
             'thickness', 'lineType')
 
-    def __call__(self, cvs, t=0.0):
+    def draw(self, cvs, t=0.0):
         x, y, thickness, color, lineType, mode = self.basic_transforms(cvs, t)
 
         a = cvs.transform_length(self.a(t))
@@ -114,7 +114,7 @@ class polyline(PrimitiveArtist):
     
     args = ('xpts', 'ypts', 'is_closed', 'color', 'thickness', 'lineType')
 
-    def __call__(self, cvs, t=0.0):
+    def draw(self, cvs, t=0.0):
 
         xpts = cvs.transform_x(np.array(self.xpts(t)), False)
         ypts = cvs.transform_y(np.array(self.ypts(t)), False)

@@ -62,7 +62,10 @@ class Artist():
                 #setattr(self, key, self._constant(val))
                 setattr(self, key, constant(val))
 
-    def __call__(self, t):
+    def __call__(self, t, *args, **kwargs):
+        # Convenience method for draw
+        self.draw(t, *args, **kwargs)
+
+    def draw(self):
         # Virtual class, need to override
         raise NotImplementedError
-

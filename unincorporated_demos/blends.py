@@ -6,7 +6,7 @@ from pixelhouse.gradient import linear_gradient
 sx = 400
 
 C = Animation(width=400, height=400, bg='purple')
-#C = Canvas(width=sx, height=sx, bg='purple')
+C = Canvas(width=sx, height=sx, bg='purple')
 
 z = motion.easeInOutQuad(0, 2*np.pi, len(C))()
 lg0 = linear_gradient(color0='red', color1='green')

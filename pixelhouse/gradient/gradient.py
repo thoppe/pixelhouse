@@ -14,7 +14,7 @@ class linear_gradient(Artist):
 
     args = ('color0', 'color1', 'theta', 'interpolation')
 
-    def __call__(self, cvs, t=0.0, mask=None):
+    def draw(self, cvs, t=0.0, mask=None):
         '''
         Assume the mask is of type Canvas. 
         Interpolation can be LAB or RGB.

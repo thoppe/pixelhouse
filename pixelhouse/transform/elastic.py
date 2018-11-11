@@ -32,7 +32,7 @@ class pull(ElasticTransform):
     mode = constant("constant")
     args = ("x", "y", "sigma", "alpha", "mode")
     
-    def __call__(self, cvs, t=0.0):
+    def draw(self, cvs, t=0.0):
         # https://gist.github.com/erniejunior/601cdf56d2b424757de5
         
         x = float(cvs.transform_x(self.x(t)))
@@ -56,7 +56,7 @@ class distort(ElasticTransform):
 
     args = ("sigma", "alpha", "mode", "seed")
     
-    def __call__(self, cvs, t=0.0):
+    def draw(self, cvs, t=0.0):
         # https://gist.github.com/erniejunior/601cdf56d2b424757de5
 
         sigma = cvs.transform_length(self.sigma(t))
@@ -82,7 +82,7 @@ class motion_lines(ElasticTransform):
     mode = constant("constant")
     args = ("alpha", "mode")
   
-    def __call__(self, cvs, t=0.0):
+    def draw(self, cvs, t=0.0):
         alpha = cvs.transform_length(self.alpha(t), is_discrete=False)
         
         theta = self.theta(t)

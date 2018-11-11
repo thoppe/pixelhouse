@@ -48,7 +48,7 @@ class instafilter(Artist):
         h, w, channels = img.shape
         return img.reshape(h*w, channels).astype(np.float32)/255
 
-    def __call__(self, cvs, t=0.0):
+    def draw(self, cvs, t=0.0):
 
         weight = self.weight(t)
         if weight <= 0:
