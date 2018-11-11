@@ -2,9 +2,7 @@ import numpy as np
 import cv2
 from ..artist import Artist, constant
 from ..primitives import _DEFAULT_COLOR, _DEFAULT_SECONDARY_COLOR
-from ..color import RGBa_interpolation, LABa_interpolation
-import cv2
-
+from . import RGBa_interpolation, LABa_interpolation
 
 class linear_gradient(Artist):
     color0 = constant(_DEFAULT_COLOR)
