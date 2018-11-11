@@ -97,15 +97,15 @@ class Canvas():
         '''
         return 2
 
-    def combine(self, rhs, mode="overlay"):
+    def combine(self, rhs, mode="blend"):
         if(rhs.width != self.width):
             raise ValueError("Can't combine images with different widths")
 
         if(rhs.height != self.height):
             raise ValueError("Can't combine images with different heights")
 
-        if mode == "overlay":
-            self.overlay(rhs)
+        if mode == "blend":
+            self.blend(rhs)
         elif mode == "add":
             cv2.add(self._img, rhs.img, self._img)
         elif mode == "subtract":
@@ -136,42 +136,6 @@ class Canvas():
         MX = (1-a)*self._img + a*rhs._img        
         MX = np.clip(MX, 0, 255).astype(np.uint8)
         self._img = MX
-        
-
-    def overlay(self, rhs):
-
-        # Saturate the transparent channel
-        alpha = np.clip(self.img[:,:,3] + rhs.img[:,:,3], 0, 255)
-        
-        # https://stackoverflow.com/a/37198079/249341
-        overlay_t_img = rhs.img
-        face_img = self.img[:, :, :3]
-
-        # Split out the transparency mask from the colour info
-        overlay_img = overlay_t_img[:,:,:3] # Grab the BRG planes
-        overlay_mask = overlay_t_img[:,:,3:]  # And the alpha plane
-
-        # Again calculate the inverse mask
-        background_mask = 255 - overlay_mask
-
-        # Turn the masks into three channel, so we can use them as weights
-        overlay_mask = cv2.cvtColor(overlay_mask, cv2.COLOR_GRAY2BGR)
-        background_mask = cv2.cvtColor(background_mask, cv2.COLOR_GRAY2BGR)
-
-        # Create a masked out face image, and masked out overlay
-        # We convert the images to floating point in range 0.0 - 1.0
-        dx = 1 / 255.0
-
-        overlay_part = (overlay_img*dx) * (overlay_mask*dx)
-        face_part = (face_img*dx) * (background_mask*dx)
-
-        # And finally just add them together,
-        # and rescale it back to an 8bit integer image    
-        self._img = np.uint8(cv2.addWeighted(
-            face_part, 255.0, overlay_part, 255.0, 0.0))
-
-        # Add back in the saturated alpha channel
-        self._img = np.dstack((self._img, alpha))
 
     def transform_x(self, x, is_discrete=True):
         x *= self.width / 2.0
