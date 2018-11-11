@@ -4,7 +4,7 @@ import itertools
 
 
 #########################################################################
-_DEFAULT_MODE = 'overlay'
+_DEFAULT_MODE = 'blend'
 
 def constant(x):
     def func(self, t=0, *args, **kwargs):
