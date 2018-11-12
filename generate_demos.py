@@ -42,21 +42,21 @@ def simple_circles():
     t = np.arange(0, 2*np.pi, 2*np.pi/n) + np.pi/6
     x,y = np.cos(t), np.sin(t)
 
-    C(circle(x[0], y[0], 1, color=[0,255,0],mode='add'))
-    C(circle(x[1], y[1], 1, color=[255,0,0],mode='add'))
-    C(circle(x[2], y[2], 1, color=[0,0,255],mode='add'))
+    C += circle(x[0], y[0], 1, color=[0,255,0],mode='add')
+    C += circle(x[1], y[1], 1, color=[255,0,0],mode='add')
+    C += circle(x[2], y[2], 1, color=[0,0,255],mode='add')
 
     # An example of not saturating the images together
-    C(circle(0, 0, 0.25, color=[155,155,155]))
+    C += circle(0, 0, 0.25, color=[155,155,155])
     
     return C
 
 def simple_rectangles():
     C = Canvas(**canvas_args)
 
-    C(rectangle(-1,-1,1,1,color='lightcoral'))
-    C(rectangle(0,0,2,-2,color='lime'))
-    C(rectangle(-3,-3,0.5,0.5,color='royalblue'))
+    C += rectangle(-1,-1,1,1,color='lightcoral')
+    C += rectangle(0,0,2,-2,color='lime')
+    C += rectangle(-3,-3,0.5,0.5,color='royalblue')
 
     return C
 
@@ -66,7 +66,7 @@ def simple_lines():
 
     tc = 0.04
 
- 
+    # An example of the functional interface Artist(Canvas)
     for i in np.arange(-4,5,.5):
         line(x=-4, y=i, x1=4, y1=i,
              thickness=tc, color=[20,]*3)(C)
@@ -86,13 +86,13 @@ def simple_lines():
 
 def instagram_filters():
 
-    c1 = Canvas(**canvas_args, bg='w')
-    c1.load('pixelhouse/filter/insta/samples/Normal.jpg')
-    scale(fx=0.25)(c1)
-    circle(r=0.50, color='r')(c1)
-    instafilter('Ludwig', weight=0.80)(c1)
+    f_sample = 'pixelhouse/filter/insta/samples/Normal.jpg'
+    C = Canvas(**canvas_args, bg='w').load(f_sample)
+    C += scale(fx=0.25)
+    C += circle(r=0.50, color='r')
+    C += instafilter('Ludwig', weight=0.80)
 
-    return c1
+    return C
 
 
 def teyleen_982():
@@ -125,13 +125,13 @@ def teyleen_116():
     pal = palettes(152)
 
     x = 0.25
-    circle(x,x, r=x/2, color=pal[0])(C)
-    circle(-x,x, r=x/2, color=pal[1])(C)
-    circle(x,-x, r=x/2, color=pal[2])(C)
-    circle(-x,-x, r=x/2, color=pal[3])(C)
+    C+= circle(x,x, r=x/2, color=pal[0])
+    C+= circle(-x,x, r=x/2, color=pal[1])
+    C+= circle(x,-x, r=x/2, color=pal[2])
+    C+= circle(-x,-x, r=x/2, color=pal[3])
 
-    circle(y=x/2, r=2-x, color=pal[4],thickness=x/20)(C)
-    circle(y=-x/2, r=2-x, color=pal[4],thickness=x/20)(C)
+    C+= circle(y=x/2, r=2-x, color=pal[4],thickness=x/20)
+    C+= circle(y=-x/2, r=2-x, color=pal[4],thickness=x/20)
 
     return C
 
@@ -159,16 +159,16 @@ def checkerboard():
     args = {"r":r, "color":c, "mode":"add"}
 
     for dx, dy in itertools.product(coord, repeat=2):
-        A(circle(z+dx, z+dy, **args))
-        A(circle(z+dx, -z+dy, **args))
-        A(circle(-z+dx, -z+dy, **args))
-        A(circle(-z+dx, z+dy, **args))
+        A += circle(z+dx, z+dy, **args)
+        A += circle(z+dx, -z+dy, **args)
+        A += circle(-z+dx, -z+dy, **args)
+        A += circle(-z+dx, z+dy, **args)
 
-        A(circle(dx, z+dy, **args))
-        A(circle(z+dx, dy, **args))
+        A += circle(dx, z+dy, **args)
+        A += circle(z+dx, dy, **args)
 
-        A(circle(dx, -z+dy, **args))
-        A(circle(-z+dx, dy, **args))
+        A += circle(dx, -z+dy, **args)
+        A += circle(-z+dx, dy, **args)
     
     return A
 
@@ -184,13 +184,12 @@ def timer():
 
         theta = motion.offsetEase(lag, stop=2*np.pi, duration=len(A))()
 
-        L = line(
+        A += line(
             x1=r*np.cos(theta),
             y1=r*np.sin(theta),
             thickness=tc, color='indigo',
             mode='add',
         )
-        A(L)
         
         r *= 0.98
         lag *= 1.17
@@ -211,11 +210,10 @@ def pacman():
     x1 = motion.easeInQuad(dp, 0, len(A)//2)()
     z = np.hstack([x0,x1])
 
-    pacman = ellipse(
+    A += ellipse(
         a=1, b=1,
         angle_start=z, angle_end=2*np.pi-z, color=pac_color)
 
-    A(pacman)
     return A
 
 #########################################################################
