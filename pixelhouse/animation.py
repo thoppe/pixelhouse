@@ -1,4 +1,4 @@
-from .canvas import Canvas
+from . import Canvas, Artist
 from .motion import easing
 
 import cv2
@@ -35,6 +35,18 @@ class Animation():
 
     def __call__(self, art):
         self.artists.append(art)
+        return self
+    
+    def __iadd__(self, rhs):
+        '''
+        Add an Artist to the canvas, or combine two canvas depending
+        on what the rhs is.
+        '''
+        if isinstance(rhs, Artist):
+            self(rhs)
+        else:
+            raise TypeError(f"Can't combine a Animation with a {type(rhs)}")
+    
         return self
 
     def render(self, n):

@@ -116,6 +116,7 @@ class Canvas():
         
         return self
 
+
     def __iadd__(self, rhs):
         '''
         Add an Artist to the canvas, or combine two canvas depending
@@ -125,6 +126,9 @@ class Canvas():
             self(rhs)
         elif isinstance(rhs, Canvas):
             self.combine(rhs)
+        else:
+            raise TypeError(f"Can't combine a Canvas with a {type(rhs)}")
+    
         return self
     
     def cv2_draw(self, func, args, mode, **kwargs):
