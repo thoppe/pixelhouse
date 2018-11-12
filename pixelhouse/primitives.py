@@ -1,12 +1,18 @@
 import numpy as np
 import cv2
+import os
+from PIL import Image, ImageDraw, ImageFont
 from .artist import Artist, constant
+
+_script_path = os.path.dirname(os.path.realpath(__file__))
 
 _DEFAULT_COLOR = 'white'
 _DEFAULT_SECONDARY_COLOR = 'black'
 _DEFAULT_THICKNESS = -1
 _DEFAULT_ANTIALIASED = True
 _DEFAULT_MODE = 'direct'
+_DEFAULT_FONT_SIZE = 0.5
+_DEFAULT_FONT = os.path.join(_script_path, 'fonts', 'Alien-Encounters-Regular.ttf')
 
 class PrimitiveArtist(Artist):
 
@@ -132,3 +138,85 @@ class polyline(PrimitiveArtist):
                 
         args = [pts], is_closed, color, thickness, lineType
         cvs.cv2_draw(cv2.polylines, args, mode=mode)
+
+
+
+
+
+class text(PrimitiveArtist):
+    text = constant("pixelhouse")
+    font = constant(_DEFAULT_FONT)
+    font_size = constant(_DEFAULT_FONT_SIZE)
+
+    vpos = constant("center")
+    hpos = constant("center")
+        
+    args = ('text', 'fontsize', 'vpos', 'hpos', 'font', 'color')
+
+    def draw(self, cvs, t=0.0):
+        '''
+        Use PIL to measure and draw the font.
+        '''
+        x, y, thickness, color, lineType, mode = self.basic_transforms(cvs, t)
+                
+        text = self.text(t)
+        fs = cvs.transform_length(self.font_size(t))
+        f_font = self.font(t)
+        
+        if not os.path.exists(f_font):
+            raise FileNotFoundError(f"Missing font {f_font}")
+        
+        font = ImageFont.truetype(self.font(t), fs)
+    
+        # Measure the font
+        tw, th = font.getsize(text)
+
+        vpos = self.vpos(t)
+        if vpos == "upper":
+            y -= th
+        elif vpos == "center":
+            y -= th//2
+        elif vpos == "lower":
+            pass
+        else:
+            possible = ['upper','center','lower']
+            raise ValueError(f"Unknown font vertical position {vpos}, "
+                             f"must be one of {possible}.")
+
+        hpos = self.hpos(t)
+        if hpos == "left":
+            pass
+        elif hpos == "center":
+            x -= tw//2
+        elif hpos == "right":
+            x -= tw
+        else:
+            possible = ['left','center','right']
+            raise ValueError(f"Unknown font vertical position {hpos}, "
+                             f"must be one of {possible}.")
+
+        # If there is no gradient, just draw it
+        if not self.gradient(t):
+            pil = Image.fromarray(cvs.copy()._img)
+                      
+            # Draw the text onto the text canvas
+            draw = ImageDraw.Draw(pil)        
+            draw.text((x,y), text, tuple(color), font)
+            cvs._img = np.array(pil)
+            return True
+
+        cvs2 = cvs.blank()
+        pil = Image.fromarray(cvs2._img)
+        draw = ImageDraw.Draw(pil)        
+        draw.text((x,y), text, (255,255,255,255), font)
+        cvs2._img = np.array(pil)
+
+        
+        #cvs += self.gradient(t, mask=cvs2)
+        self.gradient(cvs, t, mask=cvs2)
+        
+
+        #if mode == "direct":
+        #    cvs._img = np.array(pil)
+        #elif:
+            

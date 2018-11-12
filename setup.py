@@ -36,6 +36,7 @@ setuptools.setup(
     
     install_requires=[
         "opencv-python",
+        "Pillow",
         "imageio",
         "numpy",
         "scipy",

@@ -1,5 +1,6 @@
 # pixelhouse
 A minimalist drawing library for making beautiful animations in python.
+Anything that can be drawn can be moved.
 _Very much a work in progress!_
 
     pip install pixelhouse
@@ -7,6 +8,8 @@ _Very much a work in progress!_
 ## Examples
 
 ![](examples/teyleen_unknown.jpg)
+![](examples/logo.png)
+
 
 ![](examples/simple_circles.png)
 ![](examples/simple_rectangle.png)

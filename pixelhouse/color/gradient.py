@@ -25,6 +25,10 @@ class linear_gradient(Artist):
 
         mask_idx = mask.alpha > 0
 
+        # If the mask_idx is 0, image is off the canvas
+        if not mask_idx.sum():
+            return True
+
         theta = self.theta(t)
         
         A = np.array([np.cos(theta), np.sin(theta)])
