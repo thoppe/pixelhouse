@@ -12,8 +12,9 @@ class Animation():
 
     def __init__(
             self,
+            width=200, height=200,
             duration=5, fps=5,
-            width=200, height=200, extent=4,
+            extent=4,
             bg='black',
     ):
         
