@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import collections
+from . import Artist
 from .color import matplotlib_colors
 
 class Canvas():
@@ -116,7 +117,15 @@ class Canvas():
         return self
 
     def __iadd__(self, rhs):
-        return self.combine(rhs)
+        '''
+        Add an Artist to the canvas, or combine two canvas depending
+        on what the rhs is.
+        '''
+        if isinstance(rhs, Artist):
+            self(rhs)
+        elif isinstance(rhs, Canvas):
+            self.combine(rhs)
+        return self
     
     def cv2_draw(self, func, args, mode, **kwargs):
         
