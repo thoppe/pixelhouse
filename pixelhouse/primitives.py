@@ -44,10 +44,26 @@ class PrimitiveArtist(Artist):
 
 
 class circle(PrimitiveArtist):
+    '''
+    Draws a circle to the canvas. Arguments can be a constant 
+    or a function that returns a value from t=[0...1].
+        
+    Args:
+    x (float): x coordinate of the circle center
+    y (float): y coordinate of the circle center
+    r (float): Circle radius
+
+    color (tuple or string): Color (ignored if gradient used)
+    thickness (float): Line thickness (use -1 for filled)
+    antialiased (bool): Antialiased edges
+    gradient (linear_gradient): pixelhouse.gradient for coloring
+    mode (string): Direct, blend, add, or subtract
+    '''
     r = constant(1.0)
-    args = ("x", "y", "r", "color", "thickness", "linetype")
+    args = ("x", "y", "r", "color", "thickness", "lineType")
 
     def draw(self, cvs, t=0.0):
+
         x, y, thickness, color, lineType, mode = self.basic_transforms(cvs, t)
         r = cvs.transform_length(self.r(t))
 
@@ -56,6 +72,23 @@ class circle(PrimitiveArtist):
 
 
 class rectangle(PrimitiveArtist):
+    '''
+    Draws a rectangle to the canvas. Arguments can be a constant 
+    or a function that returns a value from t=[0...1].
+        
+    Args:
+    x (float): x coordinate of the upper left rectangle
+    y (float): y coordinate of the upper left rectangle
+    x1 (float): x coordinate of the lower right rectangle
+    y1 (float): y coordinate of the lower right rectangle
+
+    color (tuple or string): Color (ignored if gradient used)
+    thickness (float): Line thickness (use -1 for filled)
+    antialiased (bool): Antialiased edges
+    gradient (linear_gradient): pixelhouse.gradient for coloring
+    mode (string): Direct, blend, add, or subtract
+    '''
+    
     x1 = constant(1.0)
     y1 = constant(1.0)
     args = ("x", "y", "x1", "y1", "color", "thickness", "lineType")
@@ -72,6 +105,23 @@ class rectangle(PrimitiveArtist):
 
 
 class line(PrimitiveArtist):
+    '''
+    Draws a line to the canvas. Arguments can be a constant 
+    or a function that returns a value from t=[0...1].
+        
+    Args:
+    x (float): x coordinate of the upper left point
+    y (float): y coordinate of the upper left point
+    x1 (float): x coordinate of the lower right point
+    y1 (float): y coordinate of the lower right point
+
+    color (tuple or string): Color (ignored if gradient used)
+    thickness (float): Line thickness 
+    antialiased (bool): Antialiased edges
+    gradient (linear_gradient): pixelhouse.gradient for coloring
+    mode (string): Direct, blend, add, or subtract
+    '''
+    
     x1 = constant(1.0)
     y1 = constant(1.0)
     thickness = constant(0.1)
@@ -90,6 +140,26 @@ class line(PrimitiveArtist):
 
 
 class ellipse(PrimitiveArtist):
+    '''
+    Draws an ellipse to the canvas. Arguments can be a constant 
+    or a function that returns a value from t=[0...1].
+        
+    Args:
+    x (float): x coordinate of the upper left point
+    y (float): y coordinate of the upper left point
+    a (float): major axis length 
+    b (float): minor axis length
+    rotation (float): rotation about the center in radians
+    angle_start (float): sector angle to start drawing in radians
+    angle_end (float): sector angle to stop drawing in radians
+
+    color (tuple or string): Color (ignored if gradient used)
+    thickness (float): Line thickness (use -1 for filled)
+    antialiased (bool): Antialiased edges
+    gradient (linear_gradient): pixelhouse.gradient for coloring
+    mode (string): Direct, blend, add, or subtract
+    '''
+    
     a = constant(2.0)
     b = constant(1.0)
 
@@ -134,6 +204,22 @@ class ellipse(PrimitiveArtist):
 
 
 class polyline(PrimitiveArtist):
+    '''
+    Draws multiple line segments to the canvas. Arguments can be a constant 
+    or a function that returns a value from t=[0...1].
+        
+    Args:
+    xpts (array): x coordinates of the line
+    ypts (array): y coordinates of the line
+    is_closed(bool): draw the final line segment
+
+    color (tuple or string): Color (ignored if gradient used)
+    thickness (float): Line thickness 
+    antialiased (bool): Antialiased edges
+    gradient (linear_gradient): pixelhouse.gradient for coloring
+    mode (string): Direct, blend, add, or subtract
+    '''
+    
     xpts = constant([0.0, 1.0, 2.0])
     ypts = constant([0.0, 2.0, 0.0])
     thickness = constant(0.1)
@@ -162,6 +248,24 @@ class polyline(PrimitiveArtist):
 
 
 class text(PrimitiveArtist):
+    '''
+    Writes text the canvas. Arguments can be a constant 
+    or a function that returns a value from t=[0...1].
+        
+    Args:
+    text (string): Words to draw
+    font_size (float): Size of the font (BUG: unknown how this scales)
+    font (string): path to font file
+    vpos (string): (upper/center/lower) vertical orientation
+    hpos (string): (left/center/right) horizontal orientation
+
+    color (tuple or string): Color (ignored if gradient used)
+    thickness (float): Line thickness 
+    antialiased (bool): Antialiased edges
+    gradient (linear_gradient): pixelhouse.gradient for coloring
+    mode (string): Direct, blend, add, or subtract
+    '''
+    
     text = constant("pixelhouse")
     font = constant(_DEFAULT_FONT)
     font_size = constant(_DEFAULT_FONT_SIZE)
@@ -233,9 +337,4 @@ class text(PrimitiveArtist):
         draw.text((x, y), text, (255, 255, 255, 255), font)
         cvs2._img = np.array(pil)
 
-        # cvs += self.gradient(t, mask=cvs2)
         self.gradient(cvs, t, mask=cvs2)
-
-        # if mode == "direct":
-        #    cvs._img = np.array(pil)
-        # elif:

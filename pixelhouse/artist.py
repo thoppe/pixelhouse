@@ -18,8 +18,7 @@ class Artist:
     """
     Artists are the backbone of pixelhouse. They draw what's on the screen.
     To be a proper artist, all derived classes must accept their arguments
-    as functions. To work with both *arg and **kwargs, child classes must
-    define the class member "args" for the argument order.
+    as functions and define a "draw" method.
     """
 
     mode = constant(_DEFAULT_MODE)
