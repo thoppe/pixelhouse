@@ -8,28 +8,19 @@ import scipy.interpolate
 
 from tqdm import tqdm
 
-class Animation():
 
-    def __init__(
-            self,
-            width=200, height=200,
-            duration=5, fps=5,
-            extent=4,
-            bg='black',
-    ):
-        
+class Animation:
+    def __init__(self, width=200, height=200, duration=5, fps=5, extent=4, bg="black"):
+
         self.duration = duration
         self.fps = fps
         self.artists = []
 
-        n_frames = int(fps*duration)
+        n_frames = int(fps * duration)
 
-        self.frames = [
-            Canvas(width, height, extent, bg=bg) for _ in
-            range(n_frames)
-        ]
-        self.has_rendered = [False,]*len(self)
-        self.timepoints = np.linspace(0, 1, len(self)+1)[:-1]
+        self.frames = [Canvas(width, height, extent, bg=bg) for _ in range(n_frames)]
+        self.has_rendered = [False] * len(self)
+        self.timepoints = np.linspace(0, 1, len(self) + 1)[:-1]
 
     def __len__(self):
         return len(self.frames)
@@ -37,21 +28,21 @@ class Animation():
     def __call__(self, art):
         self.artists.append(art)
         return self
-    
+
     def __iadd__(self, rhs):
-        '''
+        """
         Add an Artist to the canvas, or combine two canvas depending
         on what the rhs is.
-        '''
+        """
         if isinstance(rhs, Artist):
             self(rhs)
         else:
             raise TypeError(f"Can't combine a Animation with a {type(rhs)}")
-    
+
         return self
 
     def render(self, n):
-        assert(0 <= n < len(self))
+        assert 0 <= n < len(self)
 
         if not self.has_rendered[n]:
 
@@ -63,9 +54,10 @@ class Animation():
             self.has_rendered[n] = True
 
             # Copy any shared attributes to the next frame
-            if n < len(self)-1:
-                self.frames[n+1].shared_attributes.update(
-                    self.frames[n].shared_attributes)
+            if n < len(self) - 1:
+                self.frames[n + 1].shared_attributes.update(
+                    self.frames[n].shared_attributes
+                )
 
         return self.frames[n]
 
@@ -78,7 +70,7 @@ class Animation():
                 is_status_bar = False
             else:
                 ITR = range(len(self))
-                
+
             for n in ITR:
                 img = self.render(n)
                 img.show(delay=delay)

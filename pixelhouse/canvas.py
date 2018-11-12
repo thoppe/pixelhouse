@@ -4,19 +4,15 @@ import collections
 from . import Artist
 from .color import matplotlib_colors
 
-class Canvas():
-    '''
+
+class Canvas:
+    """
     Basic canvas object for pixelhouse drawings. 
     Extent measures along the x-axis.
-    '''
+    """
 
     def __init__(
-            self,
-            width=200,
-            height=200,
-            extent=4.0,
-            bg='black',
-            name='pixelhouseImage',
+        self, width=200, height=200, extent=4.0, bg="black", name="pixelhouseImage"
     ):
         channels = 4
         self._img = np.zeros((height, width, channels), np.uint8)
@@ -26,21 +22,17 @@ class Canvas():
         self.bg = bg
         bg = np.array(self.transform_color(bg)).astype(np.uint8)
         bg[3] = 0
-        self._img[:,:] = bg
-        
+        self._img[:, :] = bg
+
         self.name = name
         self.extent = extent
 
         # When animating, we may want to pass attributes from one canvas
         # to another. Do so in the shared_attributes
         self.shared_attributes = {}
-        
 
     def __repr__(self):
-        return (
-            f"pixelhouse (w/h) {self.height}x{self.width}, " \
-            f"extent {self.extent}"
-        )
+        return f"pixelhouse (w/h) {self.height}x{self.width}, " f"extent {self.extent}"
 
     @property
     def height(self):
@@ -64,17 +56,16 @@ class Canvas():
 
     @property
     def alpha(self):
-        '''
+        """
         Return the alpha channel from the image
-        '''
+        """
         return self.img[:, :, 3]
-        
 
     def blank(self, bg=None):
         # Return an empty canvas of the same size
         if bg is None:
             bg = self.bg
-            
+
         return Canvas(self.width, self.height, bg=bg)
 
     def copy(self, bg=None):
@@ -84,25 +75,25 @@ class Canvas():
         return cvs
 
     def __call__(self, art=None):
-        '''
+        """
         Calls an artist on the canvas.
-        '''
+        """
         if art is not None:
             art(self)
         return self
 
     def __len__(self):
-        '''
+        """
         Return 2 so calling functions work seamlessly between 
         Canvas and Animation (allows for interpolation to not complain).
-        '''
+        """
         return 2
 
     def combine(self, rhs, mode="blend"):
-        if(rhs.width != self.width):
+        if rhs.width != self.width:
             raise ValueError("Can't combine images with different widths")
 
-        if(rhs.height != self.height):
+        if rhs.height != self.height:
             raise ValueError("Can't combine images with different heights")
 
         if mode == "blend":
@@ -113,45 +104,43 @@ class Canvas():
             cv2.subtract(self._img, rhs.img, self._img)
         else:
             raise ValueError(f"Unknown mode {mode}")
-        
+
         return self
 
-
     def __iadd__(self, rhs):
-        '''
+        """
         Add an Artist to the canvas, or combine two canvas depending
         on what the rhs is.
-        '''
+        """
         if isinstance(rhs, Artist):
             self(rhs)
         elif isinstance(rhs, Canvas):
             self.combine(rhs)
         else:
             raise TypeError(f"Can't combine a Canvas with a {type(rhs)}")
-    
+
         return self
-    
+
     def cv2_draw(self, func, args, mode, **kwargs):
-        
-        if mode=='direct':
+
+        if mode == "direct":
             func(self._img, *args)
-        elif mode=='gradient':
+        elif mode == "gradient":
             rhs = self.blank()
-            func(rhs.img, *args)            
-            kwargs['gradient'](self, t=kwargs['t'], mask=rhs)
+            func(rhs.img, *args)
+            kwargs["gradient"](self, t=kwargs["t"], mask=rhs)
         else:
             rhs = self.blank()
             func(rhs.img, *args)
             self.combine(rhs, mode)
 
-
     def blend(self, rhs):
         # Smooth the image based off the alpha from the mask image
 
-        a = rhs.alpha.reshape(self.height, self.width,-1).astype(np.float32)
+        a = rhs.alpha.reshape(self.height, self.width, -1).astype(np.float32)
         a /= 255
 
-        MX = (1-a)*self._img + a*rhs._img        
+        MX = (1 - a) * self._img + a * rhs._img
         MX = np.clip(MX, 0, 255).astype(np.uint8)
         self._img = MX
 
@@ -176,16 +165,15 @@ class Canvas():
         if is_discrete:
             return int(y)
         return y
-    
+
     def inverse_transform_y(self, y):
         y -= self.height / 2
         y *= self.extent
         y /= self.height / 2.0
         return y
-    
 
     def transform_length(self, r, is_discrete=True):
-        r *= (float(self.width)/self.extent)
+        r *= float(self.width) / self.extent
         if is_discrete:
             return int(r)
         return r
@@ -194,20 +182,19 @@ class Canvas():
         # Kernels must be positive and odd integers
         r = self.transform_length(r, is_discrete=False)
 
-        remainder = r%2
-        r = int(r - r%2)
+        remainder = r % 2
+        r = int(r - r % 2)
         r += -1 if remainder < 1 else 1
 
         r = max(1, r)
         return r
-    
+
     def transform_thickness(self, r):
         # If thickness is negative, leave it alone
-        if r>0:
+        if r > 0:
             return self.transform_length(r)
 
         return r
-    
 
     def transform_color(self, c):
         if isinstance(c, str):
@@ -215,60 +202,52 @@ class Canvas():
 
         # Force add in the alpha channel
         if len(c) == 3:
-            c = list(c) + [255,]
+            c = list(c) + [255]
 
         return c
 
     def grid_coordinates(self):
 
         attrs = self.shared_attributes
-        
-        if ('grid_coordinates' in attrs.keys() and
-            attrs['prior_shape'] == self.shape):
-            return attrs['grid_coordinates']
-        
+
+        if "grid_coordinates" in attrs.keys() and attrs["prior_shape"] == self.shape:
+            return attrs["grid_coordinates"]
+
         shape = tuple(self.shape)
 
         xg, yg, zg = np.meshgrid(
-            np.arange(shape[1]),
-            np.arange(shape[0]),
-            np.arange(shape[2])
+            np.arange(shape[1]), np.arange(shape[0]), np.arange(shape[2])
         )
 
-        attrs['grid_coordinates'] = (xg, yg, zg)
-        attrs['prior_shape'] = self.shape
-        
-        return attrs['grid_coordinates']
+        attrs["grid_coordinates"] = (xg, yg, zg)
+        attrs["prior_shape"] = self.shape
 
+        return attrs["grid_coordinates"]
 
     def grid_points(self):
 
         attrs = self.shared_attributes
-        
-        if ('grid_points' in attrs.keys() and
-            attrs['prior_shape'] == self.shape):
-            return attrs['grid_points']
+
+        if "grid_points" in attrs.keys() and attrs["prior_shape"] == self.shape:
+            return attrs["grid_points"]
 
         xg, yg, _ = self.grid_coordinates()
-        xg = xg[:,:,0]
-        yg = yg[:,:,0]
+        xg = xg[:, :, 0]
+        yg = yg[:, :, 0]
 
         xp = self.inverse_transform_x(xg.astype(np.float32))
         yp = self.inverse_transform_y(yg.astype(np.float32))
 
-        attrs['grid_points'] = (xp, yp)
-        attrs['prior_shape'] = self.shape
-        
-        return attrs['grid_points']
+        attrs["grid_points"] = (xp, yp)
+        attrs["prior_shape"] = self.shape
 
-
-    
+        return attrs["grid_points"]
 
     @staticmethod
     def transform_angle(rads):
         # From radians into degrees, counterclockwise
-        return -rads*(360/(2*np.pi))
-    
+        return -rads * (360 / (2 * np.pi))
+
     @staticmethod
     def get_lineType(antialiased):
         if antialiased:
@@ -278,7 +257,7 @@ class Canvas():
     def show(self, delay=0):
         # Before we show we have to convert back to BGR
         dst = cv2.cvtColor(self.img, cv2.COLOR_RGB2BGR)
-        
+
         cv2.imshow(self.name, dst)
         cv2.waitKey(delay)
 
@@ -289,9 +268,9 @@ class Canvas():
 
     def load(self, f_img):
         # Read the image in and convert to RGB space
-        self._img =  cv2.cvtColor(cv2.imread(f_img), cv2.COLOR_BGR2RGB)
+        self._img = cv2.cvtColor(cv2.imread(f_img), cv2.COLOR_BGR2RGB)
 
-        alpha = np.zeros_like(self._img[:,:,0])
+        alpha = np.zeros_like(self._img[:, :, 0])
         self._img = np.dstack((self._img, alpha))
-        
+
         return self

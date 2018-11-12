@@ -15,8 +15,8 @@ lg = ph.linear_gradient(pal[0], pal[1])
 C += circle(color=pal[3])
 C += gaussian_blur()
 C += circle(color=pal[3])
-for i in np.arange(-6,6,1.0):
-    C += text(y=i,gradient=lg)
+for i in np.arange(-6, 6, 1.0):
+    C += text(y=i, gradient=lg)
 
 C.save("../examples/logo.png")
 C.show()

@@ -7,21 +7,19 @@ from ..artist import Artist, constant
 
 
 class ElasticTransform(Artist):
-
     @staticmethod
     def transform(cvs, dy, dx, coords, mode):
-        
+
         xg, yg, zg = coords
 
         indices = (
-            np.reshape(yg+dy, (-1, 1)),
-            np.reshape(xg+dx, (-1, 1)),
+            np.reshape(yg + dy, (-1, 1)),
+            np.reshape(xg + dx, (-1, 1)),
             np.reshape(zg, (-1, 1)),
         )
 
-        distored_image = map_coordinates(
-            cvs.img, indices, order=2, mode=mode)
-        
+        distored_image = map_coordinates(cvs.img, indices, order=2, mode=mode)
+
         cvs._img = distored_image.reshape(cvs.shape)
 
 
@@ -31,19 +29,19 @@ class pull(ElasticTransform):
     alpha = constant(1.0)
     mode = constant("constant")
     args = ("x", "y", "sigma", "alpha", "mode")
-    
+
     def draw(self, cvs, t=0.0):
         # https://gist.github.com/erniejunior/601cdf56d2b424757de5
-        
+
         x = float(cvs.transform_x(self.x(t)))
         y = float(cvs.transform_y(self.y(t)))
         alpha = cvs.transform_length(self.alpha(t), is_discrete=False)
 
         coords = cvs.grid_coordinates()
-        
-        theta = np.arctan2(coords[1]-y, coords[0]-x)        
-        dx = alpha*np.cos(theta)
-        dy = alpha*np.sin(theta)
+
+        theta = np.arctan2(coords[1] - y, coords[0] - x)
+        dx = alpha * np.cos(theta)
+        dy = alpha * np.sin(theta)
 
         self.transform(cvs, dy, dx, coords, self.mode(t))
 
@@ -55,7 +53,7 @@ class distort(ElasticTransform):
     seed = constant(None)
 
     args = ("sigma", "alpha", "mode", "seed")
-    
+
     def draw(self, cvs, t=0.0):
         # https://gist.github.com/erniejunior/601cdf56d2b424757de5
 
@@ -74,17 +72,18 @@ class distort(ElasticTransform):
         dx = gaussian_filter(dx, sigma, mode=mode)
         dy = gaussian_filter(dy, sigma, mode=mode)
 
-        self.transform(cvs, dy*alpha, dx*alpha, coords, self.mode(t))
+        self.transform(cvs, dy * alpha, dx * alpha, coords, self.mode(t))
+
 
 class motion_lines(ElasticTransform):
     alpha = constant(0.15)
     theta = constant(0.0)
     mode = constant("constant")
     args = ("alpha", "mode")
-  
+
     def draw(self, cvs, t=0.0):
         alpha = cvs.transform_length(self.alpha(t), is_discrete=False)
-        
+
         theta = self.theta(t)
         mode = self.mode(t)
 
@@ -92,9 +91,8 @@ class motion_lines(ElasticTransform):
 
         y = cvs.inverse_transform_y(coords[1].astype(float))
         x = cvs.inverse_transform_y(coords[0].astype(float))
-                
-        dx = np.cos(theta)*np.abs(x)
-        dy = np.sin(theta)*np.abs(y)
-        
-        self.transform(cvs, alpha*dy, alpha*dx, coords, self.mode(t))
 
+        dx = np.cos(theta) * np.abs(x)
+        dy = np.sin(theta) * np.abs(y)
+
+        self.transform(cvs, alpha * dy, alpha * dx, coords, self.mode(t))

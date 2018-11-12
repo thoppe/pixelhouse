@@ -5,20 +5,19 @@ import numpy
 _script_path = os.path.dirname(os.path.abspath(__file__))
 
 
-class NamedColors():
-    '''
+class NamedColors:
+    """
     Named colors from matplotlib
-    '''
+    """
 
     def __init__(self, f_colors=None):
 
         if f_colors is None:
-            f_colors = os.path.join(
-                _script_path, 'named_colors', 'matplotlib.json')
+            f_colors = os.path.join(_script_path, "named_colors", "matplotlib.json")
 
         with open(f_colors) as FIN:
             raw = FIN.read()
-            
+
         self.colors = json.loads(raw)
 
     def __call__(self, name):
@@ -33,12 +32,9 @@ class NamedColors():
         # Add in the alpha channel
         return color
 
-
     def __len__(self):
         return len(self.colors)
 
 
-
 if __name__ == "__main__":
-    print (P('g'))
-    
+    print(P("g"))

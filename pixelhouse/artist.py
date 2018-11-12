@@ -4,41 +4,46 @@ import itertools
 
 
 #########################################################################
-_DEFAULT_MODE = 'blend'
+_DEFAULT_MODE = "blend"
+
 
 def constant(x):
     def func(self, t=0, *args, **kwargs):
         return x
+
     return func
 
-class Artist():
-    '''
+
+class Artist:
+    """
     Artists are the backbone of pixelhouse. They draw what's on the screen.
     To be a proper artist, all derived classes must accept their arguments
     as functions. To work with both *arg and **kwargs, child classes must
     define the class member "args" for the argument order.
-    '''
+    """
 
     mode = constant(_DEFAULT_MODE)
     args = []
-    
+
     @staticmethod
     def _create_interpolation(z):
-       t = np.linspace(0, 1, len(z))
-       f = scipy.interpolate.interp1d(t, z)
-       def func(x):
-           return f(x)
-       return func
+        t = np.linspace(0, 1, len(z))
+        f = scipy.interpolate.interp1d(t, z)
 
-    def __init__(self,  *args, **kwargs):
-        '''
+        def func(x):
+            return f(x)
+
+        return func
+
+    def __init__(self, *args, **kwargs):
+        """
         When an artist is initiated, all of the attributes can be set
         as a function of time. These attributes can be a constant, a numpy
         array (interpolation will be used if needed), or a function.
-        '''
+        """
 
         for key, val in zip(self.args, args):
-            kwargs[key] = val        
+            kwargs[key] = val
 
         attributes = dir(self)
         for key, val in kwargs.items():
@@ -59,7 +64,7 @@ class Artist():
 
             # Otherwise we assume it's a constant of this value
             else:
-                #setattr(self, key, self._constant(val))
+                # setattr(self, key, self._constant(val))
                 setattr(self, key, constant(val))
 
     def __call__(self, t, *args, **kwargs):

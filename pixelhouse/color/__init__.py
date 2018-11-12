@@ -7,4 +7,3 @@ from .interpolation import LABa_interpolation
 from .gradient import linear_gradient
 
 matplotlib_colors = NamedColors()
-
