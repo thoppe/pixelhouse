@@ -35,7 +35,7 @@ _Very much a work in progress!_
 + [x] Ellipse
 + [x] Polyline
 + [x] Backgrounds
-+ [ ] Text
++ [x] Text
 
 #### Transforms
 + [x] Rotation
