@@ -1,10 +1,11 @@
 # pixelhouse
 
-[![PyPI](https://img.shields.io/pypi/v/pixelhouse.svg)](https://pypi.python.org/pypi/pixelhouse)
 [![PyVersion](https://img.shields.io/pypi/pyversions/pixelhouse.svg)](https://img.shields.io/pypi/pyversions/pixelhouse.svg)
+[![PyPI](https://img.shields.io/pypi/v/pixelhouse.svg)](https://pypi.python.org/pypi/pixelhouse)
 
 
 A minimalist drawing library for making beautiful animations in python.
+Anything that can be drawn can be moved.
 _Very much a work in progress!_
 
 ## Examples
