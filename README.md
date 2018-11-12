@@ -1,16 +1,13 @@
 # pixelhouse
+
+[![PyPI](https://img.shields.io/pypi/v/pixelhouse.svg)](https://pypi.python.org/pypi/pixelhouse)
+[![PyVersion](https://img.shields.io/pypi/pyversions/pixelhouse.svg)](https://img.shields.io/pypi/pyversions/pixelhouse.svg)
+
+
 A minimalist drawing library for making beautiful animations in python.
-Anything that can be drawn can be moved.
 _Very much a work in progress!_
 
-    pip install pixelhouse
-
 ## Examples
-
-![](examples/teyleen_unknown.jpg)
-
-![](examples/logo.png)
-![](examples/circle_lines.png)
 
 ![](examples/simple_circles.png)
 ![](examples/simple_rectangle.png)
@@ -36,7 +33,7 @@ _Very much a work in progress!_
 + [x] Ellipse
 + [x] Polyline
 + [x] Backgrounds
-+ [x] Text
++ [ ] Text
 
 #### Transforms
 + [x] Rotation
@@ -46,7 +43,8 @@ _Very much a work in progress!_
 + [x] Generic elastic deformations
 
 #### Gradients
-+ [x] Linear gradients
++ [ ] Linear gradients
++ [ ] Transparent gradients
 
 #### Layers
 + [x] Additive
@@ -77,8 +75,8 @@ _Very much a work in progress!_
 #### Devops
 + [x] Unified class for artists
 + [x] Proper library
-+ [x] setup.py
-+ [x] pip install
++ [ ] setup.py
++ [ ] pip install
 + [ ] Context mangager for canvas and animation
 + [ ] Unit tests
 + [ ] Doc coverage
