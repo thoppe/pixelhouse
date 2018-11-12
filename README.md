@@ -9,7 +9,7 @@ _Very much a work in progress!_
 
 ## Examples
 
-![](examples/logo.png)	
+![](examples/teyleen_unknown.jpg)
 
 ![](examples/logo.png)
 ![](examples/circle_lines.png)
