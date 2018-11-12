@@ -12,7 +12,9 @@ _DEFAULT_THICKNESS = -1
 _DEFAULT_ANTIALIASED = True
 _DEFAULT_MODE = "direct"
 _DEFAULT_FONT_SIZE = 0.5
-_DEFAULT_FONT = os.path.join(_script_path, "fonts", "Alien-Encounters-Regular.ttf")
+_DEFAULT_FONT = os.path.join(
+    _script_path, "fonts", "Alien-Encounters-Regular.ttf"
+)
 
 
 class PrimitiveArtist(Artist):
@@ -64,7 +66,9 @@ class rectangle(PrimitiveArtist):
         y1 = cvs.transform_y(self.y1(t))
 
         args = (x, y), (x1, y1), color, thickness, lineType
-        cvs.cv2_draw(cv2.rectangle, args, mode=mode, gradient=self.gradient, t=t)
+        cvs.cv2_draw(
+            cv2.rectangle, args, mode=mode, gradient=self.gradient, t=t
+        )
 
 
 class line(PrimitiveArtist):
@@ -195,7 +199,8 @@ class text(PrimitiveArtist):
         else:
             possible = ["upper", "center", "lower"]
             raise ValueError(
-                f"Unknown font vertical position {vpos}, " f"must be one of {possible}."
+                f"Unknown font vertical position {vpos}, "
+                f"must be one of {possible}."
             )
 
         hpos = self.hpos(t)
@@ -208,7 +213,8 @@ class text(PrimitiveArtist):
         else:
             possible = ["left", "center", "right"]
             raise ValueError(
-                f"Unknown font vertical position {hpos}, " f"must be one of {possible}."
+                f"Unknown font vertical position {hpos}, "
+                f"must be one of {possible}."
             )
 
         # If there is no gradient, just draw it

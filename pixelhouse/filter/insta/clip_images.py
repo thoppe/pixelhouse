@@ -86,7 +86,12 @@ def train(img0, img1, n_epochs=40):
     model.compile(optimizer="ADAM", loss="mae")
 
     model.fit(
-        x, y, epochs=n_epochs, batch_size=2 ** 9, verbose=10, callbacks=[Histories()]
+        x,
+        y,
+        epochs=n_epochs,
+        batch_size=2 ** 9,
+        verbose=10,
+        callbacks=[Histories()],
     )
 
     yp = model.predict(x)
@@ -110,9 +115,15 @@ os.system(f"mkdir -p {save_dest_models}")
 save_dest_images = "examples"
 os.system(f"mkdir -p {save_dest_images}")
 
-cv2.imwrite(os.path.join(save_dest_images, "0_" + os.path.basename(f_source)), img0)
-cv2.imwrite(os.path.join(save_dest_images, "1_" + os.path.basename(f_source)), img1)
-cv2.imwrite(os.path.join(save_dest_images, "2_" + os.path.basename(f_source)), img2)
+cv2.imwrite(
+    os.path.join(save_dest_images, "0_" + os.path.basename(f_source)), img0
+)
+cv2.imwrite(
+    os.path.join(save_dest_images, "1_" + os.path.basename(f_source)), img1
+)
+cv2.imwrite(
+    os.path.join(save_dest_images, "2_" + os.path.basename(f_source)), img2
+)
 
 
 display_img = np.concatenate((img0, img1, img2), axis=1)

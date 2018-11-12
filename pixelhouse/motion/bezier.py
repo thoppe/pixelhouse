@@ -31,7 +31,10 @@ class bezierMotionCurve:
             t = np.array([t])
 
         polynomial_array = np.array(
-            [bernstein_poly(i, self.nPoints - 1, t) for i in range(0, self.nPoints)]
+            [
+                bernstein_poly(i, self.nPoints - 1, t)
+                for i in range(0, self.nPoints)
+            ]
         )
 
         xvals = np.dot(self.xPoints, polynomial_array)

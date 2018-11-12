@@ -24,7 +24,9 @@ class EasingBase:
 
 
 class BezierEase(EasingBase):
-    def __init__(self, x0=0.45, y0=0.25, x1=0.55, y1=0.75, start=0, stop=1, duration=1):
+    def __init__(
+        self, x0=0.45, y0=0.25, x1=0.55, y1=0.75, start=0, stop=1, duration=1
+    ):
 
         super().__init__(start, stop, duration)
         self.f = bezierMotionCurve(x0, y0, x1, y1)

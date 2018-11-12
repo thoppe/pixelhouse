@@ -77,7 +77,12 @@ def train(img0, img1, n_epochs=40, name=None):
     model.compile(optimizer="ADAM", loss="mae")
 
     history = model.fit(
-        x, y, epochs=n_epochs, batch_size=2 ** 9, verbose=0, callbacks=[Histories()]
+        x,
+        y,
+        epochs=n_epochs,
+        batch_size=2 ** 9,
+        verbose=0,
+        callbacks=[Histories()],
     )
 
     loss = history.history["loss"]

@@ -10,32 +10,73 @@ from tqdm import tqdm
 
 
 class Animation:
-    def __init__(self, width=200, height=200, duration=5, fps=5, extent=4, bg="black"):
+    def __init__(
+        self, width=200, height=200, duration=5, fps=5, extent=4, bg="black"
+    ):
+
+        self.width = width
+        self.height = height
+        self.bg = bg
+        self.extent = extent
 
         self.duration = duration
         self.fps = fps
-        self.artists = []
 
         n_frames = int(fps * duration)
 
-        self.frames = [Canvas(width, height, extent, bg=bg) for _ in range(n_frames)]
+        self.frames = [
+            Canvas(width, height, extent, bg=bg) for _ in range(n_frames)
+        ]
+
         self.has_rendered = [False] * len(self)
         self.timepoints = np.linspace(0, 1, len(self) + 1)[:-1]
+
+        # Keeps track of which list of artists to grab
+        self.artist_stack = [[]]
+        self.keyframes = np.array([0] * len(self))
+
+    def blank(self, **kwargs):
+        """
+        Return a new animation object similar to this one. Any arguments passed
+        in the keywords are also passed to the new object.
+        """
+        kws = {
+            "width": self.width,
+            "height": self.height,
+            "bg": self.bg,
+            "extent": self.extent,
+            "duration": self.duration,
+            "fps": self.fps,
+        }
+        kws.update(kwargs)
+
+        return Animation(**kws)
 
     def __len__(self):
         return len(self.frames)
 
     def __call__(self, art):
-        self.artists.append(art)
+        self.artist_stack[-1].append(art)
         return self
 
     def __iadd__(self, rhs):
         """
-        Add an Artist to the canvas, or combine two canvas depending
-        on what the rhs is.
+        Add an Artist to the canvas, or if another animation, extend the
+        animation from the rhs.
         """
         if isinstance(rhs, Artist):
             self(rhs)
+        elif isinstance(rhs, Animation):
+            self.frames.extend(rhs.frames)
+            self.has_rendered.extend(rhs.has_rendered)
+            self.timepoints = np.hstack([self.timepoints, rhs.timepoints])
+            self.duration += rhs.duration
+            self.artist_stack.extend(rhs.artist_stack)
+
+            new_keyframes = rhs.keyframes.copy()
+            new_keyframes += self.keyframes.max() + 1
+            self.keyframes = np.hstack([self.keyframes, new_keyframes])
+
         else:
             raise TypeError(f"Can't combine a Animation with a {type(rhs)}")
 
@@ -48,7 +89,8 @@ class Animation:
 
             t = self.timepoints[n]
 
-            for art in self.artists:
+            artists = self.artist_stack[self.keyframes[n]]
+            for art in artists:
                 art(self.frames[n], t)
 
             self.has_rendered[n] = True

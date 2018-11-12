@@ -13,7 +13,9 @@ class NamedColors:
     def __init__(self, f_colors=None):
 
         if f_colors is None:
-            f_colors = os.path.join(_script_path, "named_colors", "matplotlib.json")
+            f_colors = os.path.join(
+                _script_path, "named_colors", "matplotlib.json"
+            )
 
         with open(f_colors) as FIN:
             raw = FIN.read()

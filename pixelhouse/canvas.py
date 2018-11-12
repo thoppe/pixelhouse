@@ -12,7 +12,12 @@ class Canvas:
     """
 
     def __init__(
-        self, width=200, height=200, extent=4.0, bg="black", name="pixelhouseImage"
+        self,
+        width=200,
+        height=200,
+        extent=4.0,
+        bg="black",
+        name="pixelhouseImage",
     ):
         channels = 4
         self._img = np.zeros((height, width, channels), np.uint8)
@@ -32,7 +37,10 @@ class Canvas:
         self.shared_attributes = {}
 
     def __repr__(self):
-        return f"pixelhouse (w/h) {self.height}x{self.width}, " f"extent {self.extent}"
+        return (
+            f"pixelhouse (w/h) {self.height}x{self.width}, "
+            f"extent {self.extent}"
+        )
 
     @property
     def height(self):
@@ -210,7 +218,10 @@ class Canvas:
 
         attrs = self.shared_attributes
 
-        if "grid_coordinates" in attrs.keys() and attrs["prior_shape"] == self.shape:
+        if (
+            "grid_coordinates" in attrs.keys()
+            and attrs["prior_shape"] == self.shape
+        ):
             return attrs["grid_coordinates"]
 
         shape = tuple(self.shape)

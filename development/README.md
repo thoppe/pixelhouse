@@ -1,6 +1,6 @@
 ## Development notes
 
-+ Before a push run `black` (`pip install black`) to keep the code tidy.
++ Before a push run `black` (`pip install black`) to keep the code tidy. `black --line-length 80 pixelhouse unincorporated_demos/`
 + Tests can be run using `tox` (`pip install tox`), using nosetest (but be aware that python3.6 is needed for the tests so make sure nose is up-to-date.
 
 ### Release Notes:
