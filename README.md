@@ -9,6 +9,11 @@ _Very much a work in progress!_
 
 ## Examples
 
+![](examples/logo.png)	
+
+![](examples/logo.png)
+![](examples/circle_lines.png)
+
 ![](examples/simple_circles.png)
 ![](examples/simple_rectangle.png)
 ![](examples/simple_lines.png)
