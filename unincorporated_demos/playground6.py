@@ -7,9 +7,8 @@ from pixelhouse.filter import gaussian_blur
 
 import pixelhouse as ph
 
-pal = ph.ColorLoversPalette()(15)
-q = lambda x: np.random.uniform(-4,4)
-#q = lambda x: np.random.normal(0,x)
+pal = ph.ColorLoversPalette()(20)
+random.seed(44)
 
 C = Canvas(400, 400, bg=pal[0])
 #C = Animation(400, 400, fps=30, bg=pal[0], duration=7)
