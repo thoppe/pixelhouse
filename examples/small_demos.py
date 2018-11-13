@@ -220,16 +220,14 @@ def pacman():
 
 if __name__ == "__main__":
 
-    simple_lines().save("examples/simple_lines.png")
-    simple_circles().save("examples/simple_circles.png")
-    simple_rectangles().save("examples/simple_rectangle.png")
+    simple_lines().save("simple_lines.png")
+    simple_circles().save("simple_circles.png")
+    simple_rectangles().save("simple_rectangle.png")
 
-    instagram_filters().save("examples/instafilters_from_file.png")
+    canvas2gif(rotating_circles(), "moving_circles.gif", **gif_args)
+    canvas2gif(pacman(), "pacman.gif", **gif_args)
+    canvas2gif(checkerboard(), "checkerboard.gif", **gif_args)
+    canvas2gif(timer(), "timer.gif", **gif_args)
 
-    canvas2gif(rotating_circles(), "examples/moving_circles.gif", **gif_args)
-    canvas2gif(pacman(), "examples/pacman.gif", **gif_args)
-    canvas2gif(checkerboard(), "examples/checkerboard.gif", **gif_args)
-    canvas2gif(timer(), "examples/timer.gif", **gif_args)
-
-    teyleen_982().save("examples/teyleen_982.png")
-    teyleen_116().save("examples/teyleen_116.png")
+    teyleen_982().save("teyleen_982.png")
+    teyleen_116().save("teyleen_116.png")

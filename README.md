@@ -16,14 +16,9 @@ _click on an image to see the source pixelhouse_
 [![Example image: Logo](examples/logo_pixelhouse.png)](examples/logo_pixelhouse.py)
 [![Example image: Circle Lines](examples/circle_lines.png)](examples/circle_lines.py)
 
-![](examples/simple_circles.png)
-![](examples/simple_rectangle.png)
-![](examples/simple_lines.png)
+[![](examples/simple_circles.png)](examples/small_demos.py)
 ![](examples/teyleen_982.png)
 ![](examples/teyleen_116.png)
-
-![](examples/instafilters_from_file.png)
-
 ![](examples/moving_circles.gif)
 ![](examples/checkerboard.gif)
 ![](examples/pacman.gif)
