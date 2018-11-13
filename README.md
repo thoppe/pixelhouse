@@ -9,23 +9,20 @@ _Very much a work in progress!_
 
       pip install pixelhouse
 
-## Examples
-_click on an image to see the source pixelhouse_
+## Examples (click for source)
+
 [![Example image: blue woods](examples/blue_woods.png)](examples/blue_woods.py)
 
 [![Example image: Logo](examples/logo_pixelhouse.png)](examples/logo_pixelhouse.py)
 [![Example image: Circle Lines](examples/circle_lines.png)](examples/circle_lines.py)
 
 [![](examples/simple_circles.png)](examples/small_demos.py)
-![](examples/teyleen_982.png)
-![](examples/teyleen_116.png)
-![](examples/moving_circles.gif)
-![](examples/checkerboard.gif)
-![](examples/pacman.gif)
-![](examples/timer.gif)
-
-
-[Example code](generate_demos.py)
+[![](examples/teyleen_982.png)](examples/small_demos.py)
+[![](examples/teyleen_116.png)](examples/small_demos.py)
+[![](examples/moving_circles.gif)](examples/small_demos.py)
+[![](examples/checkerboard.gif)](examples/small_demos.py)
+[![](examples/pacman.gif)](examples/small_demos.py)
+[![](examples/timer.gif)](examples/small_demos.py)
 
 ## Wishlist / Roadmap
 
