@@ -1,5 +1,3 @@
-# A working file to test various aspects of the module
-import numpy as np
 from pixelhouse import Canvas, ellipse, linear_gradient
 from pixelhouse.color import ColorLoversPalette
 from pixelhouse.filter import gaussian_blur, instafilter
