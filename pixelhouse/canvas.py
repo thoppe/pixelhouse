@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 import cv2
 import numpy as np
 import collections
@@ -76,10 +77,14 @@ class Canvas:
 
         return Canvas(self.width, self.height, bg=bg)
 
-    def copy(self, bg=None):
+    def copy(self, bg=None, transparent=False):
         # Returns a deep copy of this canvas
         cvs = Canvas(self.width, self.height, bg=self.bg)
         cvs._img = self.img.copy()
+
+        if transparent:
+            cvs._img[:,:,3] = 0
+        
         return cvs
 
     def __call__(self, art=None):
@@ -285,3 +290,11 @@ class Canvas:
         self._img = np.dstack((self._img, alpha))
 
         return self
+
+
+    @contextmanager
+    def layer(self):
+        canvas = self.copy(transparent=True)
+        yield canvas
+        self += canvas
+

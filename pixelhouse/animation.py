@@ -1,6 +1,7 @@
 from . import Canvas, Artist
 from .motion import easing
 
+from contextlib import contextmanager
 import cv2
 import os
 import numpy as np
@@ -118,3 +119,8 @@ class Animation:
                 img.show(delay=delay)
             if not repeat:
                 break
+
+    @contextmanager
+    def layer(self):
+        msg = f"Layers not implemented for the animations yet."
+        raise NotImplementedError(msg)
