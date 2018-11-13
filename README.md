@@ -8,11 +8,11 @@ Anything that can be drawn can be moved.
 _Very much a work in progress!_
 
 ## Examples
-
+_click on an image to see the source pixelhouse_
 [![Example image: blue woods](examples/blue_woods.png)](examples/blue_woods.py)
 
-![](examples/logo_pixelhouse.png)
-![](examples/circle_lines.png)
+[![Example image: Logo](examples/logo_pixelhouse.png)](examples/logo_pixelhouse.py)
+[![Example image: Circle Lines](examples/circle_lines.png)](examples/circle_lines.py)
 
 ![](examples/simple_circles.png)
 ![](examples/simple_rectangle.png)
