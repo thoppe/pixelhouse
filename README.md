@@ -9,7 +9,7 @@ _Very much a work in progress!_
 
 ## Examples
 
-![](examples/blue_woods.png)
+[![Example image: blue woods](examples/blue_woods.png)](examples/blue_woods.py)
 
 ![](examples/logo_pixelhouse.png)
 ![](examples/circle_lines.png)
