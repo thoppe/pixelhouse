@@ -34,12 +34,10 @@ def draw_circles(C, dx=0.25, tc=0.1):
 C = Canvas().load("asphalt-dark-dawn-531321.jpg")
 C += instafilter("1977")
 
-C2 = C.copy()
+with C.layer() as C2:
+    draw_circles(C2)
+    C2 += gaussian_blur()
+    draw_circles(C2)
 
-draw_circles(C2)
-C2 += gaussian_blur()
-draw_circles(C2)
-
-C += C2
-C.save("../examples/teyleen_unknown.jpg")
+C.save("blue_woods.png")
 C.show()

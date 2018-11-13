@@ -9,9 +9,9 @@ _Very much a work in progress!_
 
 ## Examples
 
-![](examples/teyleen_unknown.jpg)
+![](examples/blue_woods.png)
 
-![](examples/logo.png)
+![](examples/logo_pixelhouse.png)
 ![](examples/circle_lines.png)
 
 ![](examples/simple_circles.png)
