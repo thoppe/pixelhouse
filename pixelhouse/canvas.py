@@ -83,8 +83,8 @@ class Canvas:
         cvs._img = self.img.copy()
 
         if transparent:
-            cvs._img[:,:,3] = 0
-        
+            cvs._img[:, :, 3] = 0
+
         return cvs
 
     def __call__(self, art=None):
@@ -291,10 +291,8 @@ class Canvas:
 
         return self
 
-
     @contextmanager
     def layer(self):
         canvas = self.copy(transparent=True)
         yield canvas
         self += canvas
-

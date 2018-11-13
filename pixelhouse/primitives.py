@@ -44,7 +44,7 @@ class PrimitiveArtist(Artist):
 
 
 class circle(PrimitiveArtist):
-    '''
+    """
     Draws a circle to the canvas. Arguments can be a constant 
     or a function that returns a value from t=[0...1].
         
@@ -58,7 +58,8 @@ class circle(PrimitiveArtist):
     antialiased (bool): Antialiased edges
     gradient (linear_gradient): pixelhouse.gradient for coloring
     mode (string): Direct, blend, add, or subtract
-    '''
+    """
+
     r = constant(1.0)
     args = ("x", "y", "r", "color", "thickness", "lineType")
 
@@ -72,7 +73,7 @@ class circle(PrimitiveArtist):
 
 
 class rectangle(PrimitiveArtist):
-    '''
+    """
     Draws a rectangle to the canvas. Arguments can be a constant 
     or a function that returns a value from t=[0...1].
         
@@ -87,8 +88,8 @@ class rectangle(PrimitiveArtist):
     antialiased (bool): Antialiased edges
     gradient (linear_gradient): pixelhouse.gradient for coloring
     mode (string): Direct, blend, add, or subtract
-    '''
-    
+    """
+
     x1 = constant(1.0)
     y1 = constant(1.0)
     args = ("x", "y", "x1", "y1", "color", "thickness", "lineType")
@@ -105,7 +106,7 @@ class rectangle(PrimitiveArtist):
 
 
 class line(PrimitiveArtist):
-    '''
+    """
     Draws a line to the canvas. Arguments can be a constant 
     or a function that returns a value from t=[0...1].
         
@@ -120,8 +121,8 @@ class line(PrimitiveArtist):
     antialiased (bool): Antialiased edges
     gradient (linear_gradient): pixelhouse.gradient for coloring
     mode (string): Direct, blend, add, or subtract
-    '''
-    
+    """
+
     x1 = constant(1.0)
     y1 = constant(1.0)
     thickness = constant(0.1)
@@ -140,7 +141,7 @@ class line(PrimitiveArtist):
 
 
 class ellipse(PrimitiveArtist):
-    '''
+    """
     Draws an ellipse to the canvas. Arguments can be a constant 
     or a function that returns a value from t=[0...1].
         
@@ -158,8 +159,8 @@ class ellipse(PrimitiveArtist):
     antialiased (bool): Antialiased edges
     gradient (linear_gradient): pixelhouse.gradient for coloring
     mode (string): Direct, blend, add, or subtract
-    '''
-    
+    """
+
     a = constant(2.0)
     b = constant(1.0)
 
@@ -204,7 +205,7 @@ class ellipse(PrimitiveArtist):
 
 
 class polyline(PrimitiveArtist):
-    '''
+    """
     Draws multiple line segments to the canvas. Arguments can be a constant 
     or a function that returns a value from t=[0...1].
         
@@ -218,8 +219,8 @@ class polyline(PrimitiveArtist):
     antialiased (bool): Antialiased edges
     gradient (linear_gradient): pixelhouse.gradient for coloring
     mode (string): Direct, blend, add, or subtract
-    '''
-    
+    """
+
     xpts = constant([0.0, 1.0, 2.0])
     ypts = constant([0.0, 2.0, 0.0])
     thickness = constant(0.1)
@@ -248,7 +249,7 @@ class polyline(PrimitiveArtist):
 
 
 class text(PrimitiveArtist):
-    '''
+    """
     Writes text the canvas. Arguments can be a constant 
     or a function that returns a value from t=[0...1].
         
@@ -264,8 +265,8 @@ class text(PrimitiveArtist):
     antialiased (bool): Antialiased edges
     gradient (linear_gradient): pixelhouse.gradient for coloring
     mode (string): Direct, blend, add, or subtract
-    '''
-    
+    """
+
     text = constant("pixelhouse")
     font = constant(_DEFAULT_FONT)
     font_size = constant(_DEFAULT_FONT_SIZE)

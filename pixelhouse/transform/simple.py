@@ -27,8 +27,7 @@ class translate(Artist):
         y = cvs.transform_length(self.y(t))
 
         M = np.float32([[1, 0, x], [0, 1, y]])
-        cvs._img = cv2.warpAffine(cvs.img, M, cvs.shape[:2],
-                                 borderValue=cvs.bg)
+        cvs._img = cv2.warpAffine(cvs.img, M, cvs.shape[:2], borderValue=cvs.bg)
 
 
 class rotate(Artist):
@@ -40,5 +39,4 @@ class rotate(Artist):
 
         cols, rows = cvs.shape[:2]
         M = cv2.getRotationMatrix2D((cols // 2, rows // 2), theta, 1)
-        cvs._img = cv2.warpAffine(cvs.img, M, (cols, rows),
-                                  borderValue=cvs.bg)
+        cvs._img = cv2.warpAffine(cvs.img, M, (cols, rows), borderValue=cvs.bg)
