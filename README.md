@@ -32,28 +32,27 @@ _Very much a work in progress!_
 + [x] Ellipse
 + [x] Polyline
 + [x] Backgrounds
-+ [ ] Text
++ [x] Text
++ [ ] Beizer curves
 
 #### Transforms
 + [x] Rotation
 + [x] Translation
 + [x] Scale
-+ [x] Elastic distortion
-+ [x] Generic elastic deformations
++ [x] Elastic distortions
 
 #### Gradients
 + [x] Linear gradients with transparent elements
 
 #### Layers
++ [x] Blended
 + [x] Additive
 + [x] Subtractive
-+ [x] Overlay
 + [x] Direct (for primitives)
 
 #### Filters
 + [x] Blur
 + [x] Instagram-style filters (keras not needed)
-+ [ ] Histogram normalization
 
 #### Easing
 + [x] Named easing, Pennser equations
@@ -62,7 +61,6 @@ _Very much a work in progress!_
 #### Color/Palettes
 + [x] Named colors
 + [x] Top palettes
-+ [ ] Random palettes
 
 #### File IO
 + [x] Save to gif
@@ -72,14 +70,15 @@ _Very much a work in progress!_
 
 #### Devops
 + [x] Unified class for artists
-+ [x] Proper library
-+ [ ] setup.py
-+ [ ] pip install
-+ [ ] Context mangager for canvas and animation
-+ [ ] Unit tests
-+ [ ] Doc coverage
-+ [ ] Subpixel resolution
 + [x] Hide cv2 weird colorspace, BGR -> RGB
++ [x] Proper library
++ [x] setup.py
++ [x] pip install
++ [x] Context mangager for canvas
++ [ ] Context mangager for animation
++ [ ] Unit tests (started!)
++ [ ] Doc coverage (started!)
++ [ ] Subpixel resolution
 
 
 ## Credits
