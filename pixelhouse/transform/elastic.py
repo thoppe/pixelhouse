@@ -27,7 +27,7 @@ class pull(ElasticTransform):
     x = constant(0.0)
     y = constant(0.0)
     alpha = constant(1.0)
-    mode = constant("constant")
+    mode = constant("nearest")
     args = ("x", "y", "sigma", "alpha", "mode")
 
     def draw(self, cvs, t=0.0):
@@ -49,7 +49,7 @@ class pull(ElasticTransform):
 class distort(ElasticTransform):
     sigma = constant(0.1)
     alpha = constant(10.0)
-    mode = constant("constant")
+    mode = constant("nearest")
     seed = constant(None)
 
     args = ("sigma", "alpha", "mode", "seed")
