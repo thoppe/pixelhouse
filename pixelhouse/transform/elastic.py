@@ -118,17 +118,17 @@ class wave(ElasticTransform):
         #w = cvs.transform_length(self.wavelength(t))
 
         theta = self.theta(t)
-
         w = self.wavelength(t)
+        
         a = cvs.transform_length(self.amplitude(t), is_discrete=False)
         print(w, a)
 
         # only acts in x direction
-        dx = np.cos(x*2*np.pi/w + self.offset(t))
+        dx = a*np.cos(y*2*np.pi/w + self.offset(t))
         dx[dx>0] = a
         dx[dx<=0] = -a
 
-        dy = np.cos(y*2*np.pi/w + self.offset(t))
+        dy = a*np.cos(x*2*np.pi/w + self.offset(t))
         dy[dy>0] = a
         dy[dy<=0] = -a
 

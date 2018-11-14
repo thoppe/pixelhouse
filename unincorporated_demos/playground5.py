@@ -12,8 +12,10 @@ lg = ph.linear_gradient(pal[0], pal[1])
 
 C += ph.text("pixelhouse", font_size=0.75, font=f_font)
 
-z = np.linspace(0, 0.5)
-C += el.wave(amplitude=z, theta=np.pi/2)
+z = np.linspace(0, 1)
+theta = np.linspace(0, 2*np.pi)
+C += el.wave(amplitude=0.025, theta=theta, wavelength=.25)
+#C += el.wave(amplitude=z, theta=np.pi/2, wavelength=.25)
 #C += el.wave(theta=np.pi/2)
 
 '''
