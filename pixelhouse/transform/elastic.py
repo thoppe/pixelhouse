@@ -96,3 +96,43 @@ class motion_lines(ElasticTransform):
         dy = np.sin(theta) * np.abs(y)
 
         self.transform(cvs, alpha * dy, alpha * dx, coords, self.mode(t))
+
+class wave(ElasticTransform):
+    
+    wavelength = constant(0.25)
+    amplitude = constant(0.02)
+    offset = constant(0.0)
+    theta = constant(0.0)
+    mode = constant("nearest")
+    seed = constant(None)
+
+    args = ("wavelength", "amplitude", "theta", "mode", "seed")
+
+    def draw(self, cvs, t=0.0):
+
+        coords = cvs.grid_coordinates()
+
+        y = cvs.inverse_transform_y(coords[1].astype(float))
+        x = cvs.inverse_transform_y(coords[0].astype(float))
+
+        #w = cvs.transform_length(self.wavelength(t))
+
+        theta = self.theta(t)
+
+        w = self.wavelength(t)
+        a = cvs.transform_length(self.amplitude(t), is_discrete=False)
+        print(w, a)
+
+        # only acts in x direction
+        dx = np.cos(x*2*np.pi/w + self.offset(t))
+        dx[dx>0] = a
+        dx[dx<=0] = -a
+
+        dy = np.cos(y*2*np.pi/w + self.offset(t))
+        dy[dy>0] = a
+        dy[dy<=0] = -a
+
+        dx = np.cos(theta) * dx
+        dy = np.sin(theta) * dy
+
+        self.transform(cvs, dy, dx, coords, self.mode(t))

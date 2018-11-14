@@ -7,24 +7,22 @@ pal = ph.ColorLoversPalette()(6)
 f_font = "../pixelhouse/fonts/Montserrat-Medium.otf"
 
 C = ph.Canvas(500, 200, bg=pal[2])
-C = ph.Animation(500, 200, bg=pal[2], fps=30)
+C = ph.Animation(500, 200, bg=pal[2], fps=10)
 lg = ph.linear_gradient(pal[0], pal[1])
 
-# C += ph.circle(color=pal[3])
-# C += gaussian_blur()
-# C += ph.circle(color=pal[3])
+C += ph.text("pixelhouse", font_size=0.75, font=f_font)
 
-# for i in np.arange(-6, 6, 1.0):
-#    C += ph.text("pixelhouse", font=f_font, y=i, gradient=lg)
-C += ph.text("pixelhouse", font=f_font)
+z = np.linspace(0, 0.5)
+C += el.wave(amplitude=z, theta=np.pi/2)
+#C += el.wave(theta=np.pi/2)
 
+'''
 # C += el.pull(alpha=0.05)
 # C += el.distort(alpha=20)
 z = np.logspace(-0.8, -1.5, 100)
 print(z)
 C += el.distort(sigma=z, seed=20)
+'''
 
-z2 = 0.15 - z
-# C += gaussian_blur(z2,z2)
 # C.save("logo_pixelhouse.png")
 C.show()
