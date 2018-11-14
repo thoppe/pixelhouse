@@ -8,7 +8,7 @@ C = Canvas(width=400, height=400, bg="purple")
 with C.layer() as CX:
     CX += circle(x=0, color="w")
     for i in range(10):
-        CX += gaussian_blur(blur_x=.25)
+        CX += gaussian_blur(blur_x=0.25)
 
     CX += circle(x=0, color="w")
 

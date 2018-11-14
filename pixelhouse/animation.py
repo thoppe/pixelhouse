@@ -122,5 +122,29 @@ class Animation:
 
     @contextmanager
     def layer(self):
-        msg = f"Layers not implemented for the animations yet."
+        canvas = _CanvasLayer()
+        yield canvas
+        self(canvas)
+
+
+class _CanvasLayer:
+    """
+    Keep track of the artists when used in a layer.
+    """
+
+    def __init__(self):
+        self.artists = []
+
+    def __iadd__(self, art):
+        self.artists.append(art)
+        return self
+
+    def __call__(self, cvs, t=0.0):
+        with cvs.layer() as C:
+            for art in self.artists:
+                art(C, t)
+
+    @contextmanager
+    def layer(self):
+        msg = "Nested layers in Animation are not possible yet."
         raise NotImplementedError(msg)

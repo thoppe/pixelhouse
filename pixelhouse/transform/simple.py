@@ -34,14 +34,14 @@ class rotate(Artist):
     theta = constant(np.pi / 4)
     x = constant(0.0)
     y = constant(0.0)
-    args = ("theta","x","y")
+    args = ("theta", "x", "y")
 
     def draw(self, cvs, t=0.0):
         theta = cvs.transform_angle(self.theta(t))
         x = cvs.transform_x(self.x(t))
         y = cvs.transform_y(self.y(t))
 
-        print(x,y)
+        print(x, y)
 
         cols, rows = cvs.shape[:2]
         M = cv2.getRotationMatrix2D((x, y), theta, 1)
