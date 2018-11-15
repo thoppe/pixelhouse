@@ -13,5 +13,5 @@ C += ph.circle(color=pal[3])
 for i in np.arange(-6, 6, 1.0):
     C += ph.text("pixelhouse", y=i, gradient=lg)
 
-C.save("logo_pixelhouse.png")
+C.save("figures/logo_pixelhouse.png")
 C.show()

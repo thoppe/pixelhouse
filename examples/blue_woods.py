@@ -37,5 +37,5 @@ with C.layer() as C2:
     C2 += gaussian_blur()
     draw_circles(C2)
 
-C.save("blue_woods.png")
+C.save("figures/blue_woods.png")
 C.show()
