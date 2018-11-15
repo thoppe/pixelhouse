@@ -1,7 +1,7 @@
 from pixelhouse import Canvas, Animation
 from pixelhouse import circle, line, ellipse, rectangle
 from pixelhouse.color import matplotlib_colors, ColorLoversPalette
-from pixelhouse.filter import instafilter
+from pixelhouse.filters import instafilter
 from pixelhouse.transform import scale
 import pixelhouse.motion as motion
 

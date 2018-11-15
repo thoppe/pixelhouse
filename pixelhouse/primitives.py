@@ -248,7 +248,7 @@ class polyline(PrimitiveArtist):
         if self.gradient(t) is not None:
             raise NotImplementedError("Can't use gradients on polylines yet")
 
-        args = [pts], is_closed, color, thickness, lineType, cvs.shift
+        args = [pts], is_closed, color, thickness, lineType, 0
         cvs.cv2_draw(cv2.polylines, args, mode=mode)
 
 
