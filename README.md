@@ -4,7 +4,8 @@
 [![PyPI](https://img.shields.io/pypi/v/pixelhouse.svg)](https://pypi.python.org/pypi/pixelhouse)
 
 A minimalist drawing library for making beautiful animations in python.
-Anything that can be drawn can be moved.
+Anything that can be drawn can be moved.  Comes with beautiful gradients, instagram-like filters, and elastic transforms.
+
 _Very much a work in progress!_
 
       pip install pixelhouse
@@ -23,6 +24,9 @@ _Very much a work in progress!_
 [![](examples/checkerboard.gif)](examples/small_demos.py)
 [![](examples/pacman.gif)](examples/small_demos.py)
 [![](examples/timer.gif)](examples/small_demos.py)
+
+
+_Submit your examples as an issue/pull request or post to twitter under #pixelhouse to have them showcased here!_
 
 ## Wishlist / Roadmap
 
