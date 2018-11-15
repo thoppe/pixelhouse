@@ -19,9 +19,11 @@ class Canvas:
         extent=4.0,
         bg="black",
         name="pixelhouseImage",
+        shift=8,
     ):
         channels = 4
         self._img = np.zeros((height, width, channels), np.uint8)
+        self.shift = shift
 
         # Assign the background color, but make sure it is fully transparent
         # needed for antialiased edges
@@ -157,12 +159,16 @@ class Canvas:
         MX = np.clip(MX, 0, 255).astype(np.uint8)
         self._img = MX
 
-    def transform_x(self, x, is_discrete=True):
+    def transform_x(self, x, is_discrete=True, use_shift=False):
         x *= self.width / 2.0
         x /= self.extent
         x += self.width / 2.0
+
         if is_discrete:
+            if use_shift and self.shift:
+                x *= 2**self.shift
             return int(x)
+        
         return x
 
     def inverse_transform_x(self, x):
@@ -171,11 +177,13 @@ class Canvas:
         x /= self.width / 2.0
         return x
 
-    def transform_y(self, y, is_discrete=True):
+    def transform_y(self, y, is_discrete=True, use_shift=False):
         y *= -self.height / 2.0
         y /= self.extent
         y += self.height / 2.0
         if is_discrete:
+            if use_shift and self.shift:
+                y *= 2**self.shift
             return int(y)
         return y
 
@@ -185,8 +193,12 @@ class Canvas:
         y /= self.height / 2.0
         return y
 
-    def transform_length(self, r, is_discrete=True):
+    def transform_length(self, r, is_discrete=True, use_shift=False):
         r *= float(self.width) / self.extent
+
+        if use_shift and self.shift:
+            r *= 2**self.shift
+        
         if is_discrete:
             return int(r)
         return r
