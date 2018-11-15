@@ -75,14 +75,14 @@ _Submit your examples as an issue/pull request or post to twitter under #pixelho
 #### Devops
 + [x] Unified class for artists
 + [x] Hide cv2 weird colorspace, BGR -> RGB
++ [x] Subpixel resolution for primitives
 + [x] Proper library
 + [x] setup.py
 + [x] pip install
 + [x] Context mangager for canvas
-+ [ ] Context mangager for animation
++ [x] Context mangager for animation (working but not nested)
 + [ ] Unit tests (started!)
 + [ ] Doc coverage (started!)
-+ [ ] Subpixel resolution
 
 
 ## Credits
