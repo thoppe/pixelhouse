@@ -166,9 +166,9 @@ class Canvas:
 
         if is_discrete:
             if use_shift and self.shift:
-                x *= 2**self.shift
+                x *= 2 ** self.shift
             return int(x)
-        
+
         return x
 
     def inverse_transform_x(self, x):
@@ -183,7 +183,7 @@ class Canvas:
         y += self.height / 2.0
         if is_discrete:
             if use_shift and self.shift:
-                y *= 2**self.shift
+                y *= 2 ** self.shift
             return int(y)
         return y
 
@@ -197,8 +197,8 @@ class Canvas:
         r *= float(self.width) / self.extent
 
         if use_shift and self.shift:
-            r *= 2**self.shift
-        
+            r *= 2 ** self.shift
+
         if is_discrete:
             return int(r)
         return r

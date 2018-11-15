@@ -67,7 +67,7 @@ class circle(PrimitiveArtist):
 
         x, y, thickness, color, lineType, mode = self.basic_transforms(cvs, t)
         r = cvs.transform_length(self.r(t), use_shift=True)
-        
+
         # Require the radius to be non-negative
         r = max(0, r)
 
@@ -202,7 +202,7 @@ class ellipse(PrimitiveArtist):
             color,
             thickness,
             lineType,
-            cvs.shift
+            cvs.shift,
         )
 
         cvs.cv2_draw(cv2.ellipse, args, mode=mode, gradient=self.gradient, t=t)
@@ -285,7 +285,8 @@ class text(PrimitiveArtist):
         Use PIL to measure and draw the font.
         """
         x, y, thickness, color, lineType, mode = self.basic_transforms(
-            cvs, t, use_shift=False)
+            cvs, t, use_shift=False
+        )
 
         text = self.text(t)
         fs = cvs.transform_length(self.font_size(t))
