@@ -28,9 +28,9 @@ class PrimitiveArtist(Artist):
     mode = constant(_DEFAULT_MODE)
     gradient = constant(None)
 
-    def basic_transforms(self, cvs, t):
-        x = cvs.transform_x(self.x(t), use_shift=True)
-        y = cvs.transform_y(self.y(t), use_shift=True)
+    def basic_transforms(self, cvs, t, use_shift=True):
+        x = cvs.transform_x(self.x(t), use_shift=use_shift)
+        y = cvs.transform_y(self.y(t), use_shift=use_shift)
         thickness = cvs.transform_thickness(self.thickness(t))
         color = cvs.transform_color(self.color(t))
         lineType = cvs.get_lineType(self.antialiased(t))
@@ -284,7 +284,8 @@ class text(PrimitiveArtist):
         """
         Use PIL to measure and draw the font.
         """
-        x, y, thickness, color, lineType, mode = self.basic_transforms(cvs, t)
+        x, y, thickness, color, lineType, mode = self.basic_transforms(
+            cvs, t, use_shift=False)
 
         text = self.text(t)
         fs = cvs.transform_length(self.font_size(t))
