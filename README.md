@@ -12,18 +12,18 @@ _Very much a work in progress!_
 
 ## Examples (click for source)
 
-[![Example image: blue woods](examples/blue_woods.png)](examples/blue_woods.py)
+[![Example image: blue woods](examples/figures/blue_woods.png)](examples/blue_woods.py)
 
-[![Example image: Logo](examples/logo_pixelhouse.png)](examples/logo_pixelhouse.py)
-[![Example image: Circle Lines](examples/circle_lines.png)](examples/circle_lines.py)
+[![Example image: Logo](examples/figures/logo_pixelhouse.png)](examples/logo_pixelhouse.py)
+[![Example image: Circle Lines](examples/figures/circle_lines.png)](examples/circle_lines.py)
 
-[![](examples/simple_circles.png)](examples/small_demos.py)
-[![](examples/teyleen_982.png)](examples/small_demos.py)
-[![](examples/teyleen_116.png)](examples/small_demos.py)
-[![](examples/moving_circles.gif)](examples/small_demos.py)
-[![](examples/checkerboard.gif)](examples/small_demos.py)
-[![](examples/pacman.gif)](examples/small_demos.py)
-[![](examples/timer.gif)](examples/small_demos.py)
+[![](examples/figures/simple_circles.png)](examples/small_demos.py)
+[![](examples/figures/teyleen_982.png)](examples/small_demos.py)
+[![](examples/figures/teyleen_116.png)](examples/small_demos.py)
+[![](examples/figures/moving_circles.gif)](examples/small_demos.py)
+[![](examples/figures/checkerboard.gif)](examples/small_demos.py)
+[![](examples/figures/pacman.gif)](examples/small_demos.py)
+[![](examples/figures/timer.gif)](examples/small_demos.py)
 
 
 _Submit your examples as an issue/pull request or post to twitter under #pixelhouse to have them showcased here!_
