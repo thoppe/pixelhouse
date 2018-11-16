@@ -2,7 +2,7 @@
 import numpy as np
 import pixelhouse as ph
 
-pal = ph.ColorLoversPalette()(6)
+pal = ph.palette(6)
 
 # C = ph.Canvas(400, 400, bg=pal[2])
 C = ph.Animation(400, 400, bg=pal[2])

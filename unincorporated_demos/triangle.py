@@ -3,7 +3,7 @@ import numpy as np
 import pixelhouse as ph
 from pixelhouse import Canvas, Animation, polyline, circle, Artist
 
-pal = ph.ColorLoversPalette()(4)
+pal = ph.palette(4)
 
 C = Canvas(width=400, height=400, bg=pal[0])
 C = Animation(width=400, height=400, bg=pal[0])

@@ -4,7 +4,7 @@ from pixelhouse.motion import *
 from pixelhouse.transform import *
 import numpy as np
 
-pal = ColorLoversPalette()(15)
+pal = palette(15)
 
 C = Canvas(400, 400, bg=pal[0])
 C = Animation(400, 400, bg=pal[0])

@@ -2,7 +2,7 @@ import random
 import numpy as np
 import pixelhouse as ph
 
-pal = ph.ColorLoversPalette()(20)
+pal = ph.palette(20)
 random.seed(44)
 
 C = ph.Canvas(400, 400, bg=pal[0])

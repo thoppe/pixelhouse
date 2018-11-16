@@ -4,7 +4,7 @@ import numpy as np
 
 
 def draw_circles(C, dx=0.25, tc=0.1):
-    pal = ph.ColorLoversPalette()(19)
+    pal = ph.palette(19)
 
     # Change the transparency on one of the colors
     pal[1][3] = 0

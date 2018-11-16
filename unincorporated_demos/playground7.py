@@ -5,10 +5,10 @@ import random
 from pixelhouse import Canvas, Animation, motion
 from pixelhouse import circle, text, rectangle
 from pixelhouse.transform.simple import translate, rotate
-from pixelhouse.filter import gaussian_blur
+from pixelhouse.filters import gaussian_blur
 import pixelhouse as ph
 
-pal = ph.ColorLoversPalette()(0)
+pal = ph.palette(0)
 random.seed(44)
 
 x = np.linspace(0, 2, 100)
