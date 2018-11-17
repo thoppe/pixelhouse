@@ -148,3 +148,13 @@ class _CanvasLayer:
     def layer(self):
         msg = "Nested layers in Animation are not possible yet."
         raise NotImplementedError(msg)
+
+    
+class LiveAnimation(Animation):
+
+    def show(self, delay=1):
+        while True:
+            img = self.render(0)
+            self.has_rendered[0] = False
+            img.show(delay=delay)
+

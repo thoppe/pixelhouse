@@ -1,6 +1,6 @@
 from .artist import Artist
 from .canvas import Canvas
-from .animation import Animation
+from .animation import Animation, LiveAnimation
 
 from . import transform
 from . import motion
