@@ -96,3 +96,59 @@ class motion_lines(ElasticTransform):
         dy = np.sin(theta) * np.abs(y)
 
         self.transform(cvs, alpha * dy, alpha * dx, coords, self.mode(t))
+
+class wave(ElasticTransform):
+    
+    wavelength = constant(0.25)
+    amplitude = constant(0.02)
+    offset = constant(0.0)
+    theta = constant(0.0)
+    mode = constant("nearest")
+    seed = constant(None)
+
+    args = ("wavelength", "amplitude", "theta", "seed")
+
+    def draw(self, cvs, t=0.0):
+
+        coords = cvs.grid_coordinates()
+
+        y = cvs.inverse_transform_y(coords[1].astype(float))
+        x = cvs.inverse_transform_y(coords[0].astype(float))
+
+        theta = self.theta(t)
+        w = self.wavelength(t) / (2*np.pi)
+        
+        a = cvs.transform_length(self.amplitude(t), is_discrete=False)
+        print(w, a)
+
+        # only acts in x direction
+        
+        #dx = a*np.cos(y*2*np.pi/w + self.offset(t))
+        #dx *= 0
+        #dx[dx>0] = a
+        #dx[dx<=0] = -a
+
+        
+        #dy = a*np.cos(x*2*np.pi/w + self.offset(t))
+        #dy *= 0
+        #dy[dy>0] = a
+        #dy[dy<=0] = -a
+
+        qx = a*np.cos(x/w + self.offset(t))
+        qy = a*np.cos(y/w + self.offset(t))
+
+        # Only square waves for now
+        qx[qx>0] = a
+        qx[qx<=0] = -a
+
+        qy[qy>0] = a
+        qy[qy<=0] = -a
+        
+        dx = np.cos(theta) * qy
+        dy = np.sin(theta) * qx
+
+        #print(dx)
+        
+        #dy = np.sin(theta) * dy        
+
+        self.transform(cvs, dy, dx, coords, self.mode(t))
