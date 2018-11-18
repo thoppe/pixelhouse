@@ -106,7 +106,7 @@ class wave(ElasticTransform):
     mode = constant("nearest")
     seed = constant(None)
 
-    args = ("wavelength", "amplitude", "theta", "mode", "seed")
+    args = ("wavelength", "amplitude", "theta", "seed")
 
     def draw(self, cvs, t=0.0):
 
@@ -115,24 +115,40 @@ class wave(ElasticTransform):
         y = cvs.inverse_transform_y(coords[1].astype(float))
         x = cvs.inverse_transform_y(coords[0].astype(float))
 
-        #w = cvs.transform_length(self.wavelength(t))
-
         theta = self.theta(t)
-        w = self.wavelength(t)
+        w = self.wavelength(t) / (2*np.pi)
         
         a = cvs.transform_length(self.amplitude(t), is_discrete=False)
         print(w, a)
 
         # only acts in x direction
-        dx = a*np.cos(y*2*np.pi/w + self.offset(t))
-        dx[dx>0] = a
-        dx[dx<=0] = -a
+        
+        #dx = a*np.cos(y*2*np.pi/w + self.offset(t))
+        #dx *= 0
+        #dx[dx>0] = a
+        #dx[dx<=0] = -a
 
-        dy = a*np.cos(x*2*np.pi/w + self.offset(t))
-        dy[dy>0] = a
-        dy[dy<=0] = -a
+        
+        #dy = a*np.cos(x*2*np.pi/w + self.offset(t))
+        #dy *= 0
+        #dy[dy>0] = a
+        #dy[dy<=0] = -a
 
-        dx = np.cos(theta) * dx
-        dy = np.sin(theta) * dy
+        qx = a*np.cos(x/w + self.offset(t))
+        qy = a*np.cos(y/w + self.offset(t))
+
+        # Only square waves for now
+        qx[qx>0] = a
+        qx[qx<=0] = -a
+
+        qy[qy>0] = a
+        qy[qy<=0] = -a
+        
+        dx = np.cos(theta) * qy
+        dy = np.sin(theta) * qx
+
+        #print(dx)
+        
+        #dy = np.sin(theta) * dy        
 
         self.transform(cvs, dy, dx, coords, self.mode(t))
