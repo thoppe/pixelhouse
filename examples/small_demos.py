@@ -1,7 +1,8 @@
+import pixelhouse as ph
 from pixelhouse import Canvas, Animation
 from pixelhouse import circle, line, ellipse, rectangle
-from pixelhouse.color import matplotlib_colors, ColorLoversPalette
-from pixelhouse.filter import instafilter
+from pixelhouse.color import matplotlib_colors
+from pixelhouse.filters import instafilter
 from pixelhouse.transform import scale
 import pixelhouse.motion as motion
 
@@ -19,7 +20,7 @@ animation_args.update(canvas_args)
 
 gif_args = {"palettesize": 32, "gifsicle": True}
 
-palettes = ColorLoversPalette()
+
 
 #########################################################################
 
@@ -90,7 +91,7 @@ def teyleen_982():
     C = Canvas(**canvas_args)
     pi = np.pi
 
-    pal = [matplotlib_colors("lavender")] + palettes(96)
+    pal = [matplotlib_colors("lavender")] + ph.palette(96)
     tc = 0.025
 
     dx = pi / 8
@@ -119,7 +120,7 @@ def teyleen_982():
 
 def teyleen_116():
     C = Canvas(**canvas_args)
-    pal = palettes(152)
+    pal = ph.palette(152)
 
     x = 0.25
     C += circle(x, x, r=x / 2, color=pal[0])
@@ -217,14 +218,14 @@ def pacman():
 
 if __name__ == "__main__":
 
-    simple_lines().save("simple_lines.png")
-    simple_circles().save("simple_circles.png")
-    simple_rectangles().save("simple_rectangle.png")
+    simple_lines().save("figures/simple_lines.png")
+    simple_circles().save("figures/simple_circles.png")
+    simple_rectangles().save("figures/simple_rectangle.png")
 
-    canvas2gif(rotating_circles(), "moving_circles.gif", **gif_args)
-    canvas2gif(pacman(), "pacman.gif", **gif_args)
-    canvas2gif(checkerboard(), "checkerboard.gif", **gif_args)
-    canvas2gif(timer(), "timer.gif", **gif_args)
+    canvas2gif(rotating_circles(), "figures/moving_circles.gif", **gif_args)
+    canvas2gif(pacman(), "figures/pacman.gif", **gif_args)
+    canvas2gif(checkerboard(), "figures/checkerboard.gif", **gif_args)
+    canvas2gif(timer(), "figures/timer.gif", **gif_args)
 
-    teyleen_982().save("teyleen_982.png")
-    teyleen_116().save("teyleen_116.png")
+    teyleen_982().save("figures/teyleen_982.png")
+    teyleen_116().save("figures/teyleen_116.png")

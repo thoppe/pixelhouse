@@ -1,2 +1,2 @@
-from .filters import gaussian_blur
+from .simple import gaussian_blur
 from .instagram import instafilter

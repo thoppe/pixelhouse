@@ -28,9 +28,9 @@ class PrimitiveArtist(Artist):
     mode = constant(_DEFAULT_MODE)
     gradient = constant(None)
 
-    def basic_transforms(self, cvs, t):
-        x = cvs.transform_x(self.x(t))
-        y = cvs.transform_y(self.y(t))
+    def basic_transforms(self, cvs, t, use_shift=True):
+        x = cvs.transform_x(self.x(t), use_shift=use_shift)
+        y = cvs.transform_y(self.y(t), use_shift=use_shift)
         thickness = cvs.transform_thickness(self.thickness(t))
         color = cvs.transform_color(self.color(t))
         lineType = cvs.get_lineType(self.antialiased(t))
@@ -66,9 +66,12 @@ class circle(PrimitiveArtist):
     def draw(self, cvs, t=0.0):
 
         x, y, thickness, color, lineType, mode = self.basic_transforms(cvs, t)
-        r = cvs.transform_length(self.r(t))
+        r = cvs.transform_length(self.r(t), use_shift=True)
 
-        args = (x, y), r, color, thickness, lineType
+        # Require the radius to be non-negative
+        r = max(0, r)
+
+        args = (x, y), r, color, thickness, lineType, cvs.shift
         cvs.cv2_draw(cv2.circle, args, mode=mode, gradient=self.gradient, t=t)
 
 
@@ -96,10 +99,10 @@ class rectangle(PrimitiveArtist):
 
     def draw(self, cvs, t=0.0):
         x, y, thickness, color, lineType, mode = self.basic_transforms(cvs, t)
-        x1 = cvs.transform_x(self.x1(t))
-        y1 = cvs.transform_y(self.y1(t))
+        x1 = cvs.transform_x(self.x1(t), use_shift=True)
+        y1 = cvs.transform_y(self.y1(t), use_shift=True)
 
-        args = (x, y), (x1, y1), color, thickness, lineType
+        args = (x, y), (x1, y1), color, thickness, lineType, cvs.shift
         cvs.cv2_draw(
             cv2.rectangle, args, mode=mode, gradient=self.gradient, t=t
         )
@@ -130,13 +133,13 @@ class line(PrimitiveArtist):
 
     def draw(self, cvs, t=0.0):
         x, y, thickness, color, lineType, mode = self.basic_transforms(cvs, t)
-        x1 = cvs.transform_x(self.x1(t))
-        y1 = cvs.transform_y(self.y1(t))
+        x1 = cvs.transform_x(self.x1(t), use_shift=True)
+        y1 = cvs.transform_y(self.y1(t), use_shift=True)
 
         # Thickness must be at least one pixel
         thickness = max(thickness, 1)
 
-        args = (x, y), (x1, y1), color, thickness, lineType
+        args = (x, y), (x1, y1), color, thickness, lineType, cvs.shift
         cvs.cv2_draw(cv2.line, args, mode=mode, gradient=self.gradient, t=t)
 
 
@@ -183,8 +186,8 @@ class ellipse(PrimitiveArtist):
     def draw(self, cvs, t=0.0):
         x, y, thickness, color, lineType, mode = self.basic_transforms(cvs, t)
 
-        a = cvs.transform_length(self.a(t))
-        b = cvs.transform_length(self.b(t))
+        a = cvs.transform_length(self.a(t), use_shift=True)
+        b = cvs.transform_length(self.b(t), use_shift=True)
 
         rotation = cvs.transform_angle(self.rotation(t))
         angle_start = cvs.transform_angle(self.angle_start(t))
@@ -199,6 +202,7 @@ class ellipse(PrimitiveArtist):
             color,
             thickness,
             lineType,
+            cvs.shift,
         )
 
         cvs.cv2_draw(cv2.ellipse, args, mode=mode, gradient=self.gradient, t=t)
@@ -244,7 +248,7 @@ class polyline(PrimitiveArtist):
         if self.gradient(t) is not None:
             raise NotImplementedError("Can't use gradients on polylines yet")
 
-        args = [pts], is_closed, color, thickness, lineType
+        args = [pts], is_closed, color, thickness, lineType, 0
         cvs.cv2_draw(cv2.polylines, args, mode=mode)
 
 
@@ -280,7 +284,9 @@ class text(PrimitiveArtist):
         """
         Use PIL to measure and draw the font.
         """
-        x, y, thickness, color, lineType, mode = self.basic_transforms(cvs, t)
+        x, y, thickness, color, lineType, mode = self.basic_transforms(
+            cvs, t, use_shift=False
+        )
 
         text = self.text(t)
         fs = cvs.transform_length(self.font_size(t))

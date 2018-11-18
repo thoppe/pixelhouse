@@ -2,7 +2,7 @@ import random
 import numpy as np
 import pixelhouse as ph
 
-pal = ph.ColorLoversPalette()(20)
+pal = ph.palette(20)
 random.seed(44)
 
 C = ph.Canvas(400, 400, bg=pal[0])
@@ -20,5 +20,5 @@ for k, y in enumerate(np.arange(-6, 6, r * 2)):
         c = colors[k]
         C += ph.circle(x=x0[k], y=y, r=r, color=c)
 
-C.save("circle_lines.png")
+C.save("figures/circle_lines.png")
 C.show()

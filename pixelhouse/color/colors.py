@@ -17,12 +17,21 @@ class NamedColors:
                 _script_path, "named_colors", "matplotlib.json"
             )
 
-        with open(f_colors) as FIN:
+        self.f_colors = f_colors
+        self.colors = None
+
+    def _load_colors(self):
+        # Lazy load the colors
+        
+        with open(self.f_colors) as FIN:
             raw = FIN.read()
 
         self.colors = json.loads(raw)
 
+
     def __call__(self, name):
+        if self.colors is None:
+            self._load_colors()
 
         if name not in self.colors:
             color_list = self.colors.keys()

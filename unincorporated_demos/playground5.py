@@ -1,9 +1,9 @@
 import numpy as np
 import pixelhouse as ph
-from pixelhouse.filter import gaussian_blur
+from pixelhouse.filters import gaussian_blur
 import pixelhouse.transform.elastic as el
 
-pal = ph.ColorLoversPalette()(6)
+pal = ph.palette(6)
 f_font = "../pixelhouse/fonts/Montserrat-Medium.otf"
 
 C = ph.Canvas(500, 200, bg=pal[2])

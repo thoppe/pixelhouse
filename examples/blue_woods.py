@@ -1,11 +1,10 @@
 from pixelhouse import Canvas, ellipse, linear_gradient
-from pixelhouse.color import ColorLoversPalette
-from pixelhouse.filter import gaussian_blur, instafilter
+import pixelhouse as ph
 import numpy as np
 
 
 def draw_circles(C, dx=0.25, tc=0.1):
-    pal = ColorLoversPalette()(19)
+    pal = ph.palette(19)
 
     # Change the transparency on one of the colors
     pal[1][3] = 0
@@ -30,12 +29,12 @@ def draw_circles(C, dx=0.25, tc=0.1):
 
 
 C = Canvas().load("asphalt-dark-dawn-531321.jpg")
-C += instafilter("1977")
+C += ph.filters.instafilter("1977")
 
 with C.layer() as C2:
     draw_circles(C2)
-    C2 += gaussian_blur()
+    C2 += ph.filters.gaussian_blur()
     draw_circles(C2)
 
-C.save("blue_woods.png")
+C.save("figures/blue_woods.png")
 C.show()
