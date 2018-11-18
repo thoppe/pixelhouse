@@ -10,13 +10,16 @@ import tempfile
 import os
 
 
-def canvas2gif(A, f_gif, palettesize=256, gifsicle=False):
+def canvas2gif(A, f_gif, palettesize=256, gifsicle=False, duration=None):
     images = [A.render(n).img for n in tqdm(range(len(A)))]
+
+    if duration == None:
+        duration = A.duration / A.fps
 
     imageio.mimsave(
         f_gif,
         images,
-        duration=A.duration / A.fps,
+        duration=duration,
         palettesize=palettesize,
         subrectangles=True,
     )
