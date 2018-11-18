@@ -16,7 +16,7 @@ class EasingBase:
     def __call__(self):
         t = np.linspace(0, 1, self.duration)
         _, a = self.func(t)
-        return self.stop * a + self.start * (1 - a)
+        return self.stop * (1 - a) + self.start * a
 
     @classmethod
     def func(cls, t):
