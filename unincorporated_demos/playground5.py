@@ -7,8 +7,8 @@ import pixelhouse.transform.elastic as el
 pal = ph.palette(8)
 f_font = "../pixelhouse/fonts/Montserrat-Medium.otf"
 
-C = ph.Canvas(500, 200, bg=pal[2])
-C = ph.Animation(500, 200, bg=pal[2])#, fps=10)
+C = ph.Canvas(500, 100, bg=pal[2])
+C = ph.Animation(500, 100, bg=pal[2])#, fps=10)
 lg = ph.linear_gradient(pal[0], pal[1])
 
 C += ph.text("pixelhouse", font_size=0.78, font=f_font, color='w')
@@ -25,5 +25,8 @@ C += el.wave(amplitude=a, wavelength=0.3, offset=z)
 
 z = np.linspace(0, 2*np.pi)
 C += el.wave(amplitude=a/2, wavelength=0.3/7, offset=z+.2)
+
+ph.canvas2gif(C, "wave_effect.gif", duration=0.1,
+              palettesize=32, gifsicle=True)
 
 C.show()

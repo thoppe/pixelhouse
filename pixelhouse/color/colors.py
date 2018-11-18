@@ -22,12 +22,11 @@ class NamedColors:
 
     def _load_colors(self):
         # Lazy load the colors
-        
+
         with open(self.f_colors) as FIN:
             raw = FIN.read()
 
         self.colors = json.loads(raw)
-
 
     def __call__(self, name):
         if self.colors is None:
