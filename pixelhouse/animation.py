@@ -116,7 +116,11 @@ class Animation:
 
             for n in ITR:
                 img = self.render(n)
-                img.show(delay=delay)
+                img.show(1)
+                key = cv2.waitKey(50)
+                if key != -1:
+                    return False
+
             if not repeat:
                 break
 
