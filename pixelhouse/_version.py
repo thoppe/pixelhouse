@@ -1,6 +1,7 @@
-__version__ = "0.1.4"
+__version__ = "0.1.5"
 
 """
+Version: 0.1.5: Escaep animations with any key
 Version: 0.1.4: Added a wave effect transform
 Version: 0.1.3: Moved ColorLoversPalette to just palette
 Version: 0.1.2: Fixed MANIFEST! Missing assets
