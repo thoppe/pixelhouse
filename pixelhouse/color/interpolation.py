@@ -2,9 +2,10 @@ import numpy as np
 import cv2
 
 
-def lerp(t, y0, y1, x0=0, x1=1):
-    # Linear interpolation
-    return np.interp(t, [x0, x1], [y0, y1])
+def lerp(t, *ys):
+    # Linear interpolation with evenly spaced out intervals
+    xs = np.linspace(0, 1, len(ys))
+    return np.interp(t, xs, ys)
 
 
 def RGBa_interpolation(t, c0, c1, alpha):
