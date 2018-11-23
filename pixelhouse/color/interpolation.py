@@ -8,7 +8,7 @@ def lerp(t, ys):
     return np.interp(t, xs, ys)
 
 
-def RGBa_interpolation(t, alpha, *cs):
+def RGBa_interpolation(t, alpha, cs):
     """
     Interpolate two colors RGB in RGB space parameterized by t. 
     Downweight by alpha.
@@ -21,7 +21,7 @@ def RGBa_interpolation(t, alpha, *cs):
     return np.vstack([R, G, B, a]).T
 
 
-def LABa_interpolation(t, alpha, *cs):
+def LABa_interpolation(t, alpha, cs):
     """
     Interpolate two RGB colors in LAB space parameterized by t. 
     Downweight by alpha.

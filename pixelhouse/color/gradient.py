@@ -42,18 +42,17 @@ class linear_gradient(Artist):
         pro -= pro.min()
         pro /= pro.max()
 
-        c0 = cvs.transform_color(self.color0(t))
-        c1 = cvs.transform_color(self.color1(t))
+        colors = [
+            cvs.transform_color(c(t)) for c in [self.color0, self.color1]]     
 
         # Smooth the image based off the alpha from the mask image
         alpha = (mask.alpha / 255.0)[mask_idx]
 
         imode = self.interpolation(t)
         if imode == "LAB":
-            C = LABa_interpolation(pro, alpha, c0, c1)
+            C = LABa_interpolation(pro, alpha, colors)
         elif imode == "RGB":
-            # RGBA interpolation (not great!)
-            C = RGBa_interpolation(pro, alpha, c0, c1)
+            C = RGBa_interpolation(pro, alpha, colors)
         else:
             raise KeyError(f"Unknown interpolation {imode}")
 
