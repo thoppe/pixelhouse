@@ -7,7 +7,7 @@ from . import RGBa_interpolation, LABa_interpolation
 
 class linear_gradient(Artist):
     color0 = constant(_DEFAULT_COLOR)
-    color1 = constant(_DEFAULT_COLOR)
+    color1 = constant(_DEFAULT_SECONDARY_COLOR)
     theta = constant(np.pi / 4)
     interpolation = constant("LAB")
 
