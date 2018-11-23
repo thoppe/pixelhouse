@@ -8,7 +8,7 @@ from . import RGBa_interpolation, LABa_interpolation
 class linear_gradient(Artist):
     color0 = constant(_DEFAULT_COLOR)
     color1 = constant(_DEFAULT_SECONDARY_COLOR)
-    theta = constant(np.pi / 4)
+    theta = constant(0.0)
     interpolation = constant("LAB")
 
     args = ("color0", "color1", "theta", "interpolation")
@@ -50,10 +50,10 @@ class linear_gradient(Artist):
 
         imode = self.interpolation(t)
         if imode == "LAB":
-            C = LABa_interpolation(pro, c0, c1, alpha)
+            C = LABa_interpolation(pro, alpha, c0, c1)
         elif imode == "RGB":
             # RGBA interpolation (not great!)
-            C = RGBa_interpolation(pro, c0, c1, alpha)
+            C = RGBa_interpolation(pro, alpha, c0, c1)
         else:
             raise KeyError(f"Unknown interpolation {imode}")
 
