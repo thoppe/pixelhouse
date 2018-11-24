@@ -1,6 +1,6 @@
 import numpy as np
 import cv2
-from ..artist import Artist, constant
+from ..artist import Artist, constant, constant_list
 from ..primitives import _DEFAULT_COLOR, _DEFAULT_SECONDARY_COLOR
 from . import RGBa_interpolation, LABa_interpolation
 
@@ -8,6 +8,7 @@ from . import RGBa_interpolation, LABa_interpolation
 class linear_gradient(Artist):
     color0 = constant(_DEFAULT_COLOR)
     color1 = constant(_DEFAULT_SECONDARY_COLOR)
+    colors = constant_list(_DEFAULT_COLOR, _DEFAULT_SECONDARY_COLOR)
     theta = constant(0.0)
     interpolation = constant("LAB")
 
@@ -42,8 +43,8 @@ class linear_gradient(Artist):
         pro -= pro.min()
         pro /= pro.max()
 
-        colors = [
-            cvs.transform_color(c(t)) for c in [self.color0, self.color1]]     
+        # Read and transform the colors in a list
+        colors = [cvs.transform_color(c) for c in self.colors(t)]
 
         # Smooth the image based off the alpha from the mask image
         alpha = (mask.alpha / 255.0)[mask_idx]
