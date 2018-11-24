@@ -47,12 +47,12 @@ _Submit your examples as an issue/pull request or post to twitter under #pixelho
 
 #### Gradients
 + [x] Linear gradients with transparent elements
++ [x] Discrete gradients
 
 #### Layers
 + [x] Blended
 + [x] Additive
 + [x] Subtractive
-+ [x] Direct (for primitives)
 
 #### Filters
 + [x] Blur
