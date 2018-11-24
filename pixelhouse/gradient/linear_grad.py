@@ -1,8 +1,9 @@
+import itertools
 import numpy as np
 import cv2
 from ..artist import Artist, constant, constant_list
 from ..primitives import _DEFAULT_COLOR, _DEFAULT_SECONDARY_COLOR
-from ..color import RGBa_interpolation, LABa_interpolation
+from ..color import interpolation
 
 class linear(Artist):
     colors = constant_list(_DEFAULT_COLOR, _DEFAULT_SECONDARY_COLOR)
@@ -30,8 +31,12 @@ class linear(Artist):
             return True
 
         # Read/transform the colors, apply transparency if needed
+
         colors = []
-        for c, z in zip(self.colors(t), self.transparency(t)):
+        ITR = itertools.zip_longest(
+            self.colors(t), self.transparency(t), fillvalue=None)
+        
+        for c, z in ITR:
             cval = cvs.transform_color(c).copy()
             if z is not None:
                 cval[-1] = (np.clip(z, 0, 1)*255).astype(np.uint8)
@@ -53,9 +58,12 @@ class linear(Artist):
 
         imode = self.interpolation(t)
         if imode == "LAB":
-            C = LABa_interpolation(pro, alpha, colors)
+            C = interpolation.LABa_interpolation(pro, alpha, colors)
         elif imode == "RGB":
-            C = RGBa_interpolation(pro, alpha, colors)
+            C = interpolation.RGBa_interpolation(pro, alpha, colors)
+        elif imode == "discrete":
+            C = interpolation.discrete_interpolation(pro, alpha, colors)
+            
         else:
             raise KeyError(f"Unknown interpolation {imode}")
 

@@ -198,6 +198,7 @@ class Canvas:
         return x
 
     def transform_y(self, y, is_discrete=True, use_shift=False):
+        y *= -1
         y += self.extent/self.aspect_ratio
         y *= self.pixels_per_unit
         
@@ -211,6 +212,7 @@ class Canvas:
     def inverse_transform_y(self, y):
         y /= self.pixels_per_unit
         y -= self.extent/self.aspect_ratio
+        y *= -1
         return y
 
     def transform_length(self, r, is_discrete=True, use_shift=False):

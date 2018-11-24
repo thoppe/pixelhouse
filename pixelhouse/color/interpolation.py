@@ -13,6 +13,18 @@ def lerp(t, ys, xs=None):
 
     return np.interp(t, xs, ys)
 
+def discrete_interpolation(t, alpha, cs):
+    """
+    No interpolation used, simply select the color on fixed intervals.
+    Downweight by alpha.
+    """
+    cs = np.array(cs)
+    n = len(cs)
+    idx = np.clip(np.floor(t*n), 0, n-1).astype(int)
+    C = cs[idx, :].astype(np.float)
+    C[:, 3] *= alpha
+    return C
+
 
 def RGBa_interpolation(t, alpha, cs):
     """
