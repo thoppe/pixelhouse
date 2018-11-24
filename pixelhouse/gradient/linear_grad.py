@@ -2,17 +2,14 @@ import numpy as np
 import cv2
 from ..artist import Artist, constant, constant_list
 from ..primitives import _DEFAULT_COLOR, _DEFAULT_SECONDARY_COLOR
-from . import RGBa_interpolation, LABa_interpolation
+from ..color import RGBa_interpolation, LABa_interpolation
 
-
-class linear_gradient(Artist):
-    color0 = constant(_DEFAULT_COLOR)
-    color1 = constant(_DEFAULT_SECONDARY_COLOR)
+class linear(Artist):
     colors = constant_list(_DEFAULT_COLOR, _DEFAULT_SECONDARY_COLOR)
     theta = constant(0.0)
     interpolation = constant("LAB")
 
-    args = ("color0", "color1", "theta", "interpolation")
+    args = ("colors", "theta", "interpolation")
 
     def __call__(self, cvs, t=0.0, mask=None):
         """

@@ -1,4 +1,4 @@
-# Example of rotating off axis
+# Example of rotating off axis, check background and clipping
 import numpy as np
 import pixelhouse as ph
 
@@ -7,7 +7,7 @@ pal = ph.palette(6)
 # C = ph.Canvas(400, 400, bg=pal[2])
 C = ph.Animation(400, 400, bg=pal[2])
 
-lg = ph.linear_gradient(pal[0], pal[1])
+lg = ph.gradient.linear([pal[0], pal[1]])
 
 theta = np.linspace(0, 2 * np.pi)
 C += ph.text("pixelhouse", gradient=lg)

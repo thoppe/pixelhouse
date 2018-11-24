@@ -1,3 +1,4 @@
+import pixelhouse as ph
 from pixelhouse import *
 from pixelhouse.filters import *
 from pixelhouse.motion import *
@@ -28,7 +29,7 @@ with C.layer() as L:
     L += rotate(theta)
 
 f_font = "../pixelhouse/fonts/Montserrat-Medium.otf"
-g = linear_gradient(pal[2], pal[3])
+g = ph.gradient.linear([pal[2], pal[3]])
 C += text("H&&T presents", y=3, font_size=0.5, font=f_font, gradient=g)
 C += text("pixelhouse", y=-3, font_size=0.5, font=f_font, gradient=g)
 

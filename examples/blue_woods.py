@@ -1,4 +1,4 @@
-from pixelhouse import Canvas, ellipse, linear_gradient
+from pixelhouse import Canvas, ellipse
 import pixelhouse as ph
 import numpy as np
 
@@ -12,19 +12,19 @@ def draw_circles(C, dx=0.25, tc=0.1):
     base_r = 0.80
 
     r = base_r + dx
-    lg = linear_gradient(pal[0], pal[1], theta=np.pi / 2)
+    lg = ph.gradient.linear([pal[0], pal[1]], theta=np.pi / 2)
     C += ellipse(0, 0, r, r, thickness=tc, gradient=lg)
 
     r = base_r - 2 * dx
-    lg = linear_gradient(pal[0], pal[1], theta=-np.pi / 2)
+    lg = ph.gradient.linear([pal[0], pal[1]], theta=-np.pi / 2)
     C += ellipse(0, 0, r, r, thickness=tc / 2, gradient=lg)
 
     r = base_r - dx
-    lg = linear_gradient(pal[2], pal[1], theta=np.pi / 2)
+    lg = ph.gradient.linear([pal[2], pal[1]], theta=np.pi / 2)
     C += ellipse(0, 0, r, r, thickness=tc / 2, gradient=lg)
 
     r = base_r + 1.5 * dx
-    lg = linear_gradient(pal[2], pal[1], theta=-np.pi / 2)
+    lg = ph.gradient.linear([pal[2], pal[1]], theta=-np.pi / 2)
     C += ellipse(0, 0, r, r, thickness=tc / 2, gradient=lg)
 
 
