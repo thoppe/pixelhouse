@@ -26,7 +26,7 @@ C += el.wave(amplitude=a, wavelength=0.3, offset=z)
 z = np.linspace(0, 2*np.pi)
 C += el.wave(amplitude=a/2, wavelength=0.3/7, offset=z+.2)
 
-ph.canvas2gif(C, "wave_effect.gif", duration=0.1,
-              palettesize=32, gifsicle=True)
+#ph.canvas2gif(C, "wave_effect.gif", duration=0.1,
+#              palettesize=32, gifsicle=True)
 
 C.show()

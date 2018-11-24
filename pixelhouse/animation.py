@@ -53,6 +53,26 @@ class Animation:
 
         return Animation(**kws)
 
+    @property
+    def aspect_ratio(self):
+        return self.frames[0].aspect_ratio
+
+    @property
+    def xmin(self):
+        return self.frames[0].xmin
+    
+    @property
+    def xmax(self):
+        return self.frames[0].xmax
+
+    @property
+    def ymin(self):
+        return self.frames[0].ymin
+    
+    @property
+    def ymax(self):
+        return self.frames[0].ymax
+
     def __len__(self):
         return len(self.frames)
 

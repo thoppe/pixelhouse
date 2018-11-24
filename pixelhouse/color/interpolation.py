@@ -2,9 +2,15 @@ import numpy as np
 import cv2
 
 
-def lerp(t, ys):
-    # Linear interpolation with evenly spaced out intervals
-    xs = np.linspace(0, 1, len(ys))
+def lerp(t, ys, xs=None):
+    '''
+    Linear interpolation between the list of ys. If xs is not given
+    points are evenly distributed between [0, 1]. Points are evaluated
+    on the values of t.
+    '''
+    if xs is None:
+        xs = np.linspace(0, 1, len(ys))
+
     return np.interp(t, xs, ys)
 
 

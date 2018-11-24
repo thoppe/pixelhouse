@@ -6,10 +6,11 @@ from ..color import RGBa_interpolation, LABa_interpolation
 
 class linear(Artist):
     colors = constant_list(_DEFAULT_COLOR, _DEFAULT_SECONDARY_COLOR)
+    transparency = constant_list(None, None)
     theta = constant(0.0)
     interpolation = constant("LAB")
 
-    args = ("colors", "theta", "interpolation")
+    args = ("colors", "transparency", "theta", "interpolation")
 
     def __call__(self, cvs, t=0.0, mask=None):
         """
@@ -28,20 +29,24 @@ class linear(Artist):
         if not mask_idx.sum():
             return True
 
-        theta = self.theta(t)
+        # Read/transform the colors, apply transparency if needed
+        colors = []
+        for c, z in zip(self.colors(t), self.transparency(t)):
+            cval = cvs.transform_color(c).copy()
+            if z is not None:
+                cval[-1] = (np.clip(z, 0, 1)*255).astype(np.uint8)
+            colors.append(cval)
 
+        theta = self.theta(t)        
         A = np.array([np.cos(theta), np.sin(theta)])
 
         # Project each masked grid point onto the angle mapped by theta
         xg, yg = cvs.grid_points()
-        B = np.vstack([xg[mask_idx], yg[mask_idx]])
+        B = np.vstack([xg[mask_idx], yg[mask_idx]])        
 
         pro = A.dot(B)
         pro -= pro.min()
         pro /= pro.max()
-
-        # Read and transform the colors in a list
-        colors = [cvs.transform_color(c) for c in self.colors(t)]
 
         # Smooth the image based off the alpha from the mask image
         alpha = (mask.alpha / 255.0)[mask_idx]
