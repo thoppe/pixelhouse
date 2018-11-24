@@ -3,15 +3,16 @@ import cv2
 
 
 def lerp(t, ys, xs=None):
-    '''
+    """
     Linear interpolation between the list of ys. If xs is not given
     points are evenly distributed between [0, 1]. Points are evaluated
     on the values of t.
-    '''
+    """
     if xs is None:
         xs = np.linspace(0, 1, len(ys))
 
     return np.interp(t, xs, ys)
+
 
 def discrete_interpolation(t, alpha, cs):
     """
@@ -20,7 +21,7 @@ def discrete_interpolation(t, alpha, cs):
     """
     cs = np.array(cs)
     n = len(cs)
-    idx = np.clip(np.floor(t*n), 0, n-1).astype(int)
+    idx = np.clip(np.floor(t * n), 0, n - 1).astype(int)
     C = cs[idx, :].astype(np.float)
     C[:, 3] *= alpha
     return C
@@ -48,7 +49,7 @@ def LABa_interpolation(t, alpha, cs):
     alpha_channel = csx[3]
 
     # Convert colors to LAB (remove alpha channel)
-    C = np.array(cs).astype(np.uint8)[:,:3].reshape(-1, 1, 3)
+    C = np.array(cs).astype(np.uint8)[:, :3].reshape(-1, 1, 3)
     C = cv2.cvtColor(C, cv2.COLOR_RGB2LAB).reshape(-1, 3).T
 
     # Interpolate in LAB space

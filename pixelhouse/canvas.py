@@ -35,8 +35,8 @@ class Canvas:
         self.name = name
         self.extent = extent
 
-        self.pixels_per_unit = width/(2*self.extent)
-        
+        self.pixels_per_unit = width / (2 * self.extent)
+
         # When animating, we may want to pass attributes from one canvas
         # to another. Do so in the shared_attributes
         self.shared_attributes = {}
@@ -61,12 +61,12 @@ class Canvas:
 
     @property
     def aspect_ratio(self):
-        return self.width/float(self.height)
+        return self.width / float(self.height)
 
     @property
     def xmin(self):
         return self.inverse_transform_x(0)
-    
+
     @property
     def xmax(self):
         return self.inverse_transform_x(self.width)
@@ -74,7 +74,7 @@ class Canvas:
     @property
     def ymin(self):
         return self.inverse_transform_y(0)
-    
+
     @property
     def ymax(self):
         return self.inverse_transform_y(self.height)
@@ -199,19 +199,19 @@ class Canvas:
 
     def transform_y(self, y, is_discrete=True, use_shift=False):
         y *= -1
-        y += self.extent/self.aspect_ratio
+        y += self.extent / self.aspect_ratio
         y *= self.pixels_per_unit
-        
+
         if is_discrete:
             if use_shift and self.shift:
                 y *= 2 ** self.shift
             return int(y)
-        
+
         return y
 
     def inverse_transform_y(self, y):
         y /= self.pixels_per_unit
-        y -= self.extent/self.aspect_ratio
+        y -= self.extent / self.aspect_ratio
         y *= -1
         return y
 

@@ -5,6 +5,7 @@ from ..artist import Artist, constant, constant_list
 from ..primitives import _DEFAULT_COLOR, _DEFAULT_SECONDARY_COLOR
 from ..color import interpolation
 
+
 class linear(Artist):
     colors = constant_list(_DEFAULT_COLOR, _DEFAULT_SECONDARY_COLOR)
     transparency = constant_list(None, None)
@@ -34,20 +35,21 @@ class linear(Artist):
 
         colors = []
         ITR = itertools.zip_longest(
-            self.colors(t), self.transparency(t), fillvalue=None)
-        
+            self.colors(t), self.transparency(t), fillvalue=None
+        )
+
         for c, z in ITR:
             cval = cvs.transform_color(c).copy()
             if z is not None:
-                cval[-1] = (np.clip(z, 0, 1)*255).astype(np.uint8)
+                cval[-1] = (np.clip(z, 0, 1) * 255).astype(np.uint8)
             colors.append(cval)
 
-        theta = self.theta(t)        
+        theta = self.theta(t)
         A = np.array([np.cos(theta), np.sin(theta)])
 
         # Project each masked grid point onto the angle mapped by theta
         xg, yg = cvs.grid_points()
-        B = np.vstack([xg[mask_idx], yg[mask_idx]])        
+        B = np.vstack([xg[mask_idx], yg[mask_idx]])
 
         pro = A.dot(B)
         pro -= pro.min()
@@ -63,7 +65,7 @@ class linear(Artist):
             C = interpolation.RGBa_interpolation(pro, alpha, colors)
         elif imode == "discrete":
             C = interpolation.discrete_interpolation(pro, alpha, colors)
-            
+
         else:
             raise KeyError(f"Unknown interpolation {imode}")
 

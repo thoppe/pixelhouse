@@ -5,10 +5,11 @@
 
 ### Release Notes:
 
++ `black --line-length 80 pixelhouse unincorporated_demos/`
 + Update the version number in `pixelhouse/_version.py`
-+ Build the distribution file `python setup.py sdist`
-+ Push the release to [pypi test](https://test.pypi.org/project/nlpre/) `twine upload -r test dist/*`
-+ Push the release to [pypi live](https://pypi.org/project/nlpre/) `twine upload dist/*`
++ `python setup.py sdist` Build the distribution file.
++ `twine upload -r test dist/*` Push the release to [pypi test](https://test.pypi.org/project/nlpre/) 
++ `twine upload dist/*` Push the release to [pypi live](https://pypi.org/project/nlpre/) 
 
 Use the following `~/.pypirc` file (with an updated username and password)
 

@@ -60,7 +60,7 @@ class Animation:
     @property
     def xmin(self):
         return self.frames[0].xmin
-    
+
     @property
     def xmax(self):
         return self.frames[0].xmax
@@ -68,7 +68,7 @@ class Animation:
     @property
     def ymin(self):
         return self.frames[0].ymin
-    
+
     @property
     def ymax(self):
         return self.frames[0].ymax
