@@ -1,17 +1,18 @@
+import itertools
 import numpy as np
 import cv2
-from ..artist import Artist, constant
+from ..artist import Artist, constant, constant_list
 from ..primitives import _DEFAULT_COLOR, _DEFAULT_SECONDARY_COLOR
-from . import RGBa_interpolation, LABa_interpolation
+from ..color import interpolation
 
 
-class linear_gradient(Artist):
-    color0 = constant(_DEFAULT_COLOR)
-    color1 = constant(_DEFAULT_COLOR)
-    theta = constant(np.pi / 4)
+class linear(Artist):
+    colors = constant_list(_DEFAULT_COLOR, _DEFAULT_SECONDARY_COLOR)
+    transparency = constant_list(None, None)
+    theta = constant(0.0)
     interpolation = constant("LAB")
 
-    args = ("color0", "color1", "theta", "interpolation")
+    args = ("colors", "transparency", "theta", "interpolation")
 
     def __call__(self, cvs, t=0.0, mask=None):
         """
@@ -30,8 +31,20 @@ class linear_gradient(Artist):
         if not mask_idx.sum():
             return True
 
-        theta = self.theta(t)
+        # Read/transform the colors, apply transparency if needed
 
+        colors = []
+        ITR = itertools.zip_longest(
+            self.colors(t), self.transparency(t), fillvalue=None
+        )
+
+        for c, z in ITR:
+            cval = cvs.transform_color(c).copy()
+            if z is not None:
+                cval[-1] = (np.clip(z, 0, 1) * 255).astype(np.uint8)
+            colors.append(cval)
+
+        theta = self.theta(t)
         A = np.array([np.cos(theta), np.sin(theta)])
 
         # Project each masked grid point onto the angle mapped by theta
@@ -42,18 +55,17 @@ class linear_gradient(Artist):
         pro -= pro.min()
         pro /= pro.max()
 
-        c0 = cvs.transform_color(self.color0(t))
-        c1 = cvs.transform_color(self.color1(t))
-
         # Smooth the image based off the alpha from the mask image
         alpha = (mask.alpha / 255.0)[mask_idx]
 
         imode = self.interpolation(t)
         if imode == "LAB":
-            C = LABa_interpolation(pro, c0, c1, alpha)
+            C = interpolation.LABa_interpolation(pro, alpha, colors)
         elif imode == "RGB":
-            # RGBA interpolation (not great!)
-            C = RGBa_interpolation(pro, c0, c1, alpha)
+            C = interpolation.RGBa_interpolation(pro, alpha, colors)
+        elif imode == "discrete":
+            C = interpolation.discrete_interpolation(pro, alpha, colors)
+
         else:
             raise KeyError(f"Unknown interpolation {imode}")
 

@@ -14,6 +14,13 @@ def constant(x):
     return func
 
 
+def constant_list(*x):
+    def func(self, t=0, *args, **kwargs):
+        return x
+
+    return func
+
+
 class Artist:
     """
     Artists are the backbone of pixelhouse. They draw what's on the screen.

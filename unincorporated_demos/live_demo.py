@@ -1,3 +1,4 @@
+import pixelhouse as ph
 from pixelhouse import *
 from pixelhouse.filters import *
 from pixelhouse.motion import *
@@ -10,6 +11,7 @@ C = Canvas(400, 400, bg=pal[0])
 C = Animation(400, 400, bg=pal[0])
 
 y = motion.easeReturn("easeInOutQuad", 2, -2, len(C))
+
 
 def draw_circles(C):
     C += circle(-2, y, r=0.20, color=pal[1])
@@ -28,7 +30,7 @@ with C.layer() as L:
     L += rotate(theta)
 
 f_font = "../pixelhouse/fonts/Montserrat-Medium.otf"
-g = linear_gradient(pal[2], pal[3])
+g = ph.gradient.linear([pal[2], pal[3]])
 C += text("H&&T presents", y=3, font_size=0.5, font=f_font, gradient=g)
 C += text("pixelhouse", y=-3, font_size=0.5, font=f_font, gradient=g)
 
