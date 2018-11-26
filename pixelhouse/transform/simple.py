@@ -32,6 +32,12 @@ class translate(Artist):
 
 
 class rotate(Artist):
+
+    """ Rotates a canvas by a given amount.
+        I hope you like radians.
+        Example: canvas(rotate(1.5708)) rotates by 90 degrees
+    """
+
     theta = constant(np.pi / 4)
     x = constant(0.0)
     y = constant(0.0)
