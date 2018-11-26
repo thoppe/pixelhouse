@@ -95,14 +95,19 @@ class Canvas:
         return self.img[:, :, 3]
 
     def blank(self, bg=None):
-        # Return an empty canvas of the same size
+        """
+            Return an empty canvas of the same size.
+            Does not modify in place.
+        """
         if bg is None:
             bg = self.bg
 
         return Canvas(self.width, self.height, bg=bg)
 
     def copy(self, bg=None, transparent=False):
-        # Returns a deep copy of this canvas
+        """
+            Returns a deep copy of this canvas
+        """
         cvs = Canvas(self.width, self.height, bg=self.bg)
         cvs._img = self.img.copy()
 
@@ -113,7 +118,8 @@ class Canvas:
 
     def __call__(self, art=None):
         """
-        Calls an artist on the canvas.
+            Calls an Artist on the canvas.
+            Example: canvas(scale(fx=2, fy=2))
         """
         if art is not None:
             art(self)
@@ -305,20 +311,33 @@ class Canvas:
         return 8
 
     def show(self, delay=0):
+
+        """ Opens a preview window displaying the image
+        """
+
         # Before we show we have to convert back to BGR
         dst = cv2.cvtColor(self.img, cv2.COLOR_RGB2BGR)
 
         cv2.imshow(self.name, dst)
         cv2.waitKey(delay)
 
-    def save(self, f_save):
+    def save(self, filename):
+
+        """ Writes the canvas out to the specified filename
+        """
+
         # Before we save we have to convert back to BGR
         dst = cv2.cvtColor(self.img, cv2.COLOR_RGB2BGR)
-        cv2.imwrite(f_save, dst)
+        cv2.imwrite(filename, dst)
 
-    def load(self, f_img):
+    def load(self, filename):
+
+        """ Reads an image in from a specified filename
+            and converts it to RGB space
+        """
+
         # Read the image in and convert to RGB space
-        self._img = cv2.cvtColor(cv2.imread(f_img), cv2.COLOR_BGR2RGB)
+        self._img = cv2.cvtColor(cv2.imread(filename), cv2.COLOR_BGR2RGB)
 
         alpha = np.zeros_like(self._img[:, :, 0])
         self._img = np.dstack((self._img, alpha))
