@@ -3,8 +3,8 @@ from nose.tools import *
 from pixelhouse import Canvas, Animation
 from pixelhouse import circle, line, ellipse, rectangle, text, polyline
 
-class Canvas_Test:
 
+class Canvas_Test:
     def blank_doesnt_modify_in_place_test(self):
 
         """ blank_doesnt_modify_in_place_test:

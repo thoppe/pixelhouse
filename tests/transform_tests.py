@@ -1,8 +1,8 @@
 from nose.tools import *
+from utils import AnyEffect_Test
 
-from pixelhouse import Canvas, Animation
+import pixelhouse as ph
 from pixelhouse import circle, line, ellipse, rectangle, text, polyline
-from pixelhouse.transform import scale
 
 class Transform_Test:
 
@@ -10,13 +10,10 @@ class Transform_Test:
     """
 
     def setup(self):
-        self.canvas = Canvas(width=200, height=200)
-        self.canvas += rectangle(**{
-                'x': .5,
-                'y': .25,
-                'x1': .75,
-                'y1': .75,
-            })
+        self.canvas = ph.Canvas(width=200, height=200)
+        self.canvas += rectangle(
+            **{"x": 0.5, "y": 0.25, "x1": 0.75, "y1": 0.75}
+        )
 
     def scale_up_test(self):
 
@@ -26,7 +23,7 @@ class Transform_Test:
 
         assert_true(self.canvas.width == 200)
         assert_true(self.canvas.height == 200)
-        self.canvas(scale(fx=2, fy=2))
+        self.canvas(ph.transform.scale(fx=2, fy=2))
         assert_true(self.canvas.width == 400)
         assert_true(self.canvas.height == 400)
 
@@ -38,6 +35,28 @@ class Transform_Test:
 
         assert_true(self.canvas.width == 200)
         assert_true(self.canvas.height == 200)
-        self.canvas(scale(fx=.5, fy=.5))
+        self.canvas(ph.transform.scale(fx=0.5, fy=0.5))
         assert_true(self.canvas.width == 100)
         assert_true(self.canvas.height == 100)
+
+
+class Transform_AnyEffect_Test(AnyEffect_Test):
+
+    """ Ensuring transforms work by checking if something was changed.
+    Most basic test, and does not guarantee correctness.
+    """
+    
+    def rotate_test(self):
+        self.target += ph.transform.rotate(theta=1.57)
+
+    def translate_test(self):
+        self.target += ph.transform.translate(x=0.1)
+
+    def pull_test(self):
+        self.target += ph.transform.pull()
+
+    def distort_test(self):
+        self.target += ph.transform.distort()
+
+    def motion_lines_test(self):
+        self.target += ph.transform.motion_lines()
