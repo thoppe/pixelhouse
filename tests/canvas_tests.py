@@ -14,9 +14,9 @@ class Canvas_Test:
         """
 
         canvas = Canvas()
-        assert_true(canvas._img.sum() == 0)
+        assert_true(canvas.img.sum() == 0)
         canvas += circle()
-        assert_true(canvas._img.sum() > 0)
+        assert_true(canvas.img.sum() > 0)
         canvas.blank()
-        assert_true(canvas._img.sum() > 0)
-        assert_true(canvas.blank()._img.sum() == 0)
+        assert_true(canvas.img.sum() > 0)
+        assert_true(canvas.blank().img.sum() == 0)

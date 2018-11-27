@@ -14,7 +14,7 @@ class scale(Artist):
         if fy is None:
             fy = fx
 
-        cvs._img = cv2.resize(cvs.img, (0, 0), fx=fx, fy=fy)
+        cvs.img = cv2.resize(cvs.img, (0, 0), fx=fx, fy=fy)
 
 
 class translate(Artist):
@@ -28,7 +28,7 @@ class translate(Artist):
         bg = cvs.transform_color(cvs.bg)
 
         M = np.float32([[1, 0, x], [0, 1, y]])
-        cvs._img = cv2.warpAffine(cvs.img, M, cvs.shape[:2], borderValue=bg)
+        cvs.img = cv2.warpAffine(cvs.img, M, cvs.shape[:2], borderValue=bg)
 
 
 class rotate(Artist):
@@ -51,4 +51,4 @@ class rotate(Artist):
 
         cols, rows = cvs.shape[:2]
         M = cv2.getRotationMatrix2D((x, y), theta, 1)
-        cvs._img = cv2.warpAffine(cvs.img, M, (cols, rows), borderValue=bg)
+        cvs.img = cv2.warpAffine(cvs.img, M, (cols, rows), borderValue=bg)

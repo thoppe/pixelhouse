@@ -71,5 +71,5 @@ class linear(Artist):
 
         # Blend the new shape in
         rhs = cvs.copy()
-        rhs._img[mask_idx] = C
+        rhs.img[mask_idx] = C
         cvs.blend(rhs)

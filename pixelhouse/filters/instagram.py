@@ -92,9 +92,9 @@ class instafilter(Artist):
 
         # With weight > 1 apply the whole filter
         if weight >= 1:
-            cvs._img = img2
+            cvs.img = img2
         # Otherwise blend
-        cvs._img = cv2.addWeighted(cvs.img, 1 - weight, img2, weight, gamma=0.0)
+        cvs.img = cv2.addWeighted(cvs.img, 1 - weight, img2, weight, gamma=0.0)
 
 
 if __name__ == "__main__":

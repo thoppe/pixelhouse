@@ -22,7 +22,7 @@ class ElasticTransform(Artist):
             cvs.img, indices, order=order, mode=mode
         )
 
-        cvs._img = distored_image.reshape(cvs.shape)
+        cvs.img = distored_image.reshape(cvs.shape)
 
 
 class pull(ElasticTransform):

@@ -14,7 +14,10 @@ C2 = ph.Canvas(height=50, width=400, bg="w")
 lg = ph.gradient.linear(pal[::-1], interpolation="discrete")
 C2 += ph.rectangle(C.xmin, C.ymin, C.xmax, C.ymax, gradient=lg)
 
-# ph.canvas.vstack([C,C2]).show()
+CX = ph.vstack([C,C2])
+CX.show()
+
+
 
 grid = []
 for i in range(3):

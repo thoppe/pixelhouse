@@ -20,10 +20,9 @@ class Canvas:
         bg="black",
         name="pixelhouseImage",
         shift=8,
-        img=None,
     ):
         channels = 4
-        self._img = np.zeros((height, width, channels), np.uint8)
+        self.img = np.zeros((height, width, channels), np.uint8)
         self.shift = shift
 
         # Assign the background color, but make sure it is fully transparent
@@ -31,7 +30,7 @@ class Canvas:
         self.bg = bg
         bg = np.array(self.transform_color(bg)).astype(np.uint8)
         bg[3] = 0
-        self._img[:, :] = bg
+        self.img[:, :] = bg
 
         self.name = name
         self.extent = extent
@@ -42,9 +41,6 @@ class Canvas:
         # to another. Do so in the shared_attributes
         self.shared_attributes = {}
 
-        if img is not None:
-            self._img = img
-
     def __repr__(self):
         return (
             f"Canvas (w/h) {self.height}x{self.width}, " f"extent {self.extent}"
@@ -52,15 +48,15 @@ class Canvas:
 
     @property
     def height(self):
-        return self._img.shape[0]
+        return self.img.shape[0]
 
     @property
     def width(self):
-        return self._img.shape[1]
+        return self.img.shape[1]
 
     @property
     def channels(self):
-        return self._img.shape[2]
+        return self.img.shape[2]
 
     @property
     def aspect_ratio(self):
@@ -81,10 +77,6 @@ class Canvas:
     @property
     def ymax(self):
         return self.inverse_transform_y(self.height)
-
-    @property
-    def img(self):
-        return self._img
 
     @property
     def shape(self):
@@ -112,10 +104,10 @@ class Canvas:
             Returns a deep copy of this canvas
         """
         cvs = Canvas(self.width, self.height, bg=self.bg)
-        cvs._img = self.img.copy()
+        cvs.img = self.img.copy()
 
         if transparent:
-            cvs._img[:, :, 3] = 0
+            cvs.img[:, :, 3] = 0
 
         return cvs
 
@@ -127,6 +119,12 @@ class Canvas:
         if art is not None:
             art(self)
         return self
+
+    def __getitem__(self, key):
+        return self.img[key]
+
+    def __setitem__(self, key, val):
+        self.img[key] = val
 
     def __len__(self):
         """
@@ -145,9 +143,9 @@ class Canvas:
         if mode == "blend":
             self.blend(rhs)
         elif mode == "add":
-            cv2.add(self._img, rhs.img, self._img)
+            cv2.add(self.img, rhs.img, self.img)
         elif mode == "subtract":
-            cv2.subtract(self._img, rhs.img, self._img)
+            cv2.subtract(self.img, rhs.img, self.img)
         else:
             raise ValueError(f"Unknown mode {mode}")
 
@@ -170,7 +168,7 @@ class Canvas:
     def cv2_draw(self, func, args, mode, **kwargs):
 
         if mode == "direct":
-            func(self._img, *args)
+            func(self.img, *args)
         elif mode == "gradient":
             rhs = self.blank()
             func(rhs.img, *args)
@@ -186,9 +184,9 @@ class Canvas:
         a = rhs.alpha.reshape(self.height, self.width, -1).astype(np.float32)
         a /= 255
 
-        MX = (1 - a) * self._img + a * rhs._img
+        MX = (1 - a) * self.img + a * rhs.img
         MX = np.clip(MX, 0, 255).astype(np.uint8)
-        self._img = MX
+        self.img = MX
 
     def transform_x(self, x, is_discrete=True, use_shift=False):
         x += self.extent
@@ -340,10 +338,10 @@ class Canvas:
         """
 
         # Read the image in and convert to RGB space
-        self._img = cv2.cvtColor(cv2.imread(filename), cv2.COLOR_BGR2RGB)
+        self.img = cv2.cvtColor(cv2.imread(filename), cv2.COLOR_BGR2RGB)
 
-        alpha = np.zeros_like(self._img[:, :, 0])
-        self._img = np.dstack((self._img, alpha))
+        alpha = np.zeros_like(self.img[:, :, 0])
+        self.img = np.dstack((self.img, alpha))
 
         return self
 
@@ -360,7 +358,7 @@ def hstack(canvas_list):
     uses the extent and background color from the first canvas on the list.
     """
     cvs = canvas_list[0].blank()
-    cvs._img = np.hstack([x._img for x in canvas_list])
+    cvs.img = np.hstack([x.img for x in canvas_list])
     return cvs
 
 
@@ -370,7 +368,7 @@ def vstack(canvas_list):
     uses the extent and background color from the first canvas on the list.
     """
     cvs = canvas_list[0].blank()
-    cvs._img = np.vstack([x._img for x in canvas_list])
+    cvs.img = np.vstack([x.img for x in canvas_list])
     return cvs
 
 

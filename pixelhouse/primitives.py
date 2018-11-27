@@ -330,18 +330,18 @@ class text(PrimitiveArtist):
 
         # If there is no gradient, just draw it
         if not self.gradient(t):
-            pil = Image.fromarray(cvs.copy()._img)
+            pil = Image.fromarray(cvs.copy().img)
 
             # Draw the text onto the text canvas
             draw = ImageDraw.Draw(pil)
             draw.text((x, y), text, tuple(color), font)
-            cvs._img = np.array(pil)
+            cvs.img = np.array(pil)
             return True
 
         cvs2 = cvs.blank()
-        pil = Image.fromarray(cvs2._img)
+        pil = Image.fromarray(cvs2.img)
         draw = ImageDraw.Draw(pil)
         draw.text((x, y), text, (255, 255, 255, 255), font)
-        cvs2._img = np.array(pil)
+        cvs2.img = np.array(pil)
 
         self.gradient(cvs, t, mask=cvs2)

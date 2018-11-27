@@ -23,7 +23,7 @@ class splatter(ph.Artist):
         gamma = self.gamma(t)
 
         kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (n, n))
-        org = cvs._img.copy()
+        org = cvs.img.copy()
 
         for i in range(self.iterations(t)):
 
@@ -33,11 +33,11 @@ class splatter(ph.Artist):
             p = np.random.uniform(size=len(xi))
 
             idx[xi[p > gamma], xj[p > gamma]] = False
-            cvs._img[idx] = color
+            cvs.img[idx] = color
 
         mask = cvs.alpha
         idx = ~cv2.erode(mask, kernel).astype(bool)
-        cvs._img[idx] = org[idx]
+        cvs.img[idx] = org[idx]
 
 
 pal = ph.palette(32)

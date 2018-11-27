@@ -1,6 +1,7 @@
-__version__ = "0.2.1"
+__version__ = "0.2.2"
 
 """
+Version: 0.2.2: Canvas now operates as an array (you can index and change the values as a numpy array). canvas._img is now simply canvas.img
 Version: 0.2.1: Add three new functions, hstack, vstack, and grid stack
 Version: 0.2.0: Improved gradients (multi colors, discrete, and transparency). Changed gradient API. Fixed a few canvas bugs. Added canvas properties like C.xmax.
 Version: 0.1.5: Escape animations with any key

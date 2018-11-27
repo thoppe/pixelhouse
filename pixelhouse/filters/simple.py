@@ -15,4 +15,4 @@ class gaussian_blur(Artist):
         by = cvs.transform_kernel_length(self.blur_y(t))
         kernel = (bx, by)
 
-        cvs._img = cv2.GaussianBlur(cvs.img, kernel, 0)
+        cvs.img = cv2.GaussianBlur(cvs.img, kernel, 0)
