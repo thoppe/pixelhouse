@@ -5,7 +5,7 @@
 
 ### Release Notes:
 
-+ `black --line-length 80 pixelhouse unincorporated_demos/`
++ `black --line-length 80 pixelhouse unincorporated_demos/ tests/`
 + Update the version number in `pixelhouse/_version.py`
 + `python setup.py sdist` Build the distribution file.
 + `twine upload -r test dist/*` Push the release to [pypi test](https://test.pypi.org/project/nlpre/) 

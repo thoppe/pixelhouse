@@ -1,45 +1,35 @@
 from nose.tools import *
-
-from pixelhouse import Canvas, Animation
-from pixelhouse import circle, line, ellipse, rectangle, text, polyline
+import pixelhouse as ph
 
 
-class Primitive_Test:
-    '''
-    Right now, we just make sure the commands do not fail. The
-    output images _could_ be checked against a hash.
-    '''
+class Primitive_AnyDraw_Test:
+    """
+    Right now, we just make sure the commands do not fail and draw _something_.
+    The output images _could_ be checked against a hash in the future.
+    """
 
-    @classmethod
-    def setup_class(cls):
-        pass
+    def setup(self):
+        self.C = ph.Canvas(
+            width=200, height=200, extent=4.0, bg="black", shift=8
+        )
+
+    def teardown(self):
+        assert_true(self.C.img.sum() > 0)
 
     def circle_test(self):
-        C = Canvas()
-        C += circle()
-        assert_true(C.img.sum() > 0)
+        self.C += ph.circle()
 
     def ellipse_test(self):
-        C = Canvas()
-        C += ellipse()
-        assert_true(C.img.sum() > 0)
+        self.C += ph.ellipse()
 
     def polyline_test(self):
-        C = Canvas()
-        C += polyline()
-        assert_true(C.img.sum() > 0)
+        self.C += ph.polyline()
 
     def line_test(self):
-        C = Canvas()
-        C += line()
-        assert_true(C.img.sum() > 0)
+        self.C += ph.line()
 
     def rectange_test(self):
-        C = Canvas()
-        C += rectangle()
-        assert_true(C.img.sum() > 0)
+        self.C += ph.rectangle()
 
     def text_test(self):
-        C = Canvas()
-        C += text()
-        assert_true(C.img.sum() > 0)
+        self.C += ph.text()
