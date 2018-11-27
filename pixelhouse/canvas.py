@@ -20,6 +20,7 @@ class Canvas:
         bg="black",
         name="pixelhouseImage",
         shift=8,
+        img=None,
     ):
         channels = 4
         self._img = np.zeros((height, width, channels), np.uint8)
@@ -41,10 +42,12 @@ class Canvas:
         # to another. Do so in the shared_attributes
         self.shared_attributes = {}
 
+        if img is not None:
+            self._img = img
+
     def __repr__(self):
         return (
-            f"pixelhouse (w/h) {self.height}x{self.width}, "
-            f"extent {self.extent}"
+            f"Canvas (w/h) {self.height}x{self.width}, " f"extent {self.extent}"
         )
 
     @property
@@ -349,3 +352,33 @@ class Canvas:
         canvas = self.copy(transparent=True)
         yield canvas
         self += canvas
+
+
+def hstack(canvas_list):
+    """
+    Stacks the images from two or more canvas horizontally,
+    uses the extent and background color from the first canvas on the list.
+    """
+    cvs = canvas_list[0].blank()
+    cvs._img = np.hstack([x._img for x in canvas_list])
+    return cvs
+
+
+def vstack(canvas_list):
+    """
+    Stacks the images from two or more canvas vertically,
+    uses the extent and background color from the first canvas on the list.
+    """
+    cvs = canvas_list[0].blank()
+    cvs._img = np.vstack([x._img for x in canvas_list])
+    return cvs
+
+
+def gridstack(canvas_grid):
+    """
+    Stacks the an array of arrays of canvas into a grid.
+    Uses the extent and background color from the first canvas on the list.
+    """
+    cvs = canvas_grid[0][0].blank()
+    rows = [hstack([x for x in row]) for row in canvas_grid]
+    return vstack(rows)
