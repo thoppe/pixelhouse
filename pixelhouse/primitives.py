@@ -299,12 +299,13 @@ class text(PrimitiveArtist):
 
         # Measure the font
         tw, th = font.getsize(text)
+        print(tw,th, (x,y))
 
         vpos = self.vpos(t)
         if vpos == "upper":
             y -= th
         elif vpos == "center":
-            y -= th // 2
+            y -= (th // 2)
         elif vpos == "lower":
             pass
         else:
@@ -334,6 +335,8 @@ class text(PrimitiveArtist):
 
             # Draw the text onto the text canvas
             draw = ImageDraw.Draw(pil)
+
+            print(x,y)
             draw.text((x, y), text, tuple(color), font)
             cvs.img = np.array(pil)
             return True
@@ -341,6 +344,8 @@ class text(PrimitiveArtist):
         cvs2 = cvs.blank()
         pil = Image.fromarray(cvs2.img)
         draw = ImageDraw.Draw(pil)
+        help(draw.text)
+
         draw.text((x, y), text, (255, 255, 255, 255), font)
         cvs2.img = np.array(pil)
 
