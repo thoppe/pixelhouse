@@ -9,3 +9,5 @@ pixelhouse/filter/insta/examples
 .tox
 pixelhouse.egg-info/
 dist/*
+.eggs
+.coverage
