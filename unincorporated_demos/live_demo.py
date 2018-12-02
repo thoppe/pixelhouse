@@ -10,7 +10,10 @@ pal = palette(15)
 C = Canvas(400, 400, bg=pal[0])
 C = Animation(400, 400, bg=pal[0])
 
-y = motion.easeReturn("easeInOutQuad", 2, -2, len(C))
+# HERE IS THE PROBLEM
+y = easeInOutQuad(2, -2, flip=True)
+print(-y)
+exit()
 
 
 def draw_circles(C):

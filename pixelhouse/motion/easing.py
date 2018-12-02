@@ -15,6 +15,8 @@ class EasingBase:
 
     def __call__(self, t):
         a = self.func(t)
+
+        # FIX PROBLEM HERE
         return self.start * (1 - a) + self.stop * a
 
     def func(self, t):
@@ -25,12 +27,14 @@ class Linear(EasingBase):
 
 
 class BezierEase(EasingBase):
-    def __init__(self, start=0, stop=1, flip=None):
+    def __init__(self, start=0, stop=1, flip=None, phase=0.0):
         super().__init__(start, stop)
         
         # Lazy loading of the Bezier curve so we can quickly create objects
         # note that x0, y0, x1, y1 must be set in the derived class
         self.f = None
+
+        self.phase = phase
 
         if flip is True:
             self.flip = interp1d([0,0.5,1.0],[0,1,0])
@@ -42,6 +46,9 @@ class BezierEase(EasingBase):
         return (self.x0, self.y0, self.x1, self.y1)
         
     def func(self, t):
+        t = (t+self.phase)%1.0
+
+                
         if self.f is None:
             self.f = bezierMotionCurve(self.x0, self.y0, self.x1, self.y1)
 
