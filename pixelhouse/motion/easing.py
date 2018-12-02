@@ -5,9 +5,11 @@ Base easing functions modified from: https://easings.net/
 import math
 import numpy as np
 from .bezier import bezierMotionCurve
+from scipy.interpolate import interp1d
+
 
 class EasingBase:
-    def __init__(self, start=0, stop=1): #, duration=1.0):
+    def __init__(self, start=0, stop=1): 
         self.start = start
         self.stop = stop
 
@@ -23,13 +25,16 @@ class Linear(EasingBase):
 
 
 class BezierEase(EasingBase):
-    def __init__(self, start=0, stop=1):
+    def __init__(self, start=0, stop=1, flip=None):
         super().__init__(start, stop)
         
         # Lazy loading of the Bezier curve so we can quickly create objects
         # note that x0, y0, x1, y1 must be set in the derived class
         self.f = None
 
+        if flip is True:
+            self.flip = interp1d([0,0.5,1.0],[0,1,0])
+        
     def get_params(self):
         '''
         Return a set of arguments to construct the easing.
@@ -39,8 +44,10 @@ class BezierEase(EasingBase):
     def func(self, t):
         if self.f is None:
             self.f = bezierMotionCurve(self.x0, self.y0, self.x1, self.y1)
-        print(self, self.x0, self.y0, self.x1, self.y1)
-        
+
+        if self.flip:
+            t = self.flip(t)
+            
         return self.f(t)
 
 class easeInSine(BezierEase): x0, y0, x1, y1 = 0.47, 0, 0.745, 0.715
@@ -75,7 +82,7 @@ class easeInOutBack(BezierEase): x0, y0, x1, y1 = 0.68, -0.55, 0.265, 1.55
 
 
 class offsetEase(BezierEase):
-    def __init__(self, dx=0.0, dy=0.1, baseEase="easeInSine", *args, **kwargs):        
+    def __init__(self, dx=0.0, dy=0.1, baseEase="easeInSine", *args, **kwargs):
         ease = globals()[baseEase](*args, **kwargs)
         x0, y0, x1, y1 = ease.get_params()
         
@@ -85,21 +92,23 @@ class offsetEase(BezierEase):
         y1 += dy
 
         super().__init__(x0, x1, y0, y1, *args, **kwargs)
+        
+class easeReturn(EasingBase):
+    def __init__(self, baseEase, start, stop, breakpoint=0.5, *args, **kwargs):
+        super().__init__(start, stop)
+        self.breakpoint = breakpoint
 
-def easeReturn(easing_func, start, stop, frames):
-    """
-    Returns an easing run that finishes halfway through and returns.
-    """
-    raise NotImplementedError
-    
-    if isinstance(easing_func, str):
-        easing_func = globals()[easing_func]
+        self.f0 = globals()[baseEase](start, stop)
+        self.f1 = globals()[baseEase](stop, start)
 
-    n0 = frames // 2
-    n1 = frames - n0
+                
+    def func(self, t):
+        if t <= self.breakpoint:
+            t2 = t/self.breakpoint
+            f = self.f0
+        else:
+            t2 = -t/(1-self.breakpoint)
+            f = self.f1
 
-    x0 = easing_func(start, stop, n0)()
-    x1 = easing_func(stop, start, n1)()
-
-    return np.hstack([x0, x1])
-
+        print("THIS",t,t2)
+        return f(t2)
