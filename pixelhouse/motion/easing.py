@@ -9,15 +9,17 @@ from scipy.interpolate import interp1d
 
 
 class EasingBase:
-    def __init__(self, start=0, stop=1): 
+    def __init__(self, start=0, stop=1, translate=0.0, scale=1.0): 
         self.start = start
         self.stop = stop
+        self.translate = 0.0
+        self.scale = 1.0
 
     def __call__(self, t):
         a = self.func(t)
 
-        # FIX PROBLEM HERE
-        return self.start * (1 - a) + self.stop * a
+        value = self.start * (1 - a) + self.stop * a
+        return self.scale*(self.translate + value)
 
     def func(self, t):
         raise NotImplementedError
@@ -27,17 +29,24 @@ class Linear(EasingBase):
 
 
 class BezierEase(EasingBase):
-    def __init__(self, start=0, stop=1, flip=None, phase=0.0):
-        super().__init__(start, stop)
+    def __init__(self, start=0, stop=1, flip=None, phase=0.0, *args, **kwargs):
+        super().__init__(start, stop, *args, **kwargs)
         
         # Lazy loading of the Bezier curve so we can quickly create objects
         # note that x0, y0, x1, y1 must be set in the derived class
         self.f = None
 
         self.phase = phase
+        self.flip = flip
 
         if flip is True:
             self.flip = interp1d([0,0.5,1.0],[0,1,0])
+
+    
+    def __neg__(self):
+        return BezierEase(
+            self.start, self.stop, self.flip, self.phase)
+
         
     def get_params(self):
         '''
