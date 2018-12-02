@@ -10,35 +10,24 @@ class EasingBase:
     def __init__(self, start=0, stop=1): #, duration=1.0):
         self.start = start
         self.stop = stop
-        #self.duration = duration
 
     def __call__(self, t):
         a = self.func(t)
-        result = self.stop * (1 - a) + self.start * a
+        return self.start * (1 - a) + self.stop * a
 
-        # If the input function call is an array, return one
-        if hasattr(t, '__iter__'):
-            return np.array(result)
-
-        # Else, return a single value
-        return result[0]
-
-    @classmethod
-    def func(cls, t):
+    def func(self, t):
         raise NotImplementedError
+
+class Linear(EasingBase):
+    def func(self, t): return t
 
 
 class BezierEase(EasingBase):
-    def __init__(
-        self, x0=0.45, y0=0.25, x1=0.55, y1=0.75, start=0, stop=1,
-    ):
+    def __init__(self, start=0, stop=1):
         super().__init__(start, stop)
-        self.x0 = x0
-        self.y0 = y0
-        self.x1 = x1
-        self.y1 = y1
-
+        
         # Lazy loading of the Bezier curve so we can quickly create objects
+        # note that x0, y0, x1, y1 must be set in the derived class
         self.f = None
 
     def get_params(self):
@@ -47,15 +36,12 @@ class BezierEase(EasingBase):
         '''
         return (self.x0, self.y0, self.x1, self.y1)
         
-    def _get_bezier_function(self):
-        if self.f is None:
-            self.f = bezierMotionCurve(
-                self.x0, self.y0, self.x1, self.y1, yvals_only=True)
-        return self.f
-
     def func(self, t):
-        return self._get_bezier_function()(t)
-    
+        if self.f is None:
+            self.f = bezierMotionCurve(self.x0, self.y0, self.x1, self.y1)
+        print(self, self.x0, self.y0, self.x1, self.y1)
+        
+        return self.f(t)
 
 class easeInSine(BezierEase): x0, y0, x1, y1 = 0.47, 0, 0.745, 0.715
 class easeOutSine(BezierEase): x0, y0, x1, y1 = 0.39, 0.575, 0.565, 1
@@ -89,8 +75,8 @@ class easeInOutBack(BezierEase): x0, y0, x1, y1 = 0.68, -0.55, 0.265, 1.55
 
 
 class offsetEase(BezierEase):
-    def __init__(self, dx=0.0, dy=0.1, baseEase="easeInSine", *args, **kwargs):
-        ease = globals()[baseEase]
+    def __init__(self, dx=0.0, dy=0.1, baseEase="easeInSine", *args, **kwargs):        
+        ease = globals()[baseEase](*args, **kwargs)
         x0, y0, x1, y1 = ease.get_params()
         
         x0 -= dx
