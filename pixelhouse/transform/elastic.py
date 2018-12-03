@@ -116,7 +116,7 @@ class wave(ElasticTransform):
         coords = cvs.grid_coordinates()
 
         y = cvs.inverse_transform_y(coords[1].astype(float))
-        x = cvs.inverse_transform_y(coords[0].astype(float))
+        x = cvs.inverse_transform_x(coords[0].astype(float))
 
         theta = self.theta(t)
         w = self.wavelength(t) / (2 * np.pi)
