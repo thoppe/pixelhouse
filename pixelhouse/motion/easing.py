@@ -4,6 +4,7 @@ Base easing functions modified from: https://easings.net/
 
 import math
 import numpy as np
+import copy
 from .bezier import bezierMotionCurve
 from scipy.interpolate import interp1d
 
@@ -14,6 +15,10 @@ class EasingBase:
         self.stop = stop
         self.translate = 0.0
         self.scale = 1.0
+        
+    def copy(self):
+        # Returns a deep copy of the Easing
+        return copy.deepcopy(self)
 
     def __call__(self, t):
         a = self.func(t)
@@ -41,12 +46,11 @@ class BezierEase(EasingBase):
 
         if flip is True:
             self.flip = interp1d([0,0.5,1.0],[0,1,0])
-
-    
+            
     def __neg__(self):
-        return BezierEase(
-            self.start, self.stop, self.flip, self.phase)
-
+        rhs = self.copy()
+        rhs.scale *= -1
+        return rhs
         
     def get_params(self):
         '''
