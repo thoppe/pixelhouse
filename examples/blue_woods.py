@@ -5,7 +5,7 @@ import numpy as np
 
 def draw_circles(C, dx=0.25, tc=0.1):
     pal = ph.palette(19)
-    
+
     base_r = 0.80
 
     r = base_r + dx

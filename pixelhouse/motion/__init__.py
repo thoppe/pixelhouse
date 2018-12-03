@@ -6,5 +6,3 @@ from .easing import easeInQuint, easeOutQuint, easeInOutQuint
 from .easing import easeInExpo, easeOutExpo, easeInOutExpo
 from .easing import easeInCirc, easeOutCirc, easeInOutCirc
 from .easing import easeInBack, easeOutBack, easeInOutBack
-
-from .easing import offsetEase, easeReturn

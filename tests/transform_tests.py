@@ -4,6 +4,7 @@ from utils import AnyEffect_Test
 import pixelhouse as ph
 from pixelhouse import circle, line, ellipse, rectangle, text, polyline
 
+
 class Transform_Test:
 
     """ Ensuring transforms work
@@ -45,7 +46,7 @@ class Transform_AnyEffect_Test(AnyEffect_Test):
     """ Ensuring transforms work by checking if something was changed.
     Most basic test, and does not guarantee correctness.
     """
-    
+
     def rotate_test(self):
         self.target += ph.transform.rotate(theta=1.57)
 

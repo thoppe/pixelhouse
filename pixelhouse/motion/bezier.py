@@ -14,6 +14,7 @@ def Bernstein(n, k):
 
     return _bpoly
 
+
 def Bezier(points, sample_points=200):
     """Build Bezier curve from points."""
     N = len(points)
@@ -39,7 +40,7 @@ class bezierMotionCurve:
         points = np.array([(0.0, 0), (x1, y1), (x2, y2), (1, 1)])
         x, y = Bezier(points, sample_points=sample_points).T
 
-        self.func = interp1d(x, y, kind='quadratic')
+        self.func = interp1d(x, y, kind="quadratic")
 
     def __call__(self, t):
         return self.func(t)

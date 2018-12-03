@@ -23,7 +23,6 @@ _Very much a work in progress!_
 [![](examples/figures/moving_circles.gif)](examples/small_demos.py)
 [![](examples/figures/checkerboard.gif)](examples/small_demos.py)
 [![](examples/figures/pacman.gif)](examples/small_demos.py)
-[![](examples/figures/timer.gif)](examples/small_demos.py)
 
 
 _Submit your examples as an issue/pull request or post to twitter under #pixelhouse to have them showcased here!_

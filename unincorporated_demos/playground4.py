@@ -8,7 +8,7 @@ A = ph.Animation(width=400, height=400, fps=2)
 A += ph.circle(r=0.5, color="darkorange")
 A += ph.circle(r=0.4, color="w", mode="direct")
 
-z = ph.motion.easeInOutQuad(0, 2 * np.pi, len(A))()
+z = ph.motion.easeInOutQuad(0, 2 * np.pi)
 A += ph.transform.motion_lines(0.2, theta=z)
 A += ph.transform.motion_lines(0.2)
 A += ph.transform.rotate(z)

@@ -21,7 +21,6 @@ animation_args.update(canvas_args)
 gif_args = {"palettesize": 32, "gifsicle": True}
 
 
-
 #########################################################################
 
 
@@ -139,7 +138,7 @@ def teyleen_116():
 
 def rotating_circles():
     A = Animation(**animation_args)
-    x = motion.easeReturn("easeInOutQuad", -1, 1, len(A))
+    x = motion.easeInOutQuad(-1, 1, flip=True)
 
     A(circle(x, 1, r=1.25, color=[0, 250, 150], mode="add"))
     A(circle(-x, -1, r=1.25, color=[255, 5, 100], mode="add"))
@@ -149,7 +148,7 @@ def rotating_circles():
 
 def checkerboard():
     A = Animation(**animation_args)
-    z = motion.easeReturn("easeInOutQuad", 0, 1, len(A))
+    z = motion.easeInOutQuad(0, 1, True)
 
     r = 0.20
     c = [150, 250, 0]
@@ -171,31 +170,6 @@ def checkerboard():
     return A
 
 
-def timer():
-    A = Animation(**animation_args)
-
-    tc = 0.315
-    r = 3.0
-    lag = 0.1
-
-    for k in range(20):
-
-        theta = motion.offsetEase(lag, stop=2 * np.pi, duration=len(A))()
-
-        A += line(
-            x1=r * np.cos(theta),
-            y1=r * np.sin(theta),
-            thickness=tc,
-            color="indigo",
-            mode="add",
-        )
-
-        r *= 0.98
-        lag *= 1.17
-
-    return A
-
-
 def pacman():
     args = animation_args.copy()
     args["duration"] = 0.5
@@ -205,8 +179,13 @@ def pacman():
 
     # Chomping easing function
     dp = np.pi / 4
-    x0 = motion.easeOutQuad(0, dp, len(A) // 2)()
-    x1 = motion.easeInQuad(dp, 0, len(A) // 2)()
+
+    n = len(A.timepoints)
+    t0 = A.timepoints[: n // 2]
+    t1 = A.timepoints[n // 2 :]
+
+    x0 = motion.easeOutQuad(0, dp)(t0)
+    x1 = motion.easeInQuad(dp, 0)(t1)
     z = np.hstack([x0, x1])
 
     A += ellipse(a=1, b=1, angle_start=z, angle_end=2 * np.pi - z, color=pac_color)

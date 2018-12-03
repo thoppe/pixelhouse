@@ -15,7 +15,7 @@ C += ph.text("pixelhouse", font_size=0.78, font=f_font, color="w")
 C += ph.text("pixelhouse", font_size=0.75, font=f_font, gradient=lg)
 
 # a = 0.01
-a = ph.motion.easeReturn("easeInOutQuad", 0, 0.06, len(C))
+a = ph.motion.easeInOutQuad(0, 0.06, True)
 
 z = np.linspace(2 * np.pi, 0)
 C += el.wave(amplitude=3 * a, wavelength=1.5, offset=z)

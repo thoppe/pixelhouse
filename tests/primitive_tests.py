@@ -1,6 +1,7 @@
 from utils import AnyDraw_Test
 import pixelhouse as ph
 
+
 class Primitive_AnyDraw_Test(AnyDraw_Test):
     """
     Right now, we just make sure the commands do not fail and draw something.

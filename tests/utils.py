@@ -1,12 +1,13 @@
 from nose.tools import *
 import pixelhouse as ph
 
+
 class AnyDraw_Test:
     """
     Utility testing class. Has a special setup and teardown to check if
     _anything_ was done to the self.canvas
     """
-    
+
     def setup(self):
         kwargs = {
             "width": 200,
@@ -19,14 +20,15 @@ class AnyDraw_Test:
 
     def teardown(self):
         assert_true(self.canvas.img.sum() > 0)
-        
+
+
 class AnyEffect_Test:
     """
     Utility testing class. Has a special setup and teardown to check if
     the starting and ending canvas are the same. Useful for checking
     transforms and filters.
     """
-    
+
     def setup(self):
         kwargs = {
             "width": 200,
