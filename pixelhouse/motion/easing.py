@@ -19,36 +19,7 @@ class EasingBase:
     def copy(self):
         # Returns a deep copy of the Easing
         return copy.deepcopy(self)
-
-    def __call__(self, t):
-        a = self.func(t)
-
-        value = self.start * (1 - a) + self.stop * a
-        return self.scale * (self.translate + value)
-
-    def func(self, t):
-        raise NotImplementedError
-
-
-class Linear(EasingBase):
-    def func(self, t):
-        return t
-
-
-class BezierEase(EasingBase):
-    def __init__(self, start=0, stop=1, flip=None, phase=0.0, *args, **kwargs):
-        super().__init__(start, stop, *args, **kwargs)
-
-        # Lazy loading of the Bezier curve so we can quickly create objects
-        # note that x0, y0, x1, y1 must be set in the derived class
-        self.f = None
-
-        self.phase = phase
-        self.flip = flip
-
-        if flip is True:
-            self.flip = interp1d([0, 0.5, 1.0], [0, 1, 0])
-
+    
     def __neg__(self):
         rhs = self.copy()
         rhs.scale *= -1
@@ -67,9 +38,6 @@ class BezierEase(EasingBase):
         rhs.translate -= val
         return rhs
 
-    def __rsub__(self, val):
-        return self - val
-
     def __mul__(self, val):
         rhs = self.copy()
         rhs.scale *= val
@@ -83,8 +51,29 @@ class BezierEase(EasingBase):
         rhs.scale /= val
         return rhs
 
-    def __rtruediv__(self, val):
-        return self / val
+    def __call__(self, t):
+        a = self.func(t)
+
+        value = self.start * (1 - a) + self.stop * a
+        return self.scale * (self.translate + value)
+
+    def func(self, t):
+        raise NotImplementedError
+
+
+class BezierEase(EasingBase):
+    def __init__(self, start=0, stop=1, flip=None, phase=0.0, *args, **kwargs):
+        super().__init__(start, stop, *args, **kwargs)
+
+        # Lazy loading of the Bezier curve so we can quickly create objects
+        # note that x0, y0, x1, y1 must be set in the derived class
+        self.f = None
+
+        self.phase = phase
+        self.flip = flip
+
+        if flip is True:
+            self.flip = interp1d([0, 0.5, 1.0], [0, 1, 0])
 
     def get_params(self):
         """
@@ -93,7 +82,14 @@ class BezierEase(EasingBase):
         return (self.x0, self.y0, self.x1, self.y1)
 
     def func(self, t):
-        t = (t + self.phase) % 1.0
+        t += self.phase
+
+        # If t is STRICTLY greater than 1, take the mod
+        if isinstance(t,np.ndarray):
+            t[t>1] = np.mod(t[t>1], 1.0)
+        else:
+            if t>1:
+                t %= 1.0
 
         if self.f is None:
             self.f = bezierMotionCurve(self.x0, self.y0, self.x1, self.y1)
@@ -108,6 +104,9 @@ class BezierEase(EasingBase):
 # Named Easing functions
 #########################################################################
 
+class Linear(EasingBase):
+    def func(self, t):
+        return t
 
 class easeInSine(BezierEase):
     x0, y0, x1, y1 = 0.47, 0, 0.745, 0.715
