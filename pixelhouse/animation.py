@@ -103,6 +103,10 @@ class Animation:
 
         return self
 
+    def render_all(self):
+        for n in range(len(self)):
+            self.render(n)
+
     def render(self, n):
         assert 0 <= n < len(self)
 
