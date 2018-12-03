@@ -93,3 +93,7 @@ _Submit your examples as an issue/pull request or post to twitter under #pixelho
 + [`opencv`](https://opencv.org/)
 + [Easing functions](https://github.com/semitable/easing-functions)
 + [Bezier curves](https://github.com/reptillicus/Bezier)
+
+## Press
+
++ [python weekly](https://mailchi.mp/pythonweekly/python-weekly-issue-374)
