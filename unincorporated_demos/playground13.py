@@ -21,9 +21,4 @@ C += circle(x=b - 1, y=1.2, r=0.2, gradient=g)
 C += circle(x=b * 2, y=1.2, r=0.2, gradient=g)
 C += circle(x=b / 2, y=1.2, r=0.2, gradient=g)
 
-C += circle(x=1 + b, y=1, r=0.2, gradient=g)
-C += circle(x=1 - b, y=1.2, r=0.2, gradient=g)
-C += circle(x=2 * b, y=1.2, r=0.2, gradient=g)
-C += circle(x=2 / b, y=1.2, r=0.2, gradient=g)
-
 C.show()
