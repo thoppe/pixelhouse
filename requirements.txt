@@ -1,6 +1,7 @@
 # Install what is needed via the setup file
 -e .
 
-# Needed for testing
+# Needed for testing/development
 nose
 coverage
+black

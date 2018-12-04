@@ -3,6 +3,7 @@ from nose.tools import *
 import pixelhouse as ph
 import numpy as np
 
+
 class Animation_Test:
     def simple_all_frames_the_same_test(self):
 
@@ -31,6 +32,3 @@ class Animation_Test:
 
         for rhs in canvas.frames[1:]:
             assert_true((rhs.img != canvas.frames[0].img).any())
-
-            
-        
