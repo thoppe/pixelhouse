@@ -11,3 +11,5 @@ pixelhouse.egg-info/
 dist/*
 .eggs
 .coverage
+
+development/coverage
