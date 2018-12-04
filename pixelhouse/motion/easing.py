@@ -19,7 +19,7 @@ class EasingBase:
     def copy(self):
         # Returns a deep copy of the Easing
         return copy.deepcopy(self)
-    
+
     def __neg__(self):
         rhs = self.copy()
         rhs.scale *= -1
@@ -85,10 +85,10 @@ class BezierEase(EasingBase):
         t += self.phase
 
         # If t is STRICTLY greater than 1, take the mod
-        if isinstance(t,np.ndarray):
-            t[t>1] = np.mod(t[t>1], 1.0)
+        if isinstance(t, np.ndarray):
+            t[t > 1] = np.mod(t[t > 1], 1.0)
         else:
-            if t>1:
+            if t > 1:
                 t %= 1.0
 
         if self.f is None:
@@ -104,9 +104,11 @@ class BezierEase(EasingBase):
 # Named Easing functions
 #########################################################################
 
+
 class Linear(EasingBase):
     def func(self, t):
         return t
+
 
 class easeInSine(BezierEase):
     x0, y0, x1, y1 = 0.47, 0, 0.745, 0.715
