@@ -26,13 +26,32 @@ class squish(ph.transform.elastic.ElasticTransform):
 
         gravity = 5.0
 
-        c0 = self.measure_CoM(cvs, t-self.dt)
-        c1 = self.measure_CoM(cvs, t)
-        c2 = self.measure_CoM(cvs, t+self.dt)
+        #c0 = self.measure_CoM(cvs, t-self.dt)
+        #c1 = self.measure_CoM(cvs, t)
+        #c2 = self.measure_CoM(cvs, t+self.dt)
+
+        ca = self.measure_CoM(cvs, t-self.dt*3)
+        c0 = self.measure_CoM(cvs, t-self.dt*2)
+        c1 = self.measure_CoM(cvs, t-self.dt)
+        c2 = self.measure_CoM(cvs, t)
+
+        cm = np.array([ca,c0,c1,c2]).T
+        print(cm[1].dtype, cm.dtype, type(cm[1][2]))
+
+        # Fit with spline?
+        from scipy.interpolate import splrep
+        S = splrep(cm[0], cm[1],k=1)
+        print(S)
+        exit()
 
         # Finite second-order difference scheme
         acc = (c0-2*c1+c2)/self.dt**2
         acc /= gravity
+
+        print(acc)
+        cvs += ph.text(f"x={acc[0]:0.2f}", y=1.5,font="TitilliumWeb-Black.ttf")
+        cvs += ph.text(f"y={acc[1]:0.2f}", y=-1.5,font="TitilliumWeb-Black.ttf")
+        return 
 
         coords = cvs.grid_coordinates()
         y = cvs.inverse_transform_y(coords[1].astype(float))
