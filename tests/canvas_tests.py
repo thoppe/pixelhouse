@@ -92,3 +92,17 @@ class Canvas_Test:
             [np.hstack([C1.img, C2.img]), np.hstack([C2.img, C3.img])])
         
         assert_true(np.isclose(img_stack, X.img).all())
+        
+    def get_set_item_test(self):
+
+        """ get_set_item_test:
+            Test pixel access like a numpy array.
+        """
+
+        C = ph.Canvas(bg='k')
+
+        assert_true(C[20:30, 50:60].sum() == 0)
+
+        # Set a 10x10 block red
+        C[20:30, 50:60] = [255,0,0,0]
+        assert_equal(C[20:30, 50:60].sum(), 255*100)
