@@ -1,5 +1,6 @@
 """
-Functions to save and load gifs and mp4
+Functions to save and load gifs and mp4. Ignore coverage on this file since
+it relies on outside programs.
 """
 
 from . import Animation
@@ -10,7 +11,9 @@ import tempfile
 import os
 
 
-def canvas2gif(A, f_gif, palettesize=256, gifsicle=False, duration=None):
+def canvas2gif(
+    A, f_gif, palettesize=256, gifsicle=False, duration=None
+):  # pragma: no cover
     images = [A.render(n).img for n in tqdm(range(len(A)))]
 
     if duration == None:
@@ -34,7 +37,7 @@ def canvas2gif(A, f_gif, palettesize=256, gifsicle=False, duration=None):
         print(f"gifsicle reduced filesize to {fs}")
 
 
-def canvas2mp4(A, f_mp4, loop=1):
+def canvas2mp4(A, f_mp4, loop=1):  # pragma: no cover
 
     with tempfile.TemporaryDirectory() as tmp_dir:
 

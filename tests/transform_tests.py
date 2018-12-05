@@ -43,7 +43,7 @@ class Transform_AnyEffect_Test(AnyEffect_Test):
     """ Ensuring transforms work by checking if something was changed.
     Most basic test, and does not guarantee correctness.
     """
-    
+
     def scale_test(self):
         self.target += ph.transform.scale(fx=0.25)
 

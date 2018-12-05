@@ -1,6 +1,7 @@
 from nose.tools import *
 import pixelhouse as ph
 
+
 class Palette_Test:
 
     """ Ensuring Palettes work
@@ -30,4 +31,3 @@ class Palette_Test:
             Try to access a palette that doesn't exist.
         """
         ph.palette(100000)
-    
