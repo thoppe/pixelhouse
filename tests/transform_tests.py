@@ -12,9 +12,7 @@ class Transform_Test:
 
     def setup(self):
         self.canvas = ph.Canvas(width=200, height=200)
-        self.canvas += rectangle(
-            **{"x": 0.5, "y": 0.25, "x1": 0.75, "y1": 0.75}
-        )
+        self.canvas += rectangle(x=0.5, y=0.25, x1=0.75, y1=0.75)
 
     def scale_up_test(self):
 
@@ -33,7 +31,6 @@ class Transform_Test:
         """ scale_down_test:
             After scaling by .5x, it should be 100 pixels.
         """
-
         assert_true(self.canvas.width == 200)
         assert_true(self.canvas.height == 200)
         self.canvas(ph.transform.scale(fx=0.5, fy=0.5))
@@ -46,6 +43,9 @@ class Transform_AnyEffect_Test(AnyEffect_Test):
     """ Ensuring transforms work by checking if something was changed.
     Most basic test, and does not guarantee correctness.
     """
+    
+    def scale_test(self):
+        self.target += ph.transform.scale(fx=0.25)
 
     def rotate_test(self):
         self.target += ph.transform.rotate(theta=1.57)

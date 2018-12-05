@@ -43,4 +43,10 @@ class AnyEffect_Test:
         self.target = self.source.copy()
 
     def teardown(self):
-        assert_true(~(self.source.img == self.target.img).all())
+        # We don't need to check if the canvas size changed
+        if(
+                (self.source.height == self.target.height)
+                and
+                (self.source.width != self.target.width)
+        ):
+            assert_true(~(self.source.img == self.target.img).all())
