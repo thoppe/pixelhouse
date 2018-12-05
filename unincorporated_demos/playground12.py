@@ -1,6 +1,6 @@
 import pixelhouse as ph
 import numpy as np
-from scipy.ndimage.measurements import center_of_mass
+from scipy import interpolate
 
 pal = ph.palette(3)
 g = ph.gradient.linear([pal[2], pal[3]])
@@ -9,50 +9,38 @@ g = ph.gradient.linear([pal[2], pal[3]])
 class squish(ph.transform.elastic.ElasticTransform):
     def __init__(self, art):
         self.art = art
-        self.dt = 0.01
-
-    def measure_CoM(self, cvs, t):
-        bg = cvs.copy()
-        self.art.draw(bg, t)
-        mask = bg.alpha/255
-
-        y,x = center_of_mass(mask)
-        cx = cvs.inverse_transform_x(x)
-        cy = cvs.inverse_transform_y(y)
-        
-        return np.array([cx, cy])
+        self.dt = 0.001
 
     def draw(self, cvs, t=0.0):
 
         gravity = 5.0
+        npts = 5
 
-        #c0 = self.measure_CoM(cvs, t-self.dt)
-        #c1 = self.measure_CoM(cvs, t)
-        #c2 = self.measure_CoM(cvs, t+self.dt)
+        # Measure the CM along a few fixed points back in time
+        u = np.linspace(t-(npts-1)*self.dt, t, npts)
+        CM = np.array([self.art.center_of_mass(_t) for _t in u]).T
 
-        ca = self.measure_CoM(cvs, t-self.dt*3)
-        c0 = self.measure_CoM(cvs, t-self.dt*2)
-        c1 = self.measure_CoM(cvs, t-self.dt)
-        c2 = self.measure_CoM(cvs, t)
+        tck, _ = interpolate.splprep(CM, u=u, s=0)
 
-        cm = np.array([ca,c0,c1,c2]).T
-        print(cm[1].dtype, cm.dtype, type(cm[1][2]))
+        obj = {
+            "r" : np.array(interpolate.splev(t, tck, der=0,ext=2)),
+            "v" : np.array(interpolate.splev(t, tck, der=1)),
+            "a" : np.array(interpolate.splev(t, tck, der=2)),
+        }
+        font = "TitilliumWeb-Black.ttf"
 
-        # Fit with spline?
-        from scipy.interpolate import splrep
-        S = splrep(cm[0], cm[1],k=1)
-        print(S)
-        exit()
+        val =obj['r'][0]
+        cvs += ph.text(f"x={val:0.2f}",y=1.5,font_size=0.3, font=font)
 
-        # Finite second-order difference scheme
-        acc = (c0-2*c1+c2)/self.dt**2
-        acc /= gravity
+        val =obj['v'][0]
+        cvs += ph.text(f"v={val:0.2f}",y=-1.0,x=-2,font_size=0.3,font=font)
 
-        print(acc)
-        cvs += ph.text(f"x={acc[0]:0.2f}", y=1.5,font="TitilliumWeb-Black.ttf")
-        cvs += ph.text(f"y={acc[1]:0.2f}", y=-1.5,font="TitilliumWeb-Black.ttf")
-        return 
+        val =obj['a'][0]
+        cvs += ph.text(f"a={val:0.2f}",y=-1.0,x=2,font_size=0.3,font=font)
 
+        return False
+
+        '''
         coords = cvs.grid_coordinates()
         y = cvs.inverse_transform_y(coords[1].astype(float))
         x = cvs.inverse_transform_x(coords[0].astype(float))
@@ -63,13 +51,8 @@ class squish(ph.transform.elastic.ElasticTransform):
         dx = dist * (-acc[0])
         dy = 0*(dist * acc[1])
 
-        #print(c0,c1,c2)
-        print(t, acc[1])
-        #print(dx.max())
-        
         self.transform(cvs, dy, dx, coords, 'nearest', order=0)
-        '''
-        
+                
         import pylab as plt
         plt.imshow(dx[:,:,0])
         plt.colorbar()
