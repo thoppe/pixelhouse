@@ -1,6 +1,7 @@
-__version__ = "0.3.2"
+__version__ = "0.3.3"
 
 """
+Version: 0.3.3: 100% Coverage. Fixed tiny bugs while building unit tests
 Version: 0.3.2: Removed unnecessary debug statement and added animated pixelhouse logo example.
 Version: 0.3.1: Fixed the manifest so the font files load.
 Version: 0.3.0: Cleaned up easing API, now much cleaner and _easier_ to use. Ha.
