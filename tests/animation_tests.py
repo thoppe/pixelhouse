@@ -42,14 +42,13 @@ class Animation_Test:
         A = ph.Animation(200, 100, extent=2.0)
 
         assert_equal(A.xmin, -2)
-        assert_equal(A.xmax,  2)
+        assert_equal(A.xmax, 2)
 
         assert_equal(A.ymax, -1)
-        assert_equal(A.ymin,  1)
+        assert_equal(A.ymin, 1)
 
-        assert_equal(A.aspect_ratio,  2)
+        assert_equal(A.aspect_ratio, 2)
 
-        
     def iadd_test(self):
 
         """ iadd_test:
@@ -61,8 +60,8 @@ class Animation_Test:
 
         A3 = A1.blank()
         A3 += A2
-        
-        assert_equal(A3.duration,  A1.duration+A2.duration)
+
+        assert_equal(A3.duration, A1.duration + A2.duration)
 
     @raises(TypeError)
     def iadd_wrong_type_test(self):
@@ -72,7 +71,7 @@ class Animation_Test:
         """
         A = ph.Animation()
         A += 7
-        
+
     def layer_test(self):
         """ layer_test:
             Tests ONLY if the API is working, not a complete test.
@@ -85,4 +84,3 @@ class Animation_Test:
             AX += ph.transform.translate(x=1)
 
         A.render_all()
-        

@@ -12,6 +12,7 @@ C = Animation(400, 400, bg=pal[0])
 
 y = easeInOutQuad(-2, 2, flip=True)
 
+
 def draw_circles(C):
     C += circle(-2, y, r=0.20, color=pal[1])
     C += circle(-1, -y, r=0.20, color=pal[2])

@@ -251,7 +251,7 @@ class Canvas:
         return r
 
     def transform_color(self, c):
-        
+
         if isinstance(c, str):
             c = matplotlib_colors(c)
 

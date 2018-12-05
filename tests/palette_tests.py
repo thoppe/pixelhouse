@@ -37,14 +37,14 @@ class Color_Test:
 
     """ Ensuring named colors work
     """
-    
+
     def check_len_test(self):
         """ check_len_test:
             Make sure that we load at least one color palette. Pull a color
             first to fix lazy loading.
         """
         colors = ph.color.NamedColors()
-        colors('k')
+        colors("k")
         assert_true(len(colors) > 5)
 
     @raises(KeyError)
@@ -53,4 +53,4 @@ class Color_Test:
             Try to load a color name that doesn't exist.
         """
         canvas = ph.Canvas()
-        canvas += ph.circle(color='this_color_does_not_exist')
+        canvas += ph.circle(color="this_color_does_not_exist")
