@@ -81,16 +81,18 @@ class Primitive_Text_Options_Test():
             assert_false((x.img == y.img).all())
     
     def text_gradient_test(self):
-        g = ph.gradient.linear('r', 'g')
+        pal = ph.palette(15)
 
         C0 = ph.Canvas()
-        C0 += ph.text(color='r')
+        C0 += ph.text(color=pal[0])
 
         C1 = ph.Canvas()
-        C1 += ph.text(color='g')
+        C1 += ph.text(color=pal[1])
         
-        C2 = ph.Canvas()
-        C2 += ph.text(gradient=g)
+        g = ph.gradient.linear(pal[0], pal[1])
+
+        #C2 = ph.Canvas()
+        #C2 += ph.text(gradient=g)
 
         # Now check that none of them are equal
         #for x, y in itertools.combinations([C0, C1, C2], r=2):
