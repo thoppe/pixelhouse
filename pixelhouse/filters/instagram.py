@@ -95,19 +95,3 @@ class instafilter(Artist):
             cvs.img = img2
         # Otherwise blend
         cvs.img = cv2.addWeighted(cvs.img, 1 - weight, img2, weight, gamma=0.0)
-
-
-if __name__ == "__main__":
-    img = cv2.imread("insta/samples/Normal.jpg")
-
-    print("Loading image and model")
-    F = instafilter("Ludwig")
-
-    print("Applying sampling")
-    img2 = F(img)
-
-    cv2.imshow("image", img)
-    cv2.waitKey(0)
-
-    cv2.imshow("image", img2)
-    cv2.waitKey(0)

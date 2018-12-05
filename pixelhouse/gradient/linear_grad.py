@@ -65,7 +65,6 @@ class linear(Artist):
             C = interpolation.RGBa_interpolation(pro, alpha, colors)
         elif imode == "discrete":
             C = interpolation.discrete_interpolation(pro, alpha, colors)
-
         else:
             raise KeyError(f"Unknown interpolation {imode}")
 

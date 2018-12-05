@@ -10,10 +10,7 @@ pal = palette(15)
 C = Canvas(400, 400, bg=pal[0])
 C = Animation(400, 400, bg=pal[0])
 
-# HERE IS THE PROBLEM
-y = easeInOutQuad(2, -2, flip=True)
-print(-y)
-exit()
+y = easeInOutQuad(-2, 2, flip=True)
 
 
 def draw_circles(C):
@@ -28,7 +25,7 @@ C += gaussian_blur(0.5, 0.5)
 draw_circles(C)
 
 with C.layer() as L:
-    theta = easeInOutQuad(0, 2 * np.pi, len(C))()
+    theta = easeInOutQuad(0, 2 * np.pi)
     L += rectangle(-0.5, -0.5, 0.5, 0.5, color=pal[3])
     L += rotate(theta)
 

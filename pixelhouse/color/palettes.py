@@ -38,8 +38,3 @@ class ColorLoversPalette:
 
     def __len__(self):
         return len(self.colors)
-
-
-if __name__ == "__main__":
-    P = ColorLoversPalette()
-    print(P(2))

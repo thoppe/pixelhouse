@@ -85,13 +85,12 @@ class BezierEase(EasingBase):
         t += self.phase
 
         # If t is STRICTLY greater than 1, take the mod
-        if isinstance(t,np.ndarray):
-            t[t>1] = np.mod(t[t>1], 1.0)
-            t[t<0] = np.mod(t[t<0], 1.0)
+        if isinstance(t, np.ndarray):
+            t[t > 1] = np.mod(t[t > 1], 1.0)
+            t[t < 0] = np.mod(t[t < 0], 1.0)
         else:
-            if t>1 or t<0:
+            if t > 1 or t < 0:
                 t %= 1.0
-                
 
         if self.f is None:
             self.f = bezierMotionCurve(self.x0, self.y0, self.x1, self.y1)

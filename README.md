@@ -9,7 +9,7 @@ Anything that can be drawn can be moved.  Comes with beautiful gradients, instag
 _Very much a work in progress!_
 
       pip install pixelhouse
-
+	  
 ## Examples (click for source)
 
 [![Example image: blue woods](examples/figures/blue_woods.png)](examples/blue_woods.py)
@@ -27,62 +27,21 @@ _Very much a work in progress!_
 
 _Submit your examples as an issue/pull request or post to twitter under #pixelhouse to have them showcased here!_
 
-## Wishlist / Roadmap
+## Functionality
 
-#### Primitives 
-+ [x] Line
-+ [x] Circle
-+ [x] Ellipse
-+ [x] Polyline
-+ [x] Backgrounds
-+ [x] Text
-+ [ ] Beizer curves
++ Primitives: Line, Circle, Ellipse, Polyline, Text*
++ Colors: Named colors, beautiful palettes
++ Gradients: Linear gradients with transparent elements, discrete
++ Animation: Easing (named and custom)
++ Transforms: Rotation, Translation, Scale, Elastic distortions
++ Filters: Blur, Instagram-style filters (keras not needed)
++ IO: Save/Load: jpg, png, gif, mp4
 
-#### Transforms
-+ [x] Rotation
-+ [x] Translation
-+ [x] Scale
-+ [x] Elastic distortions
+\* Note: For advanced font support install [libraqm](https://github.com/HOST-Oman/libraqm) ([why?](https://github.com/thoppe/pixelhouse/issues/26)).
 
-#### Gradients
-+ [x] Linear gradients with transparent elements
-+ [x] Discrete gradients
+## Press
 
-#### Layers
-+ [x] Blended
-+ [x] Additive
-+ [x] Subtractive
-
-#### Filters
-+ [x] Blur
-+ [x] Instagram-style filters (keras not needed)
-
-#### Easing
-+ [x] Named easing, Pennser equations
-+ [x] Generic beizer easing
-
-#### Color/Palettes
-+ [x] Named colors
-+ [x] Top palettes
-
-#### File IO
-+ [x] Save to gif
-+ [x] Save to mp4 
-+ [ ] Load from gif
-+ [ ] Load from mp4
-
-#### Devops
-+ [x] Unified class for artists
-+ [x] Hide cv2 weird colorspace, BGR -> RGB
-+ [x] Subpixel resolution for primitives
-+ [x] Proper library
-+ [x] setup.py
-+ [x] pip install
-+ [x] Context mangager for canvas
-+ [x] Context mangager for animation (working but not nested)
-+ [ ] Unit tests (started!)
-+ [ ] Doc coverage (started!)
-
++ [python weekly](https://mailchi.mp/pythonweekly/python-weekly-issue-374)
 
 ## Credits
 
@@ -94,6 +53,3 @@ _Submit your examples as an issue/pull request or post to twitter under #pixelho
 + [Easing functions](https://github.com/semitable/easing-functions)
 + [Bezier curves](https://github.com/reptillicus/Bezier)
 
-## Press
-
-+ [python weekly](https://mailchi.mp/pythonweekly/python-weekly-issue-374)

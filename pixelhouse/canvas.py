@@ -251,6 +251,7 @@ class Canvas:
         return r
 
     def transform_color(self, c):
+
         if isinstance(c, str):
             c = matplotlib_colors(c)
 
@@ -311,7 +312,7 @@ class Canvas:
             return cv2.LINE_AA
         return 8
 
-    def show(self, delay=0):
+    def show(self, delay=0):  # pragma: no cover
 
         """ Opens a preview window displaying the image
         """
