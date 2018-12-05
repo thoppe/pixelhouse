@@ -31,10 +31,23 @@ class Primitive_AnyDraw_Test(AnyDraw_Test):
 class Primitive_Error_Catching_Test():
 
     @raises(NotImplementedError)
+    def empty_artist_test(self):
+        canvas = ph.Canvas()
+        class EmptyArtist(ph.Artist):
+            pass
+        
+        canvas += EmptyArtist()
+
+    @raises(NotImplementedError)
     def polyline_gradient_test(self):
         g = ph.gradient.linear('r', 'g')
         canvas = ph.Canvas()
         canvas += ph.polyline(gradient=g)
+
+    @raises(AttributeError)
+    def missing_attribute_test(self):
+        C = ph.circle(fake_attribute=37.0)
+        
 
     @raises(FileNotFoundError)
     def font_file_missing_test(self):
@@ -89,11 +102,11 @@ class Primitive_Text_Options_Test():
         C1 = ph.Canvas()
         C1 += ph.text(color=pal[1])
         
-        g = ph.gradient.linear(pal[0], pal[1])
+        g = ph.gradient.linear([pal[0], pal[1]])
 
-        #C2 = ph.Canvas()
-        #C2 += ph.text(gradient=g)
+        C2 = ph.Canvas()
+        C2 += ph.text(gradient=g)
 
         # Now check that none of them are equal
-        #for x, y in itertools.combinations([C0, C1, C2], r=2):
-        #    assert_false((x.img == y.img).all())
+        for x, y in itertools.combinations([C0, C1, C2], r=2):
+            assert_false((x.img == y.img).all())

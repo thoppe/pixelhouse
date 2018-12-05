@@ -77,6 +77,6 @@ class Artist:
         # Convenience method for draw
         self.draw(t, *args, **kwargs)
 
-    def draw(self):
+    def draw(self, t):
         # Virtual class, need to override
         raise NotImplementedError
