@@ -44,7 +44,3 @@ class NamedColors:
 
     def __len__(self):
         return len(self.colors)
-
-
-if __name__ == "__main__":
-    print(P("g"))

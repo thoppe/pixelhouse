@@ -61,3 +61,6 @@ class Transform_AnyEffect_Test(AnyEffect_Test):
 
     def motion_lines_test(self):
         self.target += ph.transform.motion_lines()
+
+    def wave_test(self):
+        self.target += ph.transform.wave()

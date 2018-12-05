@@ -31,3 +31,26 @@ class Palette_Test:
             Try to access a palette that doesn't exist.
         """
         ph.palette(100000)
+
+
+class Color_Test:
+
+    """ Ensuring named colors work
+    """
+    
+    def check_len_test(self):
+        """ check_len_test:
+            Make sure that we load at least one color palette. Pull a color
+            first to fix lazy loading.
+        """
+        colors = ph.color.NamedColors()
+        colors('k')
+        assert_true(len(colors) > 5)
+
+    @raises(KeyError)
+    def check_unknown_color_name_test(self):
+        """ check_unknown_color_name:
+            Try to load a color name that doesn't exist.
+        """
+        canvas = ph.Canvas()
+        canvas += ph.circle(color='this_color_does_not_exist')
