@@ -299,7 +299,6 @@ class text(PrimitiveArtist):
 
         # Measure the font
         tw, th = font.getsize(text)
-        print(tw, th, (x, y))
 
         vpos = self.vpos(t)
         if vpos == "upper":
@@ -336,7 +335,6 @@ class text(PrimitiveArtist):
             # Draw the text onto the text canvas
             draw = ImageDraw.Draw(pil)
 
-            print(x, y)
             draw.text((x, y), text, tuple(color), font)
             cvs.img = np.array(pil)
             return True
