@@ -51,3 +51,9 @@ class Gradient_API_Test(AnyDraw_Test):
         """
         g = ph.gradient.linear(["r", "b"], interpolation="discrete")
         self.canvas += ph.circle(gradient=g)
+        
+    def check_API_clipped_transparency_test(self):
+        """ Check if the API for RGB interpolation works.
+        """
+        g = ph.gradient.linear(["r", "b"], transparency=[.5, 2.0])
+        self.canvas += ph.circle(gradient=g)
