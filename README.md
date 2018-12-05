@@ -37,7 +37,11 @@ _Submit your examples as an issue/pull request or post to twitter under #pixelho
 + Filters: Blur, Instagram-style filters (keras not needed)
 + IO: Save/Load: jpg, png, gif, mp4
 
-* For advanced font support install [libraqm](https://github.com/HOST-Oman/libraqm) ([why?](https://github.com/thoppe/pixelhouse/issues/26)).
+\* Note: For advanced font support install [libraqm](https://github.com/HOST-Oman/libraqm) ([why?](https://github.com/thoppe/pixelhouse/issues/26)).
+
+## Press
+
++ [python weekly](https://mailchi.mp/pythonweekly/python-weekly-issue-374)
 
 ## Credits
 
@@ -49,6 +53,3 @@ _Submit your examples as an issue/pull request or post to twitter under #pixelho
 + [Easing functions](https://github.com/semitable/easing-functions)
 + [Bezier curves](https://github.com/reptillicus/Bezier)
 
-## Press
-
-+ [python weekly](https://mailchi.mp/pythonweekly/python-weekly-issue-374)
