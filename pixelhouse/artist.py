@@ -80,3 +80,7 @@ class Artist:
     def draw(self):
         # Virtual class, need to override
         raise NotImplementedError
+
+    def center_of_mass(self, t):
+        # Some shapes have a known center of mass, by default they don't
+        raise NotImplementedError("This shape doesn't have a center of mass")

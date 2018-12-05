@@ -74,6 +74,9 @@ class circle(PrimitiveArtist):
         args = (x, y), r, color, thickness, lineType, cvs.shift
         cvs.cv2_draw(cv2.circle, args, mode=mode, gradient=self.gradient, t=t)
 
+    def center_of_mass(self, t):
+        return np.array([self.x(t), self.y(t)])
+
 
 class rectangle(PrimitiveArtist):
     """
@@ -106,6 +109,14 @@ class rectangle(PrimitiveArtist):
         cvs.cv2_draw(
             cv2.rectangle, args, mode=mode, gradient=self.gradient, t=t
         )
+
+    def center_of_mass(self, t):
+        x0, x1 = self.x(t), self.x1(t)
+        y0, y1 = self.y(t), self.y1(t)
+        
+        dx = abs(x0-x1)/2.0
+        dy = abs(y0-y1)/2.0
+        return np.array([min(x0,x1)+dx, min(y0,y1)+dy])
 
 
 class line(PrimitiveArtist):
@@ -141,6 +152,14 @@ class line(PrimitiveArtist):
 
         args = (x, y), (x1, y1), color, thickness, lineType, cvs.shift
         cvs.cv2_draw(cv2.line, args, mode=mode, gradient=self.gradient, t=t)
+
+    def center_of_mass(self, t):
+        x0, x1 = self.x(t), self.x1(t)
+        y0, y1 = self.y(t), self.y1(t)
+        
+        dx = abs(x0-x1)/2.0
+        dy = abs(y0-y1)/2.0
+        return np.array([min(x0,x1)+dx, min(y0,y1)+dy])
 
 
 class ellipse(PrimitiveArtist):
@@ -206,6 +225,9 @@ class ellipse(PrimitiveArtist):
         )
 
         cvs.cv2_draw(cv2.ellipse, args, mode=mode, gradient=self.gradient, t=t)
+
+    def center_of_mass(self, t):
+        return np.array([self.x(t), self.y(t)])
 
 
 class polyline(PrimitiveArtist):
