@@ -128,7 +128,7 @@ class Animation:
 
         return self.frames[n]
 
-    def show(self, delay=50, repeat=True):
+    def show(self, delay=50, repeat=True): # pragma: no cover
 
         is_status_bar = True
         while True:
@@ -173,6 +173,6 @@ class _CanvasLayer:
                 art(C, t)
 
     @contextmanager
-    def layer(self):
+    def layer(self): # pragma: no cover
         msg = "Nested layers in Animation are not possible yet."
         raise NotImplementedError(msg)
