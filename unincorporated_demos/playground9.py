@@ -39,22 +39,22 @@ class splatter(ph.Artist):
         idx = ~cv2.erode(mask, kernel).astype(bool)
         cvs.img[idx] = org[idx]
 
+if __name__ == "__main__":
+    pal = ph.palette(32)
+    np.random.shuffle(pal)
 
-pal = ph.palette(32)
-np.random.shuffle(pal)
+    C = ph.Canvas(400, 400, bg=pal[0])
+    # C = ph.Animation(400,400,bg=pal[0])
 
-C = ph.Canvas(400, 400, bg=pal[0])
-# C = ph.Animation(400,400,bg=pal[0])
+    for i in range(30):
+        with C.layer() as CX:
+            x = np.random.uniform(-4, 4)
+            y = np.random.uniform(-4, 4)
+            c = pal[np.random.randint(1, 5)]
+            r = np.random.uniform(0.2, 0.5)
+            gamma = np.random.uniform(0.05, 0.10)
 
-for i in range(30):
-    with C.layer() as CX:
-        x = np.random.uniform(-4, 4)
-        y = np.random.uniform(-4, 4)
-        c = pal[np.random.randint(1, 5)]
-        r = np.random.uniform(0.2, 0.5)
-        gamma = np.random.uniform(0.05, 0.10)
+            CX += ph.circle(x=x, y=y, r=r, color=c)
+            CX += splatter(gamma=gamma, color=c, seed=20)
 
-        CX += ph.circle(x=x, y=y, r=r, color=c)
-        CX += splatter(gamma=gamma, color=c, seed=20)
-
-C.show()
+    C.show()
