@@ -204,6 +204,17 @@ class Canvas:
         x -= self.extent
         return x
 
+    
+    def transform_length(self, r, is_discrete=True, use_shift=False):
+        r *= float(self.width) / self.extent / 2
+
+        if use_shift and self.shift:
+            r *= 2 ** self.shift
+
+        if is_discrete:
+            return int(r)
+        return r
+
     def transform_y(self, y, is_discrete=True, use_shift=False):
         y *= -1
         y += self.extent / self.aspect_ratio
@@ -221,16 +232,6 @@ class Canvas:
         y -= self.extent / self.aspect_ratio
         y *= -1
         return y
-
-    def transform_length(self, r, is_discrete=True, use_shift=False):
-        r *= float(self.width) / self.extent
-
-        if use_shift and self.shift:
-            r *= 2 ** self.shift
-
-        if is_discrete:
-            return int(r)
-        return r
 
     def transform_kernel_length(self, r):
         # Kernels must be positive and odd integers
@@ -321,6 +322,8 @@ class Canvas:
         dst = cv2.cvtColor(self.img, cv2.COLOR_RGB2BGR)
 
         cv2.imshow(self.name, dst)
+        cv2.moveWindow(self.name, 40, 40)
+        
         cv2.waitKey(delay)
 
     def save(self, filename):

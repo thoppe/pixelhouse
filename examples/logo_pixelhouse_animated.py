@@ -16,7 +16,7 @@ def logo_animation(logo_text):
     y = ph.motion.easeInOutQuad(0, 1, flip=True)
 
     for i in np.arange(-6, 6, 1.0):
-        A += ph.text(logo_text, y=i * y, gradient=lg, font_size=0.5)
+        A += ph.text(logo_text, y=i * y, gradient=lg, font_size=1.0)
 
     return A
 

@@ -17,7 +17,7 @@ for k, y in enumerate(np.arange(-6, 6, r * 2)):
     colors = [random.choice(pal[1:]) for k in range(len(x0))]
 
     for k in range(len(x0)):
-        C += ph.circle(x=x0[k], y=y, r=r, color=colors[k])
+        C += ph.circle(x=x0[k], y=y, r=2*r, color=colors[k])
 
 C.save("figures/circle_lines.png")
 C.show()

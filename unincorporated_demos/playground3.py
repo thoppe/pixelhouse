@@ -11,8 +11,8 @@ for i in np.arange(-dx, dx, 0.5):
     A += ph.line(i, -dx, i, dx, thickness=0)
     A += ph.line(-dx, i, dx, i, thickness=0)
 
-z = ph.motion.easeInOutQuad(1, -1)
-x = ph.motion.easeInOutQuad(1, -1)
+z = ph.motion.easeInOutQuad(2, -2)
+x = ph.motion.easeInOutQuad(2, -2)
 A += ph.transform.pull(x, 0.25, alpha=z, mode="constant")
 
 A.show()

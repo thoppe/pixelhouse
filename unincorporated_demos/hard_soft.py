@@ -1,6 +1,7 @@
 import pixelhouse as ph
 from tqdm import tqdm 
 from pixelhouse import circle
+import os
 import numpy as np
 from playground9 import splatter
 import random
@@ -8,40 +9,43 @@ import random
 random.seed(42)
 np.random.seed(42)
 
-'''
-pts = []
-buffer_radius = 0.05
 
-def is_overlap(x,y,r):
-    for x2, y2, r2, _ in pts:
-        dist = np.sqrt((x-x2)**2+(y-y2)**2)/2
+f_pts = "hs_pts.npy"
 
-        if dist <= r+r2+buffer_radius:
-            return True
-    return False
+if not os.path.exists(f_pts):
+    pts = []
+    buffer_radius = 0.10
 
-for n in tqdm(range(8000)):
-    p = np.random.uniform(0, 5)
-    r = np.random.uniform(0.015, 0.20)
+    def is_overlap(x,y,r):
+        for x2, y2, r2, _ in pts:
+            dist = np.sqrt((x-x2)**2+(y-y2)**2)
 
-    p += 12*r
-   
-    theta = np.random.uniform(0, 2*np.pi)
+            if dist <= r+r2+buffer_radius:
+                return True
+        return False
 
-    x = p*np.cos(theta)
-    y = p*np.sin(theta)
+    for n in tqdm(range(8000)):
+        p = np.random.uniform(0, 5)
+        r = np.random.uniform(0.03, 0.40)
 
-    if is_overlap(x,y,r):
-        continue
+        p += 12*r
 
-    
-    color = np.random.randint(1,5)
-    pts.append((x,y,r, color))
+        theta = np.random.uniform(0, 2*np.pi)
 
-print(np.array(pts))
-np.save("hs_pts.npy", np.array(pts),)
-'''
-pts = np.load('hs_pts.npy')
+        x = p*np.cos(theta)
+        y = p*np.sin(theta)
+
+        if is_overlap(x,y,r):
+            continue
+
+        color = np.random.randint(1,5)
+        pts.append((x,y,r, color))
+
+    print(np.array(pts))
+    np.save(f_pts, np.array(pts),)
+
+
+pts = np.load(f_pts)
 
 
 pal = ph.palette(114)

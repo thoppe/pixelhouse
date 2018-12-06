@@ -51,7 +51,7 @@ if __name__ == "__main__":
             x = np.random.uniform(-4, 4)
             y = np.random.uniform(-4, 4)
             c = pal[np.random.randint(1, 5)]
-            r = np.random.uniform(0.2, 0.5)
+            r = np.random.uniform(0.4, 1.0)
             gamma = np.random.uniform(0.05, 0.10)
 
             CX += ph.circle(x=x, y=y, r=r, color=c)

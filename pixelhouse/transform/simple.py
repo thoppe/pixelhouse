@@ -18,7 +18,7 @@ class scale(Artist):
 
 
 class translate(Artist):
-    x = constant(0.5)
+    x = constant(1.0)
     y = constant(0.0)
     args = ("x", "y")
 
