@@ -22,21 +22,19 @@ class squish(ph.transform.elastic.ElasticTransform):
 
         tck, _ = interpolate.splprep(CM, u=u, s=0)
 
-        obj = {
-            "r" : np.array(interpolate.splev(t, tck, der=0,ext=2)),
-            "v" : np.array(interpolate.splev(t, tck, der=1)),
-            "a" : np.array(interpolate.splev(t, tck, der=2)),
-        }
+        r = np.array(interpolate.splev(t, tck, der=0,ext=2))
+        v = np.array(interpolate.splev(t, tck, der=1,ext=2))
+        a = np.array(interpolate.splev(t, tck, der=2,ext=2))
+
         font = "TitilliumWeb-Black.ttf"
 
-        val =obj['r'][0]
-        cvs += ph.text(f"x={val:0.2f}",y=1.5,font_size=0.3, font=font)
+        cvs += ph.text(f"x={r[0]:0.2f}",y=1.5,font_size=0.3, font=font)
+        cvs += ph.text(f"v={v[0]:0.2f}",y=-1.0,x=-2,font_size=0.3,font=font)
+        cvs += ph.text(f"a={a[0]:0.2f}",y=-1.0,x=2,font_size=0.3,font=font)
 
-        val =obj['v'][0]
-        cvs += ph.text(f"v={val:0.2f}",y=-1.0,x=-2,font_size=0.3,font=font)
-
-        val =obj['a'][0]
-        cvs += ph.text(f"a={val:0.2f}",y=-1.0,x=2,font_size=0.3,font=font)
+        aT = (r[0]*a[0] + r[1]*a[1]) * self.dt / np.linalg.norm(v)
+        aN = (v[1]*a[0] - v[0]*a[1]) * self.dt**2 / np.linalg.norm(v)
+        print(aT, aN)
 
         return False
 
