@@ -23,7 +23,7 @@ for i in range(3):
     row = []
     for j in range(5):
         C = ph.Canvas(height=200, width=200)
-        C += ph.circle(r=2, color=pal[(i + j) % 5])
+        C += ph.circle(r=4, color=pal[(i + j) % 5])
         row.append(C)
     grid.append(row)
 

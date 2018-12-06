@@ -27,7 +27,7 @@ def erosion_distance(canvas, kernel_size=5, depth_iterations=3, decay=0.90):
 
 class rise(ph.transform.elastic.ElasticTransform):
     dist = constant(None)
-    amplitude = constant(0.01)
+    amplitude = constant(0.02)
     theta = constant(0.0)
     mode = constant("constant")
 
@@ -68,7 +68,7 @@ C += ph.text(
     y=0.5,
     font="TitilliumWeb-Black.ttf",
     vpos="center",
-    font_size=1.25,
+    font_size=2.50,
 )
 
 dist = erosion_distance(
@@ -77,7 +77,7 @@ dist = erosion_distance(
 
 C = ph.Animation(w, h, bg=pal[-1])
 
-n, tc = 40, 0.010
+n, tc = 40, 0.020
 lg = ph.gradient.linear([pal[0], pal[1]])
 
 
@@ -87,12 +87,12 @@ C += ph.filters.gaussian_blur(0.10, 0.10)
 for y in np.linspace(1.25 * C.ymin, 1.25 * C.ymax, n):
     C += ph.line(C.xmin, y, C.xmax, y, thickness=tc, gradient=lg)
 
-z = ph.motion.easeInQuad(0, 0.015, flip=True)
+z = ph.motion.easeInQuad(0, 0.030, flip=True)
 C += rise(dist, amplitude=z)
 
 X = C.render(len(C) // 2)
 X += ph.transform.scale(1.0 / scale, 1.0 / scale)
-X += ph.filters.gaussian_blur(0.25, 0)
+X += ph.filters.gaussian_blur(0.50, 0)
 X.show()
 X.save("resist.png")
 exit()
