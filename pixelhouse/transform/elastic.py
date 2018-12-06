@@ -28,7 +28,7 @@ class ElasticTransform(Artist):
 class pull(ElasticTransform):
     x = constant(0.0)
     y = constant(0.0)
-    alpha = constant(1.0)
+    alpha = constant(2.0)
     mode = constant("nearest")
     args = ("x", "y", "sigma", "alpha", "mode")
 
@@ -49,8 +49,8 @@ class pull(ElasticTransform):
 
 
 class distort(ElasticTransform):
-    sigma = constant(0.1)
-    alpha = constant(10.0)
+    sigma = constant(0.2)
+    alpha = constant(20.0)
     mode = constant("nearest")
     seed = constant(None)
 
@@ -78,7 +78,7 @@ class distort(ElasticTransform):
 
 
 class motion_lines(ElasticTransform):
-    alpha = constant(0.15)
+    alpha = constant(0.30)
     theta = constant(0.0)
     mode = constant("constant")
     args = ("alpha", "mode")
@@ -103,7 +103,7 @@ class motion_lines(ElasticTransform):
 class wave(ElasticTransform):
 
     wavelength = constant(0.25)
-    amplitude = constant(0.02)
+    amplitude = constant(0.04)
     offset = constant(0.0)
     theta = constant(0.0)
     mode = constant("nearest")

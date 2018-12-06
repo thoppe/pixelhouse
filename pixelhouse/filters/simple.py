@@ -5,8 +5,8 @@ import warnings
 
 
 class gaussian_blur(Artist):
-    blur_x = constant(0.1)
-    blur_y = constant(0.1)
+    blur_x = constant(0.2)
+    blur_y = constant(0.2)
 
     args = ("blur_x", "blur_y")
 

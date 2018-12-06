@@ -3,10 +3,10 @@ import pixelhouse as ph
 import numpy as np
 
 
-def draw_circles(C, dx=0.25, tc=0.1):
+def draw_circles(C, dx=0.50, tc=0.2):
     pal = ph.palette(19)
 
-    base_r = 0.80
+    base_r = 1.60
 
     r = base_r + dx
     lg = ph.gradient.linear([pal[0], pal[1]], [1, 0], theta=-np.pi / 2)

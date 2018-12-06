@@ -11,7 +11,7 @@ _DEFAULT_SECONDARY_COLOR = "black"
 _DEFAULT_THICKNESS = -1
 _DEFAULT_ANTIALIASED = True
 _DEFAULT_MODE = "direct"
-_DEFAULT_FONT_SIZE = 0.5
+_DEFAULT_FONT_SIZE = 1.0
 _DEFAULT_FONT = os.path.join(
     _script_path, "fonts", "Alien-Encounters-Regular.ttf"
 )
@@ -60,7 +60,7 @@ class circle(PrimitiveArtist):
     mode (string): Direct, blend, add, or subtract
     """
 
-    r = constant(1.0)
+    r = constant(2.0)
     args = ("x", "y", "r", "color", "thickness", "lineType")
 
     def draw(self, cvs, t=0.0):
@@ -128,7 +128,7 @@ class line(PrimitiveArtist):
 
     x1 = constant(1.0)
     y1 = constant(1.0)
-    thickness = constant(0.1)
+    thickness = constant(0.2)
     args = ("x", "y", "x1", "y1", "color", "thickness", "lineType")
 
     def draw(self, cvs, t=0.0):
@@ -227,7 +227,7 @@ class polyline(PrimitiveArtist):
 
     xpts = constant([0.0, 1.0, 2.0])
     ypts = constant([0.0, 2.0, 0.0])
-    thickness = constant(0.1)
+    thickness = constant(0.2)
     is_closed = constant(1)
 
     args = ("xpts", "ypts", "is_closed", "color", "thickness", "lineType")
@@ -278,7 +278,7 @@ class text(PrimitiveArtist):
     vpos = constant("center")
     hpos = constant("center")
 
-    args = ("text", "fontsize", "vpos", "hpos", "font", "color")
+    args = ("text", "font_size", "vpos", "hpos", "font", "color")
 
     def draw(self, cvs, t=0.0):
         """
