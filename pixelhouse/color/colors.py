@@ -32,14 +32,24 @@ class NamedColors:
         if self.colors is None:
             self._load_colors()
 
-        if name not in self.colors:
+        # Load a hex color
+        if name and name[0]=="#":
+            name = name.lstrip("#")
+
+            if len(name) != 6:
+                raise ValueError("Can only use full hex colors")
+            
+            color = list(int(name[i:i+2], 16) for i in (0, 2 ,4))
+
+        elif name in self.colors:
+            color = self.colors[name]
+
+        else:
             color_list = self.colors.keys()
-            msg = f"{color_list} are known colors, {name} is unknown."
+            msg = (f"{color_list} are known colors, {name} is unknown "
+                   f"and not hex.")
             raise KeyError(msg)
 
-        color = self.colors[name]
-
-        # Add in the alpha channel
         return color
 
     def __len__(self):

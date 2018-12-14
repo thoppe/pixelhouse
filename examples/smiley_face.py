@@ -7,27 +7,27 @@ import pixelhouse as ph
 # https://dev.to/agathacco/how-to-create-pure-css-illustrations-and-animate-them---part-1-1j1k
 
 # Setup our canvas! Make it 400 by 400 pixels,
-canvas = ph.Canvas(400, 400, bg='navy') #FEEE9D
+canvas = ph.Canvas(400, 400, bg='#FEEE9D')
 
 # Face shadow
-canvas += ph.circle(0.1, -0.1, color='w') #EFBB42
+canvas += ph.circle(0.1, -0.1, color='#EFBB42')
 
 # Face 150/170
-canvas += ph.circle(0, 0, color='yellow') #FBD671
+canvas += ph.circle(0, 0, color='#FBD671')
 
-# Eyes #20184E
+# Eyes 
 x = 0.75
-canvas += ph.ellipse(x,  x, a=x*(3/10), b=x*(5/10),color='k')
-canvas += ph.ellipse(-x,  x, a=x*(3/10), b=x*(5/10),color='k')
+canvas += ph.ellipse(x,  x, a=x*(3/10), b=x*(5/10),color='#20184E')
+canvas += ph.ellipse(-x,  x, a=x*(3/10), b=x*(5/10),color='#20184E')
 
-# Pupils #FBD671; 
-canvas += ph.ellipse(x-x/15, x+x/10, a=x/6, b=x/4,color='w')
-canvas += ph.ellipse(-x-x/15, x+x/10, a=x/6, b=x/4,color='w')
+# Pupils 
+canvas += ph.ellipse(x-x/15, x+x/10, a=x/6, b=x/4,color='#FBD671')
+canvas += ph.ellipse(-x-x/15, x+x/10, a=x/6, b=x/4,color='#FBD671')
 
 
-# Mouth #20184E
+# Mouth 
 canvas += ph.ellipse(0,  -1, a=0.75, b=0.50,
-                     angle_start=np.pi, angle_end=2*np.pi,color='k')
+                     angle_start=np.pi, angle_end=2*np.pi,color='#20184E')
 
 # Tounge color #F15962; 100/80
 # Display the image. It'll stay open until you press a key.
