@@ -192,7 +192,7 @@ class ellipse(PrimitiveArtist):
         rotation = cvs.transform_angle(self.rotation(t))
         angle_start = cvs.transform_angle(self.angle_start(t))
         angle_end = cvs.transform_angle(self.angle_end(t))
-
+        
         args = (
             (x, y),
             (a, b),
