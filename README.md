@@ -29,8 +29,10 @@ _Submit your examples as an issue/pull request or post to twitter under #pixelho
 
 Thousands of color palettes are built in, to see a sample of them pass a list:
 
-    import pixelhouse as ph
-    ph.palette_blocks(range(20)).show()
+``` python
+import pixelhouse as ph
+ph.palette_blocks(range(20)).show()
+```
 
 [![](examples/figures/palettes_top_20.jpg)](examples/show_palettes.py)
 
