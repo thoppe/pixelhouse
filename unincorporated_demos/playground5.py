@@ -11,8 +11,8 @@ C = ph.Canvas(500, 100, bg=pal[2])
 C = ph.Animation(500, 100, bg=pal[2])  # , fps=10)
 lg = ph.gradient.linear([pal[0], pal[1]])
 
-C += ph.text("pixelhouse", font_size=2*0.78, font=f_font, color="w")
-C += ph.text("pixelhouse", font_size=2*0.75, font=f_font, gradient=lg)
+C += ph.text("pixelhouse", font_size=2 * 0.78, font=f_font, color="w")
+C += ph.text("pixelhouse", font_size=2 * 0.75, font=f_font, gradient=lg)
 
 a = ph.motion.easeInOutQuad(0, 0.12, True)
 

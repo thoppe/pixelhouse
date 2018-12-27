@@ -204,7 +204,6 @@ class Canvas:
         x -= self.extent
         return x
 
-    
     def transform_length(self, r, is_discrete=True, use_shift=False):
         r *= float(self.width) / self.extent / 2
 
@@ -323,7 +322,7 @@ class Canvas:
 
         cv2.imshow(self.name, dst)
         cv2.moveWindow(self.name, 40, 40)
-        
+
         cv2.waitKey(delay)
 
     def save(self, filename):

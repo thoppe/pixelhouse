@@ -9,7 +9,7 @@ from . import color
 from . import gradient
 
 from .primitives import circle, line, ellipse, rectangle, polyline, text
-from .color import palette
+from .color import palette, palette_rectangles, palette_blocks
 from .io import canvas2gif, canvas2mp4
 from .canvas import hstack, vstack, gridstack
 
