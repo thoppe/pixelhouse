@@ -39,6 +39,7 @@ class splatter(ph.Artist):
         idx = ~cv2.erode(mask, kernel).astype(bool)
         cvs.img[idx] = org[idx]
 
+
 if __name__ == "__main__":
     pal = ph.palette(32)
     np.random.shuffle(pal)

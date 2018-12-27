@@ -32,6 +32,29 @@ class Palette_Test:
         """
         ph.palette(100000)
 
+    @raises(ValueError)
+    def empty_palette_block_test(self):
+        """ empty_palette_block_test:
+            Try to draw a palette_block that's empty.
+        """
+        ph.palette_blocks([])
+
+    @raises(ValueError)
+    def too_small_palette_block_test(self):
+        """ too_small_palette_block_test:
+            Try to draw a palette_block that has more columns than items
+        """
+        ph.palette_blocks([1], columns=6)
+
+    def palette_block_size_test(self):
+        """ palette_block_size_test:
+            Make sure a palette block has the right expected size, test with
+            an irregular shape.
+        """
+        width = 300
+        canvas = ph.palette_blocks(range(5), columns=2, width=width)
+        assert canvas.shape[1] == width * 2
+
 
 class Color_Test:
 

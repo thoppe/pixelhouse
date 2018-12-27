@@ -27,6 +27,15 @@ _Very much a work in progress!_
 
 _Submit your examples as an issue/pull request or post to twitter under #pixelhouse to have them showcased here!_
 
+Thousands of color palettes are built in, to see a sample of them pass a list:
+
+``` python
+import pixelhouse as ph
+ph.palette_blocks(range(20)).show()
+```
+
+[![](examples/figures/palettes_top_20.jpg)](examples/show_palettes.py)
+
 ## Functionality
 
 + Primitives: Line, Circle, Ellipse, Polyline, Text*
