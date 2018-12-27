@@ -66,7 +66,7 @@ def palette_rectangles(n, show_number=True, width=400, ratio=7):
     return C
 
 
-def palette_blocks(palette_numbers, columns=2, show_number=True):
+def palette_blocks(palette_numbers, columns=2, show_number=True, width=400):
     """
     Returns a canvas that shows what a list (palette_numbers) of palettes 
     look like.
@@ -87,7 +87,7 @@ def palette_blocks(palette_numbers, columns=2, show_number=True):
     row = 0
 
     for n in palette_numbers:
-        canvas = palette_rectangles(n, show_number=show_number)
+        canvas = palette_rectangles(n, show_number=show_number, width=width)
         blocks[row].append(canvas)
         row = (row + 1) % ((len(palette_numbers) + 1) // columns)
 
