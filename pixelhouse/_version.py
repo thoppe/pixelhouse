@@ -1,4 +1,4 @@
-__version__ = "0.3.3"
+__version__ = "0.4.0"
 
 """
 Version: 0.4.0: transform_length was off by a factor of two. Ouch. Fixed all the examples and code (mostly circle radii). This may break older code.
