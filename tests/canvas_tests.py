@@ -184,6 +184,23 @@ class Canvas_Test:
         dist = dist.astype(float) / 255
         assert_equal(dist.sum(), 0)
 
+    def direct_load_test(self):
+        """ direct_load_test:
+            Load an image without creating a canvas.
+        """
+        C = ph.Canvas(bg="yellow")
+        C += ph.circle(color="g")
+
+        C2 = ph.Canvas()
+
+        with tempfile.NamedTemporaryFile(suffix=".png") as F:
+            C.save(F.name)
+            C2 = ph.load(F.name)
+
+        dist = C.img[:, :, :3] - C2.img[:, :, :3]
+        dist = dist.astype(float) / 255
+        assert_equal(dist.sum(), 0)
+
     def combine_canvas_test(self):
         """ combine_canvas_test:
             Try to add two canvas together with blend, add, subtract modes.

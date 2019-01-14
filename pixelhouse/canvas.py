@@ -383,3 +383,11 @@ def gridstack(canvas_grid):
     cvs = canvas_grid[0][0].blank()
     rows = [hstack([x for x in row]) for row in canvas_grid]
     return vstack(rows)
+
+
+def load(filename):
+    """
+    Helper function to load an image directly. 
+    pixelhouse.load(filename) returns a preloaded canvas.
+    """
+    return Canvas().load(filename)

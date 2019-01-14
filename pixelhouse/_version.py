@@ -1,6 +1,7 @@
-__version__ = "0.4.1"
+__version__ = "0.4.2"
 
 """
+Version: 0.4.1: Add helper load function directly from pixelhouse.
 Version: 0.4.1: Add helper functions to see all the color palettes.
 Version: 0.4.0: transform_length was off by a factor of two. Ouch. Fixed all the examples and code (mostly circle radii). This may break older code.
 Version: 0.3.3: 100% Coverage. Fixed tiny bugs while building unit tests

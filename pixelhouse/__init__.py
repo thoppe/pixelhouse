@@ -1,5 +1,5 @@
 from .artist import Artist
-from .canvas import Canvas
+from .canvas import Canvas, load
 from .animation import Animation
 
 from . import transform
