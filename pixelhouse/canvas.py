@@ -314,7 +314,9 @@ class Canvas:
 
     def show(self, delay=0):  # pragma: no cover
 
-        """ Opens a preview window displaying the image
+        """ 
+        Opens a preview window displaying the image. 
+        Returns the keycode of the button pressed.
         """
 
         # Before we show we have to convert back to BGR
@@ -323,7 +325,7 @@ class Canvas:
         cv2.imshow(self.name, dst)
         cv2.moveWindow(self.name, 40, 40)
 
-        cv2.waitKey(delay)
+        return cv2.waitKey(delay)
 
     def save(self, filename):
 
