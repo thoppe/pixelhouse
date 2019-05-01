@@ -117,7 +117,7 @@ class Canvas:
             Example: canvas(scale(fx=2, fy=2))
         """
         if art is not None:
-            art(self)
+            art.draw(self)
         return self
 
     def __getitem__(self, key):

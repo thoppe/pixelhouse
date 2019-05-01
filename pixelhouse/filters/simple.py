@@ -14,6 +14,7 @@ class gaussian_blur(Artist):
         bx = cvs.transform_kernel_length(self.blur_x(t))
         by = cvs.transform_kernel_length(self.blur_y(t))
         kernel = (bx, by)
+        print("KERNEL!", kernel)
 
         cvs.img = cv2.GaussianBlur(cvs.img, kernel, 0)
 
@@ -29,20 +30,15 @@ class glow(Artist):
 
     def draw(self, cvs, t=0.0):
 
-        cvs += self.art
+        gx, gy = self.glow_x(t), self.glow_y(t)
+        art = self.art(t)
+        
+        cvs += art
 
         if self.n(t)==0:
             return True
 
-        gx, gy = self.glow_x(t), self.glow_y(t)
-
-        print(gx, gy)
-
-        
-
         with cvs.layer() as C:
             for i in range(self.n(t)):
-                
-                C += gaussian_blur(self.glow_x(t), self.glow_y(t))
-                C += self.art
-    
+                C += gaussian_blur(gx, gy)
+                C += art    

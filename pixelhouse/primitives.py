@@ -132,6 +132,7 @@ class line(PrimitiveArtist):
     args = ("x", "y", "x1", "y1", "color", "thickness", "lineType")
 
     def draw(self, cvs, t=0.0):
+        
         x, y, thickness, color, lineType, mode = self.basic_transforms(cvs, t)
         x1 = cvs.transform_x(self.x1(t), use_shift=True)
         y1 = cvs.transform_y(self.y1(t), use_shift=True)
