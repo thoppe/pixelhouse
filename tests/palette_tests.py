@@ -70,6 +70,16 @@ class Color_Test:
         colors("k")
         assert_true(len(colors) > 5)
 
+    def check_hex_color_test(self):
+        """
+        Check an awesome purple.
+        """
+        colors = ph.color.NamedColors()
+        purple = colors("#FF6AD5")
+        assert_true(purple[0] == 255)
+        assert_true(purple[1] == 106)
+        assert_true(purple[2] == 213)
+
     @raises(KeyError)
     def check_unknown_color_name_test(self):
         """ check_unknown_color_name:

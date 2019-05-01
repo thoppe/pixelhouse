@@ -8,7 +8,7 @@ Anything that can be drawn can be moved.  Comes with beautiful gradients, instag
 
 _Very much a work in progress!_
 
-      pip install pixelhouse
+    pip install pixelhouse
 	  
 ## Examples (click for source)
 

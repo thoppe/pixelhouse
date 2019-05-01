@@ -1,6 +1,7 @@
-__version__ = "0.4.3"
+__version__ = "0.4.4"
 
 """
+Version: 0.4.4: Colors now take hex code. Fix numpy error w/new version.
 Version: 0.4.3: canvas.show() now returns the keycode.
 Version: 0.4.2: Add helper load function directly from pixelhouse.
 Version: 0.4.1: Add helper functions to see all the color palettes.

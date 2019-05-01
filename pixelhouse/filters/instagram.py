@@ -34,7 +34,8 @@ class instafilter(Artist):
         f_model = os.path.join(_model_path, f"{name}.npz")
         assert os.path.exists(f_model)
 
-        obj = np.load(f_model)
+        obj = np.load(f_model, allow_pickle=True)
+
         self.weights = obj["W"]
         self.bias = obj["b"]
 
