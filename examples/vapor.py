@@ -18,5 +18,5 @@ for k, y in enumerate(Y):
 
 
 #ph.canvas2mp4(C, "vwa.mp4")
-C.save("../examples/figures/vapor.png")
+C.save("figures/vapor.png")
 C.show()

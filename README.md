@@ -17,9 +17,8 @@ _Very much a work in progress!_
 [![Example image: Logo](examples/figures/logo_pixelhouse.png)](examples/logo_pixelhouse.py)
 [![Example image: Circle Lines](examples/figures/circle_lines.png)](examples/circle_lines.py)
 
-
-[![Example image: Resist](examples/figures/resist.png)](examples/figures/resist.png)
-[![Example image: Vapor](examples/figures/vapor.png)](examples/figures/vapor.png)
+[![Example image: Resist](examples/figures/resist.png)](examples/resist.py)
+[![Example image: Vapor](examples/figures/vapor.png)](examples/vapor.py)
 
 [![](examples/figures/simple_circles.png)](examples/small_demos.py)
 [![](examples/figures/teyleen_982.png)](examples/small_demos.py)

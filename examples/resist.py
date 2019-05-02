@@ -94,5 +94,5 @@ X = C.render(len(C) // 2)
 X += ph.transform.scale(1.0 / scale, 1.0 / scale)
 X += ph.filters.gaussian_blur(0.50, 0)
 
-X.save("../examples/figures/resist.png")
+X.save("figures/resist.png")
 X.show()
