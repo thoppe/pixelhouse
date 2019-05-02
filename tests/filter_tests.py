@@ -14,6 +14,13 @@ class Filter_AnyEffect_Test(AnyEffect_Test):
     def gaussian_blur_test(self):
         self.target += ph.filters.gaussian_blur()
 
+    def glow_test(self):
+        line = ph.line()
+        self.target += ph.filters.glow(line)
+
+        # Test w/effect off too
+        self.target += ph.filters.glow(line, n=0)
+
     def instagram_test(self):
         self.target += ph.filters.instafilter("1977")
 
