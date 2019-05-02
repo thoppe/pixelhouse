@@ -59,7 +59,7 @@ class rise(ph.transform.elastic.ElasticTransform):
 pal = ph.palette(13)
 # w,h = 3*600, 3*200
 scale = 4
-w, h = scale * 600, scale * 200
+w, h = scale * 600, scale * 400
 
 C = ph.Canvas(w, h)
 C += ph.text(
@@ -94,7 +94,5 @@ X = C.render(len(C) // 2)
 X += ph.transform.scale(1.0 / scale, 1.0 / scale)
 X += ph.filters.gaussian_blur(0.50, 0)
 X.show()
-X.save("resist.png")
-exit()
-
+X.save("../examples/figures/resist.png")
 C.show()
