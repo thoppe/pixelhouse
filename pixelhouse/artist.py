@@ -72,9 +72,9 @@ class Artist:
             else:
                 # setattr(self, key, self._constant(val))
                 setattr(self, key, constant(val))
-                
+
     #  Removed __call__ since canvas additions must be done with draw
-    #def __call__(self, t, *args, **kwargs):
+    # def __call__(self, t, *args, **kwargs):
     #    # Convenience method for draw
     #    self.draw(t, *args, **kwargs)
 
