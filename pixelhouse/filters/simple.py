@@ -27,11 +27,9 @@ class glow(Artist):
     args = ("art", "glow_x", "glow_y", "n")
 
     def draw(self, cvs, t=0.0):
-
         gx, gy = self.glow_x(t), self.glow_y(t)
         art = self.art(t)
-
-        cvs += art
+        art.draw(cvs, t)
 
         if self.n(t) == 0:
             return True
@@ -39,4 +37,4 @@ class glow(Artist):
         with cvs.layer() as cvs2:
             for i in range(self.n(t)):
                 cvs2 += gaussian_blur(gx, gy)
-                cvs2 += art
+                art.draw(cvs2, t)
