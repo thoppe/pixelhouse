@@ -116,7 +116,7 @@ class Animation:
 
             artists = self.artist_stack[self.keyframes[n]]
             for art in artists:
-                art(self.frames[n], t)
+                art.draw(self.frames[n], t)
 
             self.has_rendered[n] = True
 
@@ -167,10 +167,10 @@ class _CanvasLayer:
         self.artists.append(art)
         return self
 
-    def __call__(self, cvs, t=0.0):
+    def draw(self, cvs, t=0.0):
         with cvs.layer() as C:
             for art in self.artists:
-                art(C, t)
+                art.draw(C, t)
 
     @contextmanager
     def layer(self):  # pragma: no cover

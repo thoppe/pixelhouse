@@ -135,7 +135,7 @@ class line(PrimitiveArtist):
         x, y, thickness, color, lineType, mode = self.basic_transforms(cvs, t)
         x1 = cvs.transform_x(self.x1(t), use_shift=True)
         y1 = cvs.transform_y(self.y1(t), use_shift=True)
-
+        
         # Thickness must be at least one pixel
         thickness = max(thickness, 1)
 
