@@ -135,7 +135,7 @@ class line(PrimitiveArtist):
         x, y, thickness, color, lineType, mode = self.basic_transforms(cvs, t)
         x1 = cvs.transform_x(self.x1(t), use_shift=True)
         y1 = cvs.transform_y(self.y1(t), use_shift=True)
-        
+
         # Thickness must be at least one pixel
         thickness = max(thickness, 1)
 
@@ -232,7 +232,15 @@ class polyline(PrimitiveArtist):
     is_closed = constant(1)
     is_filled = constant(0)
 
-    args = ("xpts", "ypts", "is_closed", "color", "thickness", "lineType", "is_filled")
+    args = (
+        "xpts",
+        "ypts",
+        "is_closed",
+        "color",
+        "thickness",
+        "lineType",
+        "is_filled",
+    )
 
     def draw(self, cvs, t=0.0):
 
@@ -249,7 +257,6 @@ class polyline(PrimitiveArtist):
 
         if self.gradient(t) is not None:
             raise NotImplementedError("Can't use gradients on polylines yet")
-
 
         if not self.is_filled(t):
             args = [pts], is_closed, color, thickness, lineType, 0
