@@ -217,6 +217,7 @@ class polyline(PrimitiveArtist):
     xpts (array): x coordinates of the line
     ypts (array): y coordinates of the line
     is_closed(bool): draw the final line segment
+    is_filled(bool): fill the polygon with (cv2.fillpoly)
 
     color (tuple or string): Color (ignored if gradient used)
     thickness (float): Line thickness 
@@ -229,8 +230,9 @@ class polyline(PrimitiveArtist):
     ypts = constant([0.0, 2.0, 0.0])
     thickness = constant(0.2)
     is_closed = constant(1)
+    is_filled = constant(0)
 
-    args = ("xpts", "ypts", "is_closed", "color", "thickness", "lineType")
+    args = ("xpts", "ypts", "is_closed", "color", "thickness", "lineType", "is_filled")
 
     def draw(self, cvs, t=0.0):
 
@@ -248,8 +250,13 @@ class polyline(PrimitiveArtist):
         if self.gradient(t) is not None:
             raise NotImplementedError("Can't use gradients on polylines yet")
 
-        args = [pts], is_closed, color, thickness, lineType, 0
-        cvs.cv2_draw(cv2.polylines, args, mode=mode)
+
+        if not self.is_filled(t):
+            args = [pts], is_closed, color, thickness, lineType, 0
+            cvs.cv2_draw(cv2.polylines, args, mode=mode)
+
+        args = [pts], color, lineType, 0
+        cvs.cv2_draw(cv2.fillPoly, args, mode=mode)
 
 
 class text(PrimitiveArtist):

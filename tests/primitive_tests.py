@@ -20,6 +20,9 @@ class Primitive_AnyDraw_Test(AnyDraw_Test):
     def polyline_test(self):
         self.canvas += ph.polyline()
 
+    def polyFill_test(self):
+        self.canvas += ph.polyline(is_filled=1)
+
     def line_test(self):
         self.canvas += ph.line()
 

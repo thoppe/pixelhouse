@@ -1,6 +1,7 @@
-__version__ = "0.4.4"
+__version__ = "0.4.6"
 
 """
+Version: 0.4.6: polyLines can now be filled
 Version: 0.4.5: Added glow filter, slow but pretty
 Version: 0.4.4: Colors now take hex code. Fix numpy error w/new version.
 Version: 0.4.3: canvas.show() now returns the keycode.
