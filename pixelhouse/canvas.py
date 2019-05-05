@@ -97,13 +97,16 @@ class Canvas:
         if bg is None:
             bg = self.bg
 
-        return Canvas(self.width, self.height, bg=bg)
+        cvs = Canvas(self.width, self.height, bg=bg)
+        cvs.pixels_per_unit = self.pixels_per_unit
+
+        return cvs
 
     def copy(self, bg=None, transparent=False):
         """
             Returns a deep copy of this canvas
         """
-        cvs = Canvas(self.width, self.height, bg=self.bg)
+        cvs = self.blank()
         cvs.img = self.img.copy()
 
         if transparent:
