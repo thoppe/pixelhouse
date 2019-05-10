@@ -4,4 +4,4 @@ Juno
 ![](samples/Juno.jpg)
 
 
-
+![](samples/Juno.jpg&s=200)
