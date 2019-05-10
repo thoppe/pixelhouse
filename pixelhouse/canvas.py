@@ -351,6 +351,9 @@ class Canvas:
         alpha = np.zeros_like(self.img[:, :, 0])
         self.img = np.dstack((self.img, alpha))
 
+        # Set the pixels_per_unit
+        self.pixels_per_unit = self.width / (2 * self.extent)
+
         return self
 
     @contextmanager

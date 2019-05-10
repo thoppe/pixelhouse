@@ -1,6 +1,7 @@
-__version__ = "0.4.7"
+__version__ = "0.4.8"
 
 """
+Version: 0.4.8: Fix load from file to have correct pixels_per_unit
 Version: 0.4.7: Fix copy/blank error
 Version: 0.4.6: polyLines can now be filled
 Version: 0.4.5: Added glow filter, slow but pretty
