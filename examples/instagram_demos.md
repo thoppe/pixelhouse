@@ -1,4 +1,5 @@
 Showcasing instalike filters
 
-![]("../pixelhouse/filters/insta/samples/Juno.jpg")
+Juno
+![](pixelhouse/filters/insta/samples/Juno.jpg)
 
