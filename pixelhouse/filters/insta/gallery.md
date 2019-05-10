@@ -1,7 +1,7 @@
 Showcasing instalike filters
 
 Juno
-![](Juno.jpg)
+![](samples/Juno.jpg)
 
 
 
