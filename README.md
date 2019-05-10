@@ -46,7 +46,7 @@ ph.palette_blocks(range(20)).show()
 + Gradients: Linear gradients with transparent elements, discrete
 + Animation: Easing (named and custom)
 + Transforms: Rotation, Translation, Scale, Elastic distortions
-+ Filters: Blur, Instagram-style filters (keras not needed)
++ Filters: Blur, [Instagram-style](pixelhouse/filters/insta/samples/gallery.md) filters
 + IO: Save/Load: jpg, png, gif, mp4
 
 \* Note: For advanced font support install [libraqm](https://github.com/HOST-Oman/libraqm) ([why?](https://github.com/thoppe/pixelhouse/issues/26)).
