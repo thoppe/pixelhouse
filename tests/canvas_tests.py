@@ -290,3 +290,37 @@ class Canvas_Test:
     def bad_type_iadd_canvas_test(self):
         C1 = ph.Canvas(100, 200)
         C1 += 3
+
+            
+    def resize_up_test(self):
+        """ resize_up_test:
+            After scaling by 2x, it should be 400 pixels.
+        """
+        C = ph.Canvas(width=200, height=200)
+        C += ph.rectangle(x=0.5, y=0.25, x1=0.75, y1=0.75)
+                
+        assert_true(C.width == 200)
+        assert_true(C.height == 200)
+        C.resize(fx=2)
+        
+        assert_true(C.width == 400)
+        assert_true(C.height == 400)
+
+    def resize_exact_test(self):
+        """ resize_exact_test:
+            After scaling, it should have these exact dimensions
+        """
+        C = ph.Canvas(width=200, height=200)
+        C += ph.rectangle(x=0.5, y=0.25, x1=0.75, y1=0.75)
+        C.resize(output_size=(100, 50))
+        
+        assert_true(C.width == 100)
+        assert_true(C.height == 50)
+
+    @raises(ValueError)
+    def resize_set_both_exact_and_scale_test(self):
+        """ resize_set_both_exact_and_scale_test:
+         Raise an error if both values are set
+        """
+        C = ph.Canvas()
+        C.resize(fx=2.0, output_size=(100, 50))
