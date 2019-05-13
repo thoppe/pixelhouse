@@ -165,6 +165,16 @@ class Canvas_Test:
 
         assert_true(len(pts), 2)
 
+    @raises(FileNotFoundError)
+    def load_missing_file_test(self):
+        """ load_missing_file_test
+            Raise an exception if a file is missing
+        """
+        C = ph.load("THIS_IS_A_MISSING_FILE.png")
+        alpha = C.alpha.sum()
+
+        assert alpha.sum() > 0
+
     def load_transparent_test(self):
         """ load_transparent_test:
             Load an image with a known transparent channel.

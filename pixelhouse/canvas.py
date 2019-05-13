@@ -1,5 +1,6 @@
 from contextlib import contextmanager
 import cv2
+import os
 import numpy as np
 import collections
 from . import Artist
@@ -352,6 +353,9 @@ class Canvas:
         """ Reads an image in from a specified filename
             and converts it to RGB space
         """
+
+        if not os.path.exists(filename):
+            raise  FileNotFoundError(f'"{filename}" not found')
 
         # Read the image in and convert to RGB space
         img = cv2.imread(filename, cv2.IMREAD_UNCHANGED)
