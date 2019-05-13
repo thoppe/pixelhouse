@@ -1,6 +1,7 @@
-__version__ = "0.4.8"
+__version__ = "0.4.9"
 
 """
+Version: 0.4.9: Loading from file now respects an alpha channel
 Version: 0.4.8: Fix load from file to have correct pixels_per_unit
 Version: 0.4.7: Fix copy/blank error
 Version: 0.4.6: polyLines can now be filled

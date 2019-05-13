@@ -89,6 +89,14 @@ class Canvas:
         """
         return self.img[:, :, 3]
 
+    @alpha.setter
+    def alpha(self, value):
+        """
+        Set the alpha channel for the image, 
+        either as a fixed value or an array.
+        """
+        self.img[:, :, 3] = value
+
     def blank(self, bg=None):
         """
             Return an empty canvas of the same size.
@@ -346,10 +354,14 @@ class Canvas:
         """
 
         # Read the image in and convert to RGB space
-        self.img = cv2.cvtColor(cv2.imread(filename), cv2.COLOR_BGR2RGB)
+        img = cv2.imread(filename, cv2.IMREAD_UNCHANGED)
 
-        alpha = np.zeros_like(self.img[:, :, 0])
-        self.img = np.dstack((self.img, alpha))
+        # If needed, add in an alpha channel
+        if img.shape[2] == 3:
+            alpha = np.zeros_like(img[:, :, 0])
+            img = np.dstack((img, alpha))
+
+        self.img = cv2.cvtColor(img, cv2.COLOR_BGRA2RGBA)
 
         # Set the pixels_per_unit
         self.pixels_per_unit = self.width / (2 * self.extent)
