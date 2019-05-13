@@ -317,6 +317,14 @@ class Canvas_Test:
         assert_true(C.width == 100)
         assert_true(C.height == 50)
 
+    
+    def resize_animation_test(self):
+        """ resize_animation_test:
+            Check that resizing an animation doesn't fail
+        """
+        C = ph.Animation()
+        C.resize(2.0)
+
     @raises(ValueError)
     def resize_set_both_exact_and_scale_test(self):
         """ resize_set_both_exact_and_scale_test:
