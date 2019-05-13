@@ -165,6 +165,24 @@ class Canvas_Test:
 
         assert_true(len(pts), 2)
 
+    def load_transparent_test(self):
+        """ load_transparent_test:
+            Load an image with a known transparent channel.
+        """
+        C = ph.load("tests/tree.png")
+        alpha = C.alpha.sum()
+
+        assert alpha.sum() > 0
+
+    def set_alpha_value_test(self):
+        """ set_alpha_value_test
+            Set the alpha channel to a specific value
+        """
+        C = ph.Canvas()
+        C.alpha = 120
+
+        assert_true(C.alpha.mean(), 120)
+
     def save_load_test(self):
         """ save_load_test:
             Create an image, save it to a tmp location and try to load it
