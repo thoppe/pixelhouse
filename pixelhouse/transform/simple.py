@@ -4,17 +4,8 @@ from ..artist import Artist, constant
 
 
 class scale(Artist):
-    fx = constant(0.5)
-    fy = constant(None)
-    args = ("fx", "fy")
-
     def draw(self, cvs, t=0.0):
-
-        fx, fy = self.fx(t), self.fy(t)
-        if fy is None:
-            fy = fx
-
-        cvs.img = cv2.resize(cvs.img, (0, 0), fx=fx, fy=fy)
+        raise NotImplementedError("Use canvas.resize instead")
 
 
 class translate(Artist):

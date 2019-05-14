@@ -6,5 +6,5 @@ C = ph.Animation()
 x = np.linspace(0.05, 0.1, 100)
 C += ph.circle(x=x, r=3.0)
 
-C += ph.transform.scale(4)
+C.resize(4)
 C.show()

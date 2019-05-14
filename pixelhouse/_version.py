@@ -1,6 +1,7 @@
-__version__ = "0.4.9"
+__version__ = "0.5.0"
 
 """
+Version: 0.5.0: Resize function in canvas.resize (removed transform.scale)
 Version: 0.4.9: Loading from file now respects an alpha channel
 Version: 0.4.8: Fix load from file to have correct pixels_per_unit
 Version: 0.4.7: Fix copy/blank error

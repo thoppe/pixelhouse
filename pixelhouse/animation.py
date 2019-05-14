@@ -15,8 +15,6 @@ class Animation:
         self, width=200, height=200, duration=5, fps=5, extent=4, bg="black"
     ):
 
-        self.width = width
-        self.height = height
         self.bg = bg
         self.extent = extent
 
@@ -52,6 +50,21 @@ class Animation:
         kws.update(kwargs)
 
         return Animation(**kws)
+
+    @property
+    def height(self):
+        return self.frames[0].height
+
+    @property
+    def width(self):
+        return self.frames[0].width
+
+    def resize(self, fx=0, fy=0, output_size=None):
+        """
+        Resizes the all canvas' either by a set scale or direct pixel amount
+        """
+        for canvas in self.frames:
+            canvas.resize(fx, fy, output_size)
 
     @property
     def aspect_ratio(self):

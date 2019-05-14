@@ -126,7 +126,7 @@ class Canvas:
     def __call__(self, art=None):
         """
             Calls an Artist on the canvas.
-            Example: canvas(scale(fx=2, fy=2))
+            Example: canvas(translate(x=2, y=1))
         """
         if art is not None:
             art.draw(self)
@@ -355,7 +355,7 @@ class Canvas:
         """
 
         if not os.path.exists(filename):
-            raise  FileNotFoundError(f'"{filename}" not found')
+            raise FileNotFoundError(f'"{filename}" not found')
 
         # Read the image in and convert to RGB space
         img = cv2.imread(filename, cv2.IMREAD_UNCHANGED)
@@ -377,6 +377,23 @@ class Canvas:
         canvas = self.copy(transparent=True)
         yield canvas
         self += canvas
+
+    def resize(self, fx=0, fy=0, output_size=None):
+        """
+        Resizes the canvas either by a set scale or direct pixel amount
+        """
+
+        if output_size and (fx or fy):
+            raise ValueError("Can't set both fx,fy and output_size")
+
+        if output_size:
+            self.img = cv2.resize(self.img, output_size)
+        else:
+            if not fy:
+                fy = fx
+            self.img = cv2.resize(self.img, (0, 0), fx=float(fx), fy=float(fy))
+
+        return self
 
 
 def hstack(canvas_list):
