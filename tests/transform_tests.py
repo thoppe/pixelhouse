@@ -38,3 +38,8 @@ class Transform_AnyEffect_Test(AnyEffect_Test):
 
     def wave_test(self):
         self.target += ph.transform.wave()
+
+    @raises(NotImplementedError)
+    def scale_test(self):
+        # This was depreciated to canvas.resize()
+        self.target += ph.transform.scale(2.0)

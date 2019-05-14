@@ -2,6 +2,7 @@ import numpy as np
 import cv2
 from ..artist import Artist, constant
 
+
 class scale(Artist):
     def draw(self, cvs, t=0.0):
         raise NotImplementedError("Use canvas.resize instead")

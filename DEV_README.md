@@ -1,15 +1,4 @@
-### Release Notes:
-
-+ `black --line-length 80 pixelhouse unincorporated_demos/ tests/`
-+ Update the version number in `pixelhouse/_version.py`
-+ `python setup.py sdist` Build the distribution file.
-+ `twine upload -r test dist/*` Push the release to [pypi test](https://test.pypi.org/project/pixelhouse/) 
-+ `twine upload dist/*` Push the release to [pypi live](https://pypi.org/project/pixelhouse/)
-
-## Development notes
-
-+ Before a push run `black` (`pip install black`) to keep the code tidy.
-+ Tests can be run using `tox` (`pip install tox`), using nosetest (but be aware that python3.6 is needed for the tests so make sure nose is up-to-date.
+## pypi Notes
 
 Use the following `~/.pypirc` file (with an updated username and password)
 
@@ -27,3 +16,15 @@ Use the following `~/.pypirc` file (with an updated username and password)
     repository = https://upload.pypi.org/legacy/
     username=
     password=
+
+### Release Notes:
+
++ Update the version number in `pixelhouse/_version.py`
++ Test release, check coverage, and lint
++ Push the release to [pypi live](https://pypi.org/project/pixelhouse/)
+
+    tox
+    black --line-length 80 pixelhouse unincorporated_demos/ tests/
+    python setup.py sdist
+    twine upload -r test dist/*
+    twine upload dist/*

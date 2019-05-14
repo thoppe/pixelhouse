@@ -18,6 +18,13 @@ class Animation_Test:
         for rhs in canvas.frames[1:]:
             assert_true((rhs.img == canvas.frames[0].img).all())
 
+    def resize_test(self):
+        canvas = ph.Animation(width=200, height=150)
+        canvas.resize(2.0)
+
+        assert_true(all(f.width == 400 for f in canvas.frames))
+        assert_true(all(f.height == 300 for f in canvas.frames))
+
     def something_moved_test(self):
 
         """ something_moved_test:
