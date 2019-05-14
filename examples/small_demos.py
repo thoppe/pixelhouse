@@ -58,19 +58,15 @@ def simple_lines():
 
     # An example of the functional interface Artist(Canvas)
     for i in np.arange(-4, 5, 0.5):
-        line(x=-4, y=i, x1=4, y1=i, thickness=tc, color=[20] * 3)(C)
-        line(x=i, y=4, x1=i, y1=-4, thickness=tc, color=[20] * 3)(C)
+        C += line(x=-4, y=i, x1=4, y1=i, thickness=tc, color=[20] * 3)
+        C += line(x=i, y=4, x1=i, y1=-4, thickness=tc, color=[20] * 3)
 
     for i in np.arange(-4, 5, 1):
-        line(x=-4, y=i, x1=4, y1=i, thickness=tc, color=[100, int(100 + i * 10), 100])(
-            C
-        )
-        line(x=i, y=4, x1=i, y1=-4, thickness=tc, color=[100, 100, int(100 + i * 10)])(
-            C
-        )
+        C += line(x=-4, y=i, x1=4, y1=i, thickness=tc, color=[100, int(100 + i * 10), 100])
+        C += line(x=i, y=4, x1=i, y1=-4, thickness=tc, color=[100, 100, int(100 + i * 10)])
 
-    line(-4, 0, 4, 0, thickness=0.10)(C)
-    line(0, 4, 0, -4, thickness=0.10)(C)
+    C += line(-4, 0, 4, 0, thickness=0.10)
+    C += line(0, 4, 0, -4, thickness=0.10)
 
     return C
 
@@ -79,7 +75,7 @@ def instagram_filters():
 
     f_sample = "pixelhouse/filter/insta/samples/Normal.jpg"
     C = Canvas(bg="w", **canvas_args).load(f_sample)
-    C += scale(fx=0.25)
+    C.scale(fx=0.25)
     C += circle(r=1.00, color="r")
     C += instafilter("Ludwig", weight=0.80)
 
@@ -99,7 +95,7 @@ def teyleen_982():
     r = 3.6
 
     for n in range(6):
-        ellipse(
+        C+= ellipse(
             a=r,
             b=r,
             rotation=pi / 2,
@@ -107,7 +103,7 @@ def teyleen_982():
             angle_end=t1,
             color=pal[n],
             thickness=tc,
-        )(C)
+        )
 
         dx *= 1.4
         t0 = dx
