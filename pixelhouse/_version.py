@@ -1,6 +1,8 @@
-__version__ = "0.5.0"
+__version__ = "0.5.2"
 
 """
+Version: 0.5.2: Add canvas init from image and setters from scalars
+Version: 0.5.1: Add canvas.rgb getter/setter to quickly get non-alpha img
 Version: 0.5.0: Resize function in canvas.resize (removed transform.scale)
 Version: 0.4.9: Loading from file now respects an alpha channel
 Version: 0.4.8: Fix load from file to have correct pixels_per_unit

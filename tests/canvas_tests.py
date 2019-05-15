@@ -191,7 +191,44 @@ class Canvas_Test:
         C = ph.Canvas()
         C.alpha = 120
 
-        assert_true(C.alpha.mean(), 120)
+        assert_equal(C.alpha.mean(), 120)
+
+    def set_rgb_value_test(self):
+        """ set_rgb_value_test
+            Set the rgb channel to a specific value
+        """
+        C = ph.Canvas()
+        C.rgb = 120
+
+        assert_equal(C.alpha.mean(), 0)
+        assert_equal(C.rgb.mean(), 120)
+
+    def set_img_value_from_string_test(self):
+        """ set_rgb_value_from_string_test
+            Set the rgb channel to a specific value from a string
+        """
+        C = ph.Canvas()
+        C.img = "r"
+
+        assert_equal(C[:, :, 0].mean(), 255)
+        assert_equal(C[:, :, 1].mean(), 0)
+        assert_equal(C[:, :, 2].mean(), 0)
+        assert_equal(C[:, :, 3].mean(), 255)
+
+        C.img = 32
+        assert_equal(C.img.mean(), 32)
+
+    def set_img_value_from_vector_test(self):
+        """ set_rgb_value_from_vector_test
+            Set the rgb channel to a specific value from a vector
+        """
+        C = ph.Canvas()
+        C.img = [1, 2, 3, 4]
+
+        assert_equal(C[:, :, 0].mean(), 1)
+        assert_equal(C[:, :, 1].mean(), 2)
+        assert_equal(C[:, :, 2].mean(), 3)
+        assert_equal(C[:, :, 3].mean(), 4)
 
     def save_load_test(self):
         """ save_load_test:
@@ -330,3 +367,33 @@ class Canvas_Test:
         """
         C = ph.Canvas()
         C.resize(fx=2.0, output_size=(100, 50))
+
+    def create_from_single_channel_img_test(self):
+        """ create_from_single_channel_img_test:
+         Create a canvas from a single channel image
+        """
+        img = 37 * np.ones(shape=(100, 200)).astype(np.uint8)
+        C = ph.Canvas(img=img)
+
+        assert_equal(C.rgb.mean(), 37)
+        assert_equal(C.alpha.mean(), 0)
+
+    def create_from_rgb_channel_img_test(self):
+        """ create_from_rgb_channel_img_test:
+         Create a canvas from a rgb channel image
+        """
+        img = 37 * np.ones(shape=(100, 200, 3)).astype(np.uint8)
+        C = ph.Canvas(img=img)
+
+        assert_equal(C.rgb.mean(), 37)
+        assert_equal(C.alpha.mean(), 0)
+
+    def create_from_rgba_channel_img_test(self):
+        """ create_from_rgba_channel_img_test:
+         Create a canvas from a rgba channel image
+        """
+        img = 37 * np.ones(shape=(100, 200, 4)).astype(np.uint8)
+        C = ph.Canvas(img=img)
+
+        assert_equal(C.rgb.mean(), 37)
+        assert_equal(C.alpha.mean(), 37)

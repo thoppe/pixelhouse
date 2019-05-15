@@ -19,24 +19,37 @@ class Canvas:
         height=200,
         extent=4.0,
         bg="black",
+        img=None,
         name="pixelhouseImage",
         shift=8,
     ):
-        channels = 4
-        self.img = np.zeros((height, width, channels), np.uint8)
+
         self.shift = shift
 
         # Assign the background color, but make sure it is fully transparent
         # needed for antialiased edges
-        self.bg = bg
         bg = np.array(self.transform_color(bg)).astype(np.uint8)
-        bg[3] = 0
-        self.img[:, :] = bg
+        self.bg = bg
+
+        if img is None:
+            # Empty canvas
+            self._img = np.zeros((height, width, 4), np.uint8)
+            self.bg[3] = 0
+            self.img = self.bg
+
+        else:
+            # If a single channel image, upcast to greyscale
+            if len(img.shape) == 2:
+                img = np.dstack([img, img, img])
+
+            # If rgb, add the alpha channel
+            if img.shape[2] == 3:
+                alpha = np.zeros_like(img[:, :, 0])
+                img = np.dstack([img, alpha])
+            self._img = img
 
         self.name = name
         self.extent = extent
-
-        self.pixels_per_unit = width / (2 * self.extent)
 
         # When animating, we may want to pass attributes from one canvas
         # to another. Do so in the shared_attributes
@@ -84,6 +97,51 @@ class Canvas:
         return self.height, self.width, self.channels
 
     @property
+    def pixels_per_unit(self):
+        return self.width / (2 * self.extent)
+
+    @property
+    def img(self):
+        """
+        Returns the image
+        """
+        return self._img
+
+    @img.setter
+    def img(self, value):
+        """
+        Set the img from either a scalar, vector, or image array.
+        """
+        if isinstance(value, str):
+            value = self.transform_color(value)
+
+        value = np.array(value)
+
+        rank = np.ndim(value)
+        if not rank:
+            self._img.fill(value)
+            return
+        elif rank == 1:
+            self._img[:, :] = self.transform_color(value)
+        else:
+            self._img = value
+
+    @property
+    def rgb(self):
+        """
+        Return the image without the alpha channel
+        """
+        return self.img[:, :, :3]
+
+    @rgb.setter
+    def rgb(self, value):
+        """
+        Set the alpha channel for the image, 
+        either as a fixed value or an array.
+        """
+        self.img[:, :, :3] = value
+
+    @property
     def alpha(self):
         """
         Return the alpha channel from the image
@@ -106,9 +164,7 @@ class Canvas:
         if bg is None:
             bg = self.bg
 
-        cvs = Canvas(self.width, self.height, bg=bg)
-        cvs.pixels_per_unit = self.pixels_per_unit
-
+        cvs = Canvas(self.width, self.height, extent=self.extent, bg=bg)
         return cvs
 
     def copy(self, bg=None, transparent=False):
@@ -119,7 +175,7 @@ class Canvas:
         cvs.img = self.img.copy()
 
         if transparent:
-            cvs.img[:, :, 3] = 0
+            cvs.alpha = 0
 
         return cvs
 
@@ -263,6 +319,9 @@ class Canvas:
         return r
 
     def transform_color(self, c):
+        """
+        Cleanly transform a color.
+        """
 
         if isinstance(c, str):
             c = matplotlib_colors(c)
@@ -270,6 +329,10 @@ class Canvas:
         # Force add in the alpha channel
         if len(c) == 3:
             c = list(c) + [255]
+
+        # Force the return of a scalar (cv2 is picky)
+        if isinstance(c, np.ndarray):
+            c = c.tolist()
 
         return c
 
@@ -366,9 +429,6 @@ class Canvas:
             img = np.dstack((img, alpha))
 
         self.img = cv2.cvtColor(img, cv2.COLOR_BGRA2RGBA)
-
-        # Set the pixels_per_unit
-        self.pixels_per_unit = self.width / (2 * self.extent)
 
         return self
 

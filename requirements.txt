@@ -5,3 +5,4 @@
 nose
 coverage
 black
+tox
