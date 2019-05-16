@@ -25,6 +25,6 @@ Use the following `~/.pypirc` file (with an updated username and password)
 
     tox
     black --line-length 80 pixelhouse unincorporated_demos/ tests/
-    python setup.py sdist
+    rm dist/ -rvf && python setup.py sdist
     twine upload -r test dist/*
     twine upload dist/*

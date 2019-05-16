@@ -246,6 +246,8 @@ class Canvas:
             func(rhs.img, *args)
             self.combine(rhs, mode)
 
+        return self
+
     def blend(self, rhs):
         # Smooth the image based off the alpha from the mask image
 
@@ -255,6 +257,8 @@ class Canvas:
         MX = (1 - a) * self.img + a * rhs.img
         MX = np.clip(MX, 0, 255).astype(np.uint8)
         self.img = MX
+
+        return self
 
     def transform_x(self, x, is_discrete=True, use_shift=False):
         x += self.extent
@@ -387,20 +391,30 @@ class Canvas:
             return cv2.LINE_AA
         return 8
 
-    def show(self, delay=0):  # pragma: no cover
+    def show(
+        self, delay=0, orient=False, return_status=False
+    ):  # pragma: no cover
 
         """ 
         Opens a preview window displaying the image. 
-        Returns the keycode of the button pressed.
+        Returns the keycode of the button pressed if return_status==True,
+        else returns self.
         """
 
         # Before we show we have to convert back to BGR
         dst = cv2.cvtColor(self.img, cv2.COLOR_RGB2BGR)
 
         cv2.imshow(self.name, dst)
-        cv2.moveWindow(self.name, 40, 40)
 
-        return cv2.waitKey(delay)
+        if orient:
+            cv2.moveWindow(self.name, 40, 40)
+
+        status = cv2.waitKey(delay)
+
+        if return_status:
+            return status
+
+        return self
 
     def save(self, filename):
 
@@ -410,6 +424,8 @@ class Canvas:
         # Before we save we have to convert back to BGR
         dst = cv2.cvtColor(self.img, cv2.COLOR_RGB2BGR)
         cv2.imwrite(filename, dst)
+
+        return self
 
     def load(self, filename):
 
