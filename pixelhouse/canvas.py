@@ -439,9 +439,9 @@ class Canvas:
         # Read the image in and convert to RGB space
         img = cv2.imread(filename, cv2.IMREAD_UNCHANGED)
 
-        # If needed, add in an alpha channel
+        # If needed, add in an alpha channel as fully opaque
         if img.shape[2] == 3:
-            alpha = np.zeros_like(img[:, :, 0])
+            alpha = 255*np.ones_like(img[:, :, 0])
             img = np.dstack((img, alpha))
 
         self.img = cv2.cvtColor(img, cv2.COLOR_BGRA2RGBA)

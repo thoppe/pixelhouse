@@ -1,6 +1,7 @@
-__version__ = "0.5.3"
+__version__ = "0.5.4"
 
 """
+Version: 0.5.4: Loaded images are now fully opaque
 Version: 0.5.3: Show and resize now return self for chaining
 Version: 0.5.2: Add canvas init from image and setters from scalars
 Version: 0.5.1: Add canvas.rgb getter/setter to quickly get non-alpha img
