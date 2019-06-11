@@ -23,8 +23,8 @@ Use the following `~/.pypirc` file (with an updated username and password)
 + Test release, check coverage, and lint
 + Push the release to [pypi live](https://pypi.org/project/pixelhouse/)
 
-    tox
-    black --line-length 80 pixelhouse unincorporated_demos/ tests/
-    rm dist/ -rvf && python setup.py sdist
-    twine upload -r test dist/*
-    twine upload dist/*
+     tox
+     black --line-length 80 pixelhouse unincorporated_demos/ tests/
+     rm dist/ -rvf && python setup.py sdist
+     twine upload -r test dist/*
+     twine upload dist/*
