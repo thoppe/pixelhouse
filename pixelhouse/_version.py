@@ -1,6 +1,7 @@
-__version__ = "0.5.4"
+__version__ = "0.5.5"
 
 """
+Version: 0.5.5: Added Nevasleep filter
 Version: 0.5.4: Loaded images are now fully opaque
 Version: 0.5.3: Show and resize now return self for chaining
 Version: 0.5.2: Add canvas init from image and setters from scalars
