@@ -312,7 +312,7 @@ class text(PrimitiveArtist):
         font = ImageFont.truetype(self.font(t), fs)
 
         # Measure the font
-        tw, th = font.getsize(text)
+        _, _, tw, th = font.getbbox(text)
 
         vpos = self.vpos(t)
         if vpos == "upper":
