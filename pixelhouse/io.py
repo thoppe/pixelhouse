@@ -17,10 +17,10 @@ def canvas2gif(
 ):  # pragma: no cover
     images = [A.render(n).img for n in tqdm(range(len(A)))]
 
-    for i,img in enumerate(images):
-        if img.shape[2] == 4:
-            img[:, :, 3] = 255
-            images[i] = img
+    # for i,img in enumerate(images):
+    #     if img.shape[2] == 4:
+    #         img[:, :, 3] = 255
+    #         images[i] = img
             
     if duration == None:
         duration = A.duration / A.fps
@@ -32,6 +32,7 @@ def canvas2gif(
         palettesize=palettesize,
         subrectangles=True,
         loop=0,
+        disposal=2,
     )
 
     fs = os.stat(f_gif).st_size
