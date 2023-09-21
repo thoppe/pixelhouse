@@ -9,7 +9,6 @@ from tqdm import tqdm
 import imageio
 import tempfile
 import os
-import numpy as np
 
 
 def canvas2gif(
