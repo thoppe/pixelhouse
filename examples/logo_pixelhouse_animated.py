@@ -9,7 +9,7 @@ def logo_animation(logo_text):
 
     lg = ph.gradient.linear([pal[0], pal[1]], theta=-np.pi / 4)
 
-    A += ph.rectangle(-400, -400, 400, 400, color=pal[-1])
+    A += ph.rectangle(-400, -400, 400, 400, color=pal[2])
     
     A += ph.circle(color=pal[3])
     A += ph.filters.gaussian_blur()
